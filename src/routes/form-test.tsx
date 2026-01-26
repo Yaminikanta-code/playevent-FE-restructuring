@@ -8,6 +8,7 @@ import {
   Radio,
   Textarea,
   Button,
+  StatusSelector,
 } from '../common'
 import { Mail, Lock, User, Phone } from 'lucide-react'
 
@@ -22,6 +23,7 @@ type FormData = {
   phone: string
   password: string
   country: string
+  status: string
   terms: boolean
   newsletter: boolean
   gender: string
@@ -37,6 +39,7 @@ function RouteComponent() {
       phone: '',
       password: '',
       country: '',
+      status: '',
       terms: false,
       newsletter: false,
       gender: '',
@@ -147,6 +150,15 @@ function RouteComponent() {
             control={form.control}
             options={countryOptions}
             rules={{ required: 'Country is required' }}
+          />
+
+          {/* Status Selector */}
+          <StatusSelector
+            name="status"
+            label="Status"
+            control={form.control}
+            rules={{ required: 'Status is required' }}
+            helperText="Select your current status"
           />
 
           {/* Radio Buttons */}

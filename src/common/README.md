@@ -346,6 +346,82 @@ import { Textarea } from '@/common'
 />
 ```
 
+### StatusSelector
+
+A specialized status selector component that applies status color styling directly to the select dropdown element.
+
+#### Props
+
+- `name`: `Path<T>` - Field name in form data
+- `control`: `Control<T>` - React Hook Form control object
+- `label`: `string` - Field label
+- `options`: `StatusOption[]` - Array of status options (default: built-in status options)
+- `rules`: `object` - React Hook Form validation rules
+- `error`: `string` - External error message
+- `helperText`: `string` - Helper text displayed below selector
+- `disabled`: `boolean` - Disables the selector (default: `false`)
+
+#### Status Types
+
+The component includes built-in status options with color styling:
+- `available` - Green (bg-statuszen-base)
+- `busy` - Orange (bg-statusalert-base)
+- `away` - Purple (bg-statusneutral-base)
+- `offline` - Dark (bg-statusneutral-darkest)
+- `alert` - Orange (bg-statusalert-base)
+- `success` - Green (bg-statuszen-base)
+- `neutral` - Purple (bg-statusneutral-base)
+
+#### Component Behavior
+
+**Styled Select Dropdown:**
+When a status is selected, the select dropdown itself displays with:
+- Full colored background matching the status
+- White text for contrast
+- Transparent border
+- White dropdown arrow (vs dark arrow when unselected)
+- Hover effect with reduced opacity
+
+**Unselected State:**
+- Neutral background (bg-inputs-background)
+- Border with inputs-border color
+- Dark text (text-inputs-title)
+- Dark dropdown arrow
+- Hover effect on border
+
+**Error State:**
+- Red border and text when validation fails
+- Focus ring in red color
+
+#### Usage Examples
+
+```tsx
+import { StatusSelector } from '@/common'
+
+// Using default status options
+<StatusSelector
+  name="status"
+  label="Status"
+  control={form.control}
+  rules={{ required: 'Status is required' }}
+  helperText="Select your current status"
+/>
+
+// Using custom status options
+const customStatuses = [
+  { value: 'draft', label: 'Draft', colorClass: 'bg-statusneutral-base' },
+  { value: 'published', label: 'Published', colorClass: 'bg-statuszen-base' },
+  { value: 'archived', label: 'Archived', colorClass: 'bg-statusneutral-darkest' },
+]
+
+<StatusSelector
+  name="contentStatus"
+  label="Content Status"
+  control={form.control}
+  options={customStatuses}
+/>
+```
+
 ## Complete Form Example
 
 ```tsx

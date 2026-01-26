@@ -21,3 +21,11 @@ export type { TextareaProps } from './Textarea'
 
 export { default as Form } from './Form'
 export type { FormProps } from './Form'
+
+export { default as StatusSelector } from './StatusSelector'
+export type {
+  StatusSelectorProps,
+  StatusType,
+  StatusOption,
+} from './StatusSelector'
+export { statusOptions } from './StatusSelector'
