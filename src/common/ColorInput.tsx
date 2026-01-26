@@ -44,6 +44,7 @@ const ColorInput = <T extends FieldValues = FieldValues>({
   const [isPickerOpen, setIsPickerOpen] = useState(false)
   const pickerRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const [pickerPosition, setPickerPosition] = useState<'top' | 'bottom'>('top')
 
   // Close picker when clicking outside
   useEffect(() => {
@@ -60,6 +61,42 @@ const ColorInput = <T extends FieldValues = FieldValues>({
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  // Check screen position and adjust picker placement
+  useEffect(() => {
+    if (isPickerOpen && containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect()
+      const spaceBelow = window.innerHeight - rect.bottom
+      const spaceAbove = rect.top
+      const pickerHeight = 320 // Approximate height of the picker
+
+      // If there's not enough space below but enough above, open upwards
+      if (spaceBelow < pickerHeight && spaceAbove >= pickerHeight) {
+        setPickerPosition('top')
+      } else {
+        // Default to bottom if there's space, otherwise use whichever has more space
+        setPickerPosition(spaceBelow >= spaceAbove ? 'bottom' : 'top')
+      }
+    }
+  }, [isPickerOpen])
+
+  // Convert hex to rgba for opacity calculation
+  const hexToRgba = (hex: string) => {
+    const result =
+      /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?$/i.exec(hex)
+    if (!result) return { r: 0, g: 0, b: 0, a: 1 }
+    return {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+      a: result[4] ? parseInt(result[4], 16) / 255 : 1,
+    }
+  }
+
+  const getOpacityPercentage = (hex: string) => {
+    const rgba = hexToRgba(hex)
+    return Math.round(rgba.a * 100)
+  }
 
   return (
     <Controller
@@ -84,6 +121,9 @@ const ColorInput = <T extends FieldValues = FieldValues>({
         }
 
         const paddingLeft = Icon ? 40 : dotSize + 16
+        const opacity = getOpacityPercentage(value)
+        const colorWithoutAlpha =
+          value.length >= 7 ? value.substring(0, 7) : value
 
         return (
           <div className={cn('flex flex-col', className)} ref={containerRef}>
@@ -142,30 +182,91 @@ const ColorInput = <T extends FieldValues = FieldValues>({
                 {...props}
               />
 
-              {/* Color picker popover */}
+              {/* Enhanced Color picker popover - Now opens up by default */}
               {isPickerOpen && (
                 <div
                   ref={pickerRef}
-                  className="absolute left-0 top-full mt-2 z-50 bg-inputs-background border-2 border-inputs-border rounded-md shadow-lg p-4"
-                  style={{ minWidth: '220px' }}
+                  className={cn(
+                    'absolute z-50 bg-white border border-gray-200 rounded-lg shadow-xl p-3',
+                    pickerPosition === 'top'
+                      ? 'bottom-full mb-2' // Positions above the input
+                      : 'top-full mt-2', // Fallback: positions below the input
+                  )}
+                  style={{ width: '260px' }}
                 >
-                  <HexAlphaColorPicker
-                    color={value || '#000000'}
-                    onChange={handleColorChange}
-                  />
-                  <div className="mt-3 flex justify-between items-center">
-                    <span className="text-sm text-inputs-text">Color</span>
-                    <span className="text-sm text-inputs-title font-mono">
-                      {value}
-                    </span>
+                  {/* Main color picker area */}
+                  <div className="relative w-full" style={{ height: '220px' }}>
+                    <HexAlphaColorPicker
+                      color={value || '#000000FF'}
+                      onChange={handleColorChange}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    />
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setIsPickerOpen(false)}
-                    className="mt-3 w-full py-2 text-sm bg-inputs-border text-inputs-title rounded-md hover:bg-inputs-border-off transition-colors"
-                  >
-                    Select
-                  </button>
+
+                  {/* Custom CSS to make sliders thinner and add spacing */}
+                  <style>{`
+                    .react-colorful__hue,
+                    .react-colorful__alpha {
+                      height: 10px !important;
+                      border-radius: 5px !important;
+                      margin-top: 12px !important;
+                    }
+                    
+                    .react-colorful__pointer {
+                      width: 18px !important;
+                      height: 18px !important;
+                    }
+                    
+                    .react-colorful__saturation {
+                      border-radius: 8px !important;
+                      margin-bottom: 4px !important;
+                    }
+                  `}</style>
+
+                  {/* Color inputs */}
+                  <div className="mt-3 flex items-center gap-3">
+                    <div className="flex-1 flex flex-wrap items-center gap-2">
+                      <input
+                        type="text"
+                        value={colorWithoutAlpha.toUpperCase()}
+                        onChange={(e) => {
+                          const newColor = e.target.value
+                          if (/^#[0-9A-F]{0,6}$/i.test(newColor)) {
+                            const alpha =
+                              value.length === 9 ? value.substring(7, 9) : 'FF'
+                            handleColorChange(newColor + alpha)
+                          }
+                        }}
+                        className="w-36 px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+
+                      <div className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                        <input
+                          type="text"
+                          value={opacity}
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value) || 0
+                            const clampedVal = Math.max(0, Math.min(100, val))
+                            const alphaHex = Math.round(
+                              (clampedVal / 100) * 255,
+                            )
+                              .toString(16)
+                              .padStart(2, '0')
+                            const baseColor =
+                              value.length >= 7
+                                ? value.substring(0, 7)
+                                : '#000000'
+                            handleColorChange(baseColor + alphaHex)
+                          }}
+                          className="w-10 text-sm font-medium bg-transparent border-none outline-none text-right"
+                        />
+                        <span className="text-sm text-gray-500">%</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
