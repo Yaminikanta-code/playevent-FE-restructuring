@@ -1,0 +1,952 @@
+/* index.css */
+@import 'tailwindcss';
+
+/* Define your custom properties */
+:root {
+  /* Radius */
+  --radius: 0.65rem;
+
+  /* Colors */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #8b5cf6;
+  --primary-foreground: #f8fafc;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #8b5cf6;
+
+  /* Chart colors */
+  --chart-1: #f97316;
+  --chart-2: #0d9488;
+  --chart-3: #1e293b;
+  --chart-4: #eab308;
+  --chart-5: #f59e0b;
+
+  /* Your original custom variables converted to hex */
+  --variable-collection-divers-button: #7e77e8;
+  --variable-collection-divers-links: #df21cc;
+  --variable-collection-divers-notification: #a7f3d0;
+  --variable-collection-divers-white: #ffffff;
+  --variable-collection-icons-black: #000000;
+  --variable-collection-icons-dark: #020818;
+  --variable-collection-icons-green: #34d399;
+  --variable-collection-icons-purple: #7e77e8;
+  --variable-collection-icons-red: #da3c3c;
+  --variable-collection-icons-white: #ffffff;
+  --variable-collection-icons-white-10: rgba(255, 255, 255, 0.1);
+  --variable-collection-icons-white-20: rgba(255, 255, 255, 0.2);
+  --variable-collection-ink-alert: #fb923c;
+  --variable-collection-ink-black: #000000;
+  --variable-collection-ink-darkest: #020818;
+  --variable-collection-ink-error: #da3c3c;
+  --variable-collection-ink-grey: #b0afbd;
+  --variable-collection-ink-highlight: #7e77e8;
+  --variable-collection-ink-white: #ffffff;
+  --variable-collection-ink-white-40: rgba(255, 255, 255, 0.4);
+  --variable-collection-inputs-background: #020818;
+  --variable-collection-inputs-background-off: #0c131f;
+  --variable-collection-inputs-border: #1c303b;
+  --variable-collection-inputs-border-off: #1a2831;
+  --variable-collection-inputs-error: #da3c3c;
+  --variable-collection-inputs-text: #b0afbd;
+  --variable-collection-inputs-text-off: #465361;
+  --variable-collection-inputs-title: #ffffff;
+  --variable-collection-midnight-base: #060d1d;
+  --variable-collection-midnight-darkest: #020818;
+  --variable-collection-midnight-light: #1c303b;
+  --variable-collection-midnight-lighter: #2f4e5e;
+  --variable-collection-midnight-lightest: #5e879c;
+  --variable-collection-statusalert-base: #fb923c;
+  --variable-collection-statusalert-base-dark: #db7f33;
+  --variable-collection-statusalert-dark: #ef4444;
+  --variable-collection-statusalert-darkest: #da3c3c;
+  --variable-collection-statusalert-light: #edc114;
+  --variable-collection-statusalert-lightest: #facc15;
+  --variable-collection-statusneutral-available: #2b79c2;
+  --variable-collection-statusneutral-base: #7e77e8;
+  --variable-collection-statusneutral-dark: #4b5563;
+  --variable-collection-statusneutral-darkest: #111827;
+  --variable-collection-statusneutral-light: #d1d5db;
+  --variable-collection-statusneutral-lightest: #f3f4f6;
+  --variable-collection-statuszen-base: #34d399;
+  --variable-collection-statuszen-dark: #059669;
+  --variable-collection-statuszen-darkest: #065f46;
+  --variable-collection-statuszen-lighest: #ecfdf5;
+  --variable-collection-statuszen-light: #a7f3d0;
+
+  /* Font sizes - Using original variables with px */
+  --play-event-button-text-font-size: 24px;
+  --play-event-input-pholder-font-size: 20px;
+  --play-event-input-title-font-size: 24px;
+  --play-event-regular-text-font-size: 16px;
+  --play-event-small-text-font-size: 14px;
+  --play-event-strong-text-font-size: 16px;
+  --play-event-table-text-font-size: 16px;
+  --play-event-table-title-font-size: 19px;
+  --play-event-title-0-font-size: 48px;
+  --play-event-title-1-font-size: 24px;
+  --play-event-title-1-UPPER-font-size: 24px;
+  --play-event-title-2-font-size: 18px;
+  --play-event-title-2-UPPER-font-size: 18px;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --popover: #0f172a;
+  --popover-foreground: #f8fafc;
+  --primary: #7c3aed;
+  --primary-foreground: #f8fafc;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f8fafc;
+  --destructive: #991b1b;
+  --destructive-foreground: #f8fafc;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #7c3aed;
+  --chart-1: #3b82f6;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #a855f7;
+  --chart-5: #ec4899;
+}
+
+/* Define ONLY custom utilities that use your CSS variables */
+@layer utilities {
+  /* Your original color utilities */
+  .bg-background {
+    background-color: var(--background);
+  }
+  .bg-foreground {
+    background-color: var(--foreground);
+  }
+  .bg-card {
+    background-color: var(--card);
+  }
+  .bg-card-foreground {
+    background-color: var(--card-foreground);
+  }
+  .bg-popover {
+    background-color: var(--popover);
+  }
+  .bg-popover-foreground {
+    background-color: var(--popover-foreground);
+  }
+  .bg-primary {
+    background-color: var(--primary);
+  }
+  .bg-primary-foreground {
+    background-color: var(--primary-foreground);
+  }
+  .bg-secondary {
+    background-color: var(--secondary);
+  }
+  .bg-secondary-foreground {
+    background-color: var(--secondary-foreground);
+  }
+  .bg-muted {
+    background-color: var(--muted);
+  }
+  .bg-muted-foreground {
+    background-color: var(--muted-foreground);
+  }
+  .bg-accent {
+    background-color: var(--accent);
+  }
+  .bg-accent-foreground {
+    background-color: var(--accent-foreground);
+  }
+  .bg-destructive {
+    background-color: var(--destructive);
+  }
+  .bg-destructive-foreground {
+    background-color: var(--destructive-foreground);
+  }
+  .bg-input {
+    background-color: var(--input);
+  }
+  .bg-ring {
+    background-color: var(--ring);
+  }
+
+  .text-background {
+    color: var(--background);
+  }
+  .text-foreground {
+    color: var(--foreground);
+  }
+  .text-card {
+    color: var(--card);
+  }
+  .text-card-foreground {
+    color: var(--card-foreground);
+  }
+  .text-popover {
+    color: var(--popover);
+  }
+  .text-popover-foreground {
+    color: var(--popover-foreground);
+  }
+  .text-primary {
+    color: var(--primary);
+  }
+  .text-primary-foreground {
+    color: var(--primary-foreground);
+  }
+  .text-secondary {
+    color: var(--secondary);
+  }
+  .text-secondary-foreground {
+    color: var(--secondary-foreground);
+  }
+  .text-muted {
+    color: var(--muted);
+  }
+  .text-muted-foreground {
+    color: var(--muted-foreground);
+  }
+  .text-accent {
+    color: var(--accent);
+  }
+  .text-accent-foreground {
+    color: var(--accent-foreground);
+  }
+  .text-destructive {
+    color: var(--destructive);
+  }
+  .text-destructive-foreground {
+    color: var(--destructive-foreground);
+  }
+  .text-input {
+    color: var(--input);
+  }
+  .text-ring {
+    color: var(--ring);
+  }
+
+  .border-border {
+    border-color: var(--border);
+  }
+  .border-input {
+    border-color: var(--input);
+  }
+  .border-ring {
+    border-color: var(--ring);
+  }
+  .border-primary {
+    border-color: var(--primary);
+  }
+  .border-secondary {
+    border-color: var(--secondary);
+  }
+  .border-destructive {
+    border-color: var(--destructive);
+  }
+
+  .ring-ring {
+    --tw-ring-color: var(--ring);
+  }
+  .ring-primary {
+    --tw-ring-color: var(--primary);
+  }
+  .ring-destructive {
+    --tw-ring-color: var(--destructive);
+  }
+
+  .fill-primary {
+    fill: var(--primary);
+  }
+  .fill-secondary {
+    fill: var(--secondary);
+  }
+  .fill-muted {
+    fill: var(--muted);
+  }
+  .fill-destructive {
+    fill: var(--destructive);
+  }
+  .fill-background {
+    fill: var(--background);
+  }
+  .fill-foreground {
+    fill: var(--foreground);
+  }
+  .fill-card {
+    fill: var(--card);
+  }
+  .fill-accent {
+    fill: var(--accent);
+  }
+
+  .stroke-primary {
+    stroke: var(--primary);
+  }
+  .stroke-secondary {
+    stroke: var(--secondary);
+  }
+  .stroke-muted {
+    stroke: var(--muted);
+  }
+  .stroke-foreground {
+    stroke: var(--foreground);
+  }
+
+  .chart-1 {
+    color: var(--chart-1);
+  }
+  .chart-2 {
+    color: var(--chart-2);
+  }
+  .chart-3 {
+    color: var(--chart-3);
+  }
+  .chart-4 {
+    color: var(--chart-4);
+  }
+  .chart-5 {
+    color: var(--chart-5);
+  }
+
+  /* Border radius using your CSS variable */
+  .rounded-radius {
+    border-radius: var(--radius);
+  }
+  .rounded-lg {
+    border-radius: var(--radius);
+  }
+  .rounded-md {
+    border-radius: calc(var(--radius) - 2px);
+  }
+  .rounded-sm {
+    border-radius: calc(var(--radius) - 4px);
+  }
+
+  /* Ring offset using your variables */
+  .ring-offset-background {
+    --tw-ring-offset-color: var(--background);
+  }
+  .ring-offset-card {
+    --tw-ring-offset-color: var(--card);
+  }
+  .ring-offset-foreground {
+    --tw-ring-offset-color: var(--foreground);
+  }
+
+  /* Custom hover states using your variables */
+  .hover\:bg-accent:hover {
+    background-color: var(--accent);
+  }
+  .hover\:bg-primary\/90:hover {
+    background-color: color-mix(in srgb, var(--primary) 90%, transparent);
+  }
+  .hover\:bg-secondary\/80:hover {
+    background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
+  }
+  .hover\:bg-destructive\/90:hover {
+    background-color: color-mix(in srgb, var(--destructive) 90%, transparent);
+  }
+
+  /* Your custom color utilities */
+  .bg-divers-button {
+    background-color: var(--variable-collection-divers-button);
+  }
+  .bg-divers-links {
+    background-color: var(--variable-collection-divers-links);
+  }
+  .bg-divers-notification {
+    background-color: var(--variable-collection-divers-notification);
+  }
+  .bg-icons-black {
+    background-color: var(--variable-collection-icons-black);
+  }
+  .bg-icons-dark {
+    background-color: var(--variable-collection-icons-dark);
+  }
+  .bg-icons-green {
+    background-color: var(--variable-collection-icons-green);
+  }
+  .bg-icons-purple {
+    background-color: var(--variable-collection-icons-purple);
+  }
+  .bg-icons-red {
+    background-color: var(--variable-collection-icons-red);
+  }
+  .bg-icons-white {
+    background-color: var(--variable-collection-icons-white);
+  }
+  .bg-icons-white-10 {
+    background-color: var(--variable-collection-icons-white-10);
+  }
+  .bg-icons-white-20 {
+    background-color: var(--variable-collection-icons-white-20);
+  }
+  .bg-ink-alert {
+    background-color: var(--variable-collection-ink-alert);
+  }
+  .bg-ink-darkest {
+    background-color: var(--variable-collection-ink-darkest);
+  }
+  .bg-ink-error {
+    background-color: var(--variable-collection-ink-error);
+  }
+  .bg-ink-grey {
+    background-color: var(--variable-collection-ink-grey);
+  }
+  .bg-ink-highlight {
+    background-color: var(--variable-collection-ink-highlight);
+  }
+  .bg-inputs-background {
+    background-color: var(--variable-collection-inputs-background);
+  }
+  .bg-inputs-background-off {
+    background-color: var(--variable-collection-inputs-background-off);
+  }
+  .bg-inputs-border {
+    background-color: var(--variable-collection-inputs-border);
+  }
+  .bg-inputs-border-off {
+    background-color: var(--variable-collection-inputs-border-off);
+  }
+  .bg-midnight-base {
+    background-color: var(--variable-collection-midnight-base);
+  }
+  .bg-midnight-darkest {
+    background-color: var(--variable-collection-midnight-darkest);
+  }
+  .bg-midnight-light {
+    background-color: var(--variable-collection-midnight-light);
+  }
+  .bg-midnight-lighter {
+    background-color: var(--variable-collection-midnight-lighter);
+  }
+  .bg-midnight-lightest {
+    background-color: var(--variable-collection-midnight-lightest);
+  }
+  .bg-statusalert-base {
+    background-color: var(--variable-collection-statusalert-base);
+  }
+  .bg-statuszen-base {
+    background-color: var(--variable-collection-statuszen-base);
+  }
+  .bg-statusneutral-base {
+    background-color: var(--variable-collection-statusneutral-base);
+  }
+
+  .text-divers-button {
+    color: var(--variable-collection-divers-button);
+  }
+  .text-divers-links {
+    color: var(--variable-collection-divers-links);
+  }
+  .text-icons-green {
+    color: var(--variable-collection-icons-green);
+  }
+  .text-icons-purple {
+    color: var(--variable-collection-icons-purple);
+  }
+  .text-icons-red {
+    color: var(--variable-collection-icons-red);
+  }
+  .text-ink-alert {
+    color: var(--variable-collection-ink-alert);
+  }
+  .text-ink-darkest {
+    color: var(--variable-collection-ink-darkest);
+  }
+  .text-ink-error {
+    color: var(--variable-collection-ink-error);
+  }
+  .text-ink-grey {
+    color: var(--variable-collection-ink-grey);
+  }
+  .text-ink-highlight {
+    color: var(--variable-collection-ink-highlight);
+  }
+  .text-inputs-text {
+    color: var(--variable-collection-inputs-text);
+  }
+  .text-inputs-text-off {
+    color: var(--variable-collection-inputs-text-off);
+  }
+  .text-inputs-title {
+    color: var(--variable-collection-inputs-title);
+  }
+  .text-statusalert-base {
+    color: var(--variable-collection-statusalert-base);
+  }
+  .text-statuszen-base {
+    color: var(--variable-collection-statuszen-base);
+  }
+  .text-statusneutral-base {
+    color: var(--variable-collection-statusneutral-base);
+  }
+
+  .border-inputs-border {
+    border-color: var(--variable-collection-inputs-border);
+  }
+  .border-inputs-border-off {
+    border-color: var(--variable-collection-inputs-border-off);
+  }
+  .border-ink-alert {
+    border-color: var(--variable-collection-ink-alert);
+  }
+  .border-ink-error {
+    border-color: var(--variable-collection-ink-error);
+  }
+
+  /* Typography utilities using your font variables */
+  .text-title-0 {
+    font-family: var(--play-event-title-0-font-family, 'Poppins', Helvetica);
+    font-size: var(--play-event-title-0-font-size);
+    font-weight: 600;
+    line-height: 72px;
+    letter-spacing: 0px;
+  }
+
+  .text-title-1 {
+    font-family: var(--play-event-title-1-font-family, 'Poppins', Helvetica);
+    font-size: var(--play-event-title-1-font-size);
+    font-weight: 600;
+    line-height: 36px;
+    letter-spacing: 0px;
+  }
+
+  .text-title-1-uppercase {
+    font-family: var(
+      --play-event-title-1-UPPER-font-family,
+      'Poppins',
+      Helvetica
+    );
+    font-size: var(--play-event-title-1-UPPER-font-size);
+    font-weight: 600;
+    line-height: 36px;
+    letter-spacing: 0px;
+    text-transform: uppercase;
+  }
+
+  .text-title-2 {
+    font-family: var(--play-event-title-2-font-family, 'Poppins', Helvetica);
+    font-size: var(--play-event-title-2-font-size);
+    font-weight: 600;
+    line-height: 25px;
+    letter-spacing: 0px;
+  }
+
+  .text-title-2-uppercase {
+    font-family: var(
+      --play-event-title-2-UPPER-font-family,
+      'Poppins',
+      Helvetica
+    );
+    font-size: var(--play-event-title-2-UPPER-font-size);
+    font-weight: 600;
+    line-height: 25px;
+    letter-spacing: 0px;
+    text-transform: uppercase;
+  }
+
+  .text-button {
+    font-family: var(
+      --play-event-button-text-font-family,
+      'Poppins',
+      Helvetica
+    );
+    font-size: var(--play-event-button-text-font-size);
+    font-weight: 400;
+    line-height: 36px;
+    letter-spacing: 0px;
+  }
+
+  .text-input-title {
+    font-family: var(
+      --play-event-input-title-font-family,
+      'Poppins',
+      Helvetica
+    );
+    font-size: var(--play-event-input-title-font-size);
+    font-weight: 400;
+    line-height: 36px;
+    letter-spacing: 0px;
+  }
+
+  .text-input-placeholder {
+    font-family: var(
+      --play-event-input-pholder-font-family,
+      'Poppins',
+      Helvetica
+    );
+    font-size: var(--play-event-input-pholder-font-size);
+    font-weight: 300;
+    line-height: 30px;
+    letter-spacing: 0px;
+  }
+
+  .text-regular {
+    font-family: var(
+      --play-event-regular-text-font-family,
+      'Poppins',
+      Helvetica
+    );
+    font-size: var(--play-event-regular-text-font-size);
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+
+  .text-strong {
+    font-family: var(
+      --play-event-strong-text-font-family,
+      'Poppins',
+      Helvetica
+    );
+    font-size: var(--play-event-strong-text-font-size);
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+
+  .text-small {
+    font-family: var(--play-event-small-text-font-family, 'Poppins', Helvetica);
+    font-size: var(--play-event-small-text-font-size);
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: 0px;
+  }
+
+  .text-table-title {
+    font-family: var(
+      --play-event-table-title-font-family,
+      'Poppins',
+      Helvetica
+    );
+    font-size: var(--play-event-table-title-font-size);
+    font-weight: 400;
+    line-height: 29px;
+    letter-spacing: 0px;
+  }
+
+  .text-table {
+    font-family: var(--play-event-table-text-font-family, 'Poppins', Helvetica);
+    font-size: var(--play-event-table-text-font-size);
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0px;
+  }
+
+  /* Your custom animation utilities */
+  .animate-fade-in {
+    animation: fade-in 1s var(--animation-delay, 0s) ease forwards;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 1s var(--animation-delay, 0s) ease forwards;
+  }
+
+  .animate-marquee {
+    animation: marquee var(--duration) infinite linear;
+  }
+
+  .animate-marquee-vertical {
+    animation: marquee-vertical var(--duration) linear infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 8s infinite;
+  }
+
+  .animate-spin {
+    animation: var(--animate-spin);
+  }
+
+  .animate-image-glow {
+    animation: image-glow 2s ease-in-out infinite;
+  }
+
+  /* Custom utilities */
+  .glass-effect {
+    backdrop-filter: blur(16px);
+    background-color: var(--variable-collection-icons-white-10);
+    border: 1px solid var(--variable-collection-icons-white-20);
+  }
+
+  .text-gradient {
+    background: linear-gradient(
+      to right,
+      var(--variable-collection-divers-button),
+      var(--variable-collection-divers-links)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-gradient-dark {
+    background: linear-gradient(
+      135deg,
+      var(--variable-collection-midnight-darkest) 0%,
+      var(--variable-collection-midnight-base) 50%,
+      var(--variable-collection-midnight-light) 100%
+    );
+  }
+
+  /* Dimension utilities */
+  .w-dimensions-24 {
+    width: var(--dimensions-24, 24px);
+  }
+  .h-dimensions-24 {
+    height: var(--dimensions-24, 24px);
+  }
+  .w-dimensions-48 {
+    width: var(--dimensions-48, 48px);
+  }
+  .h-dimensions-48 {
+    height: var(--dimensions-48, 48px);
+  }
+
+  /* Reset utility */
+  .all-unset {
+    all: unset;
+  }
+}
+
+/* Custom animations for shadcn */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Your original animations (kept from your code) */
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes image-glow {
+  0% {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.74, 0.25, 0.76, 1);
+  }
+
+  10% {
+    opacity: 0.7;
+    animation-timing-function: cubic-bezier(0.12, 0.01, 0.08, 0.99);
+  }
+
+  to {
+    opacity: 0.4;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  90%,
+  to {
+    background-position: calc(-100% - var(--shimmer-width)) 0;
+  }
+
+  30%,
+  60% {
+    background-position: calc(100% + var(--shimmer-width)) 0;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0);
+  }
+
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes marquee-vertical {
+  0% {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+/* Custom progress animation */
+@keyframes progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.animate-progress {
+  animation: progress 2s linear forwards;
+}
+
+/* Your custom styles */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+code {
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Logo styles */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--variable-collection-divers-button);
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(
+    135deg,
+    var(--variable-collection-divers-button) 0%,
+    var(--variable-collection-icons-purple) 100%
+  );
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+/* Focus styles using your ring variable */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Selection styles using your primary variable */
+::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Disabled states */
+[aria-disabled='true'],
+[data-disabled],
+:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
