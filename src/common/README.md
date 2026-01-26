@@ -133,7 +133,7 @@ const onSubmit = (data) => {
   console.log(data)
 }
 
-<Form form={form} onSubmit={onSubmit}>
+;<Form form={form} onSubmit={onSubmit}>
   {/* Form fields go here */}
 </Form>
 ```
@@ -210,10 +210,13 @@ A dropdown select field with options, label, error handling, and validation supp
 - `control`: `Control<T>` - React Hook Form control object
 - `label`: `string` - Field label
 - `placeholder`: `string` - Placeholder text (default: `'Select an option'`)
+- `className`: `string` - Additional CSS classes for the container
+- `triggerClassName`: `string` - Additional CSS classes for the trigger button (useful for custom styling like status colors)
 - `options`: `SelectOption[]` - Array of options with value and label
 - `rules`: `object` - React Hook Form validation rules
 - `error`: `string` - External error message
 - `helperText`: `string` - Helper text displayed below select
+- `disabled`: `boolean` - Disables the select
 - All standard HTML select attributes
 
 #### Usage Examples
@@ -329,8 +332,7 @@ A multi-line text input field with label, error handling, and validation support
 
 ```tsx
 import { Textarea } from '@/common'
-
-<Textarea
+;<Textarea
   name="bio"
   label="About You"
   placeholder="Tell us about yourself..."
@@ -346,9 +348,111 @@ import { Textarea } from '@/common'
 />
 ```
 
+### DatePicker
+
+A date input field with label, icon, error handling, and validation support. Uses native HTML5 date picker with enhanced clickability.
+
+#### Props
+
+- `name`: `Path<T>` - Field name in form data
+- `control`: `Control<T>` - React Hook Form control object
+- `label`: `string` - Field label
+- `placeholder`: `string` - Placeholder text
+- `icon`: `LucideIcon` - Optional icon to display inside input
+- `rules`: `object` - React Hook Form validation rules
+- `error`: `string` - External error message
+- `helperText`: `string` - Helper text displayed below input
+- `min`: `string` - Minimum date (YYYY-MM-DD format)
+- `max`: `string` - Maximum date (YYYY-MM-DD format)
+- All standard HTML input attributes
+
+#### Usage Examples
+
+```tsx
+import { DatePicker } from '@/common'
+
+;<DatePicker
+  name="birthDate"
+  label="Birth Date"
+  control={form.control}
+  rules={{ required: 'Birth date is required' }}
+  min="1900-01-01"
+  max={new Date().toISOString().split('T')[0]}
+  helperText="Select your date of birth"
+/>
+```
+
+### TimePicker
+
+A time input field with label, icon, error handling, and validation support. Uses native HTML5 time picker with enhanced clickability.
+
+#### Props
+
+- `name`: `Path<T>` - Field name in form data
+- `control`: `Control<T>` - React Hook Form control object
+- `label`: `string` - Field label
+- `placeholder`: `string` - Placeholder text
+- `icon`: `LucideIcon` - Optional icon to display inside input
+- `rules`: `object` - React Hook Form validation rules
+- `error`: `string` - External error message
+- `helperText`: `string` - Helper text displayed below input
+- `min`: `string` - Minimum time (HH:MM format)
+- `max`: `string` - Maximum time (HH:MM format)
+- `step`: `string | number` - Time step in seconds (e.g., 900 for 15-minute intervals)
+- All standard HTML input attributes
+
+#### Usage Examples
+
+```tsx
+import { TimePicker } from '@/common'
+
+;<TimePicker
+  name="meetingTime"
+  label="Meeting Time"
+  control={form.control}
+  rules={{ required: 'Meeting time is required' }}
+  step="900"
+  helperText="Select time in 15-minute intervals"
+/>
+```
+
+### DateTimePicker
+
+A date and time input field with label, icon, error handling, and validation support. Uses native HTML5 datetime-local picker with enhanced clickability.
+
+#### Props
+
+- `name`: `Path<T>` - Field name in form data
+- `control`: `Control<T>` - React Hook Form control object
+- `label`: `string` - Field label
+- `placeholder`: `string` - Placeholder text
+- `icon`: `LucideIcon` - Optional icon to display inside input
+- `rules`: `object` - React Hook Form validation rules
+- `error`: `string` - External error message
+- `helperText`: `string` - Helper text displayed below input
+- `min`: `string` - Minimum datetime (YYYY-MM-DDTHH:MM format)
+- `max`: `string` - Maximum datetime (YYYY-MM-DDTHH:MM format)
+- `step`: `string | number` - Time step in seconds
+- All standard HTML input attributes
+
+#### Usage Examples
+
+```tsx
+import { DateTimePicker } from '@/common'
+
+;<DateTimePicker
+  name="eventDateTime"
+  label="Event Date & Time"
+  control={form.control}
+  rules={{ required: 'Event date and time is required' }}
+  min={new Date().toISOString().slice(0, 16)}
+  helperText="Select future date and time"
+/>
+```
+
 ### StatusSelector
 
-A specialized status selector component that applies status color styling directly to the select dropdown element.
+A specialized status selector component built on top of the [`Select`](src/common/Select.tsx:1) component that applies status color styling to the dropdown trigger.
 
 #### Props
 
@@ -364,6 +468,7 @@ A specialized status selector component that applies status color styling direct
 #### Status Types
 
 The component includes built-in status options with color styling:
+
 - `available` - Green (bg-statuszen-base)
 - `busy` - Orange (bg-statusalert-base)
 - `away` - Purple (bg-statusneutral-base)
@@ -374,24 +479,31 @@ The component includes built-in status options with color styling:
 
 #### Component Behavior
 
-**Styled Select Dropdown:**
-When a status is selected, the select dropdown itself displays with:
-- Full colored background matching the status
+**Built on Select Component:**
+The StatusSelector leverages the enhanced dropdown UI from the [`Select`](src/common/Select.tsx:1) component while adding status-specific styling:
+
+**When a status is selected:**
+
+- Full colored background matching the status (via `colorClass`)
 - White text for contrast
 - Transparent border
-- White dropdown arrow (vs dark arrow when unselected)
 - Hover effect with reduced opacity
 
 **Unselected State:**
+
+- Uses the standard Select component styling
 - Neutral background (bg-inputs-background)
 - Border with inputs-border color
 - Dark text (text-inputs-title)
-- Dark dropdown arrow
 - Hover effect on border
 
 **Error State:**
-- Red border and text when validation fails
+
+- Red border and text when validation fails (only when no status is selected)
 - Focus ring in red color
+
+**Implementation Note:**
+The component internally converts `StatusOption[]` to `SelectOption[]` and uses the `Select` component's `triggerClassName` prop to apply status-specific styling.
 
 #### Usage Examples
 
@@ -425,7 +537,15 @@ const customStatuses = [
 ## Complete Form Example
 
 ```tsx
-import { Form, Input, Select, Checkbox, Radio, Textarea, Button } from '@/common'
+import {
+  Form,
+  Input,
+  Select,
+  Checkbox,
+  Radio,
+  Textarea,
+  Button,
+} from '@/common'
 import { useForm } from 'react-hook-form'
 import { Mail, Lock } from 'lucide-react'
 

@@ -3,12 +3,16 @@ import { useForm } from 'react-hook-form'
 import {
   Form,
   Input,
+  ColorInput,
   Select,
   Checkbox,
   Radio,
   Textarea,
   Button,
   StatusSelector,
+  DatePicker,
+  TimePicker,
+  DateTimePicker,
 } from '../common'
 import { Mail, Lock, User, Phone } from 'lucide-react'
 
@@ -28,6 +32,10 @@ type FormData = {
   newsletter: boolean
   gender: string
   bio: string
+  birthDate: string
+  meetingTime: string
+  eventDateTime: string
+  favoriteColor: string
 }
 
 function RouteComponent() {
@@ -44,6 +52,10 @@ function RouteComponent() {
       newsletter: false,
       gender: '',
       bio: '',
+      birthDate: '',
+      meetingTime: '',
+      eventDateTime: '',
+      favoriteColor: '#7e77e8',
     },
   })
 
@@ -204,6 +216,52 @@ function RouteComponent() {
             }}
             helperText="Maximum 500 characters"
           />
+
+          {/* Color Input */}
+          <ColorInput
+            name="favoriteColor"
+            label="Favorite Color"
+            placeholder="#000000FF"
+            control={form.control}
+            rules={{
+              pattern: {
+                value: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}|[A-Fa-f0-9]{8})$/,
+                message:
+                  'Please enter a valid hex/hexa color (e.g., #FF0000 or #FF0000FF)',
+              },
+            }}
+            helperText="Click the color dot to pick a color"
+            dotSize={24}
+          />
+
+          {/* Date and Time Pickers */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <DatePicker
+              name="birthDate"
+              label="Birth Date"
+              control={form.control}
+              rules={{ required: 'Birth date is required' }}
+              min="1900-01-01"
+              max={new Date().toISOString().split('T')[0]}
+              helperText="Select your date of birth"
+            />
+            <TimePicker
+              name="meetingTime"
+              label="Meeting Time"
+              control={form.control}
+              rules={{ required: 'Meeting time is required' }}
+              step="900"
+              helperText="Select time in 15-minute intervals"
+            />
+            <DateTimePicker
+              name="eventDateTime"
+              label="Event Date & Time"
+              control={form.control}
+              rules={{ required: 'Event date and time is required' }}
+              min={new Date().toISOString().slice(0, 16)}
+              helperText="Select future date and time"
+            />
+          </div>
 
           {/* Submit Button */}
           <div className="flex gap-4">

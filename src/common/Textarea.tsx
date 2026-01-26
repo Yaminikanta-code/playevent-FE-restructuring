@@ -43,6 +43,10 @@ const Textarea = <T extends FieldValues = FieldValues>({
       render={({ field, fieldState }) => {
         const hasError = fieldState.error || externalError
         const errorMessage = fieldState.error?.message || externalError
+        const isRequired =
+          rules && typeof rules === 'object' && 'required' in rules
+        const descriptionId = `${textareaId}-description`
+        const hasDescription = hasError || helperText
 
         return (
           <div className={cn('flex flex-col', className)}>
@@ -52,6 +56,7 @@ const Textarea = <T extends FieldValues = FieldValues>({
                 className="block text-sm font-medium text-inputs-title mb-2"
               >
                 {label}
+                {isRequired && <span className="text-ink-error ml-1">*</span>}
               </label>
             )}
             <textarea
@@ -74,16 +79,22 @@ const Textarea = <T extends FieldValues = FieldValues>({
                 resize === 'horizontal' && 'resize-x',
                 resize === 'vertical' && 'resize-y',
               )}
+              aria-invalid={hasError ? 'true' : 'false'}
+              aria-required={isRequired ? 'true' : undefined}
+              aria-describedby={hasDescription ? descriptionId : undefined}
               {...field}
               {...props}
             />
             {hasError && (
-              <span className="text-sm text-ink-error mt-1">
+              <span id={descriptionId} className="text-sm text-ink-error mt-1">
                 {errorMessage}
               </span>
             )}
             {!hasError && helperText && (
-              <span className="text-sm text-inputs-text-off mt-1">
+              <span
+                id={descriptionId}
+                className="text-sm text-inputs-text-off mt-1"
+              >
                 {helperText}
               </span>
             )}

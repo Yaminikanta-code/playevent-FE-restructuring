@@ -2,16 +2,15 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 import type { Control, FieldValues, Path } from 'react-hook-form'
 import type { LucideIcon } from 'lucide-react'
+import { CalendarClock } from 'lucide-react'
 import { cn } from '../lib/utils'
 
-export interface InputProps<T extends FieldValues = FieldValues> extends Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  'name'
-> {
+export interface DateTimePickerProps<
+  T extends FieldValues = FieldValues,
+> extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'name' | 'type'> {
   id?: string
   label?: string
   placeholder?: string
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search'
   className?: string
   control: Control<T>
   name: Path<T>
@@ -19,23 +18,45 @@ export interface InputProps<T extends FieldValues = FieldValues> extends Omit<
   icon?: LucideIcon
   error?: string
   helperText?: string
+  min?: string
+  max?: string
+  step?: string | number
 }
 
-const Input = <T extends FieldValues = FieldValues>({
+const DateTimePicker = <T extends FieldValues = FieldValues>({
   id,
   label = '',
   placeholder = '',
-  type = 'text',
   className = '',
   control,
   name,
   rules = {},
-  icon: Icon,
+  icon: Icon = CalendarClock,
   error: externalError,
   helperText,
+  min,
+  max,
+  step,
   ...props
-}: InputProps<T>) => {
+}: DateTimePickerProps<T>) => {
   const inputId = id || name
+
+  const handleIconClick = () => {
+    if (props.disabled) return
+    const input = document.getElementById(inputId) as HTMLInputElement | null
+    if (input) {
+      input.focus()
+      // Show the browser's datetime picker if supported
+      input.showPicker?.()
+    }
+  }
+
+  const handleIconKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleIconClick()
+    }
+  }
 
   return (
     <Controller
@@ -62,15 +83,21 @@ const Input = <T extends FieldValues = FieldValues>({
               </label>
             )}
             <div className="relative">
-              {Icon && (
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-inputs-text">
-                  <Icon size={20} />
-                </div>
-              )}
+              <button
+                type="button"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-inputs-text cursor-pointer bg-transparent border-none p-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-inputs-border rounded-sm"
+                onClick={handleIconClick}
+                onKeyDown={handleIconKeyDown}
+                disabled={props.disabled}
+                aria-label="Open date time picker"
+                tabIndex={props.disabled ? -1 : 0}
+              >
+                <Icon size={20} />
+              </button>
               <input
                 id={inputId}
                 data-testid={inputId}
-                type={type}
+                type="datetime-local"
                 placeholder={placeholder}
                 className={cn(
                   'flex h-10 w-full px-3 py-2 text-base transition-all duration-200',
@@ -78,12 +105,16 @@ const Input = <T extends FieldValues = FieldValues>({
                   'focus:outline-none focus:ring-2 focus:ring-offset-2',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                   'md:text-sm',
-                  Icon && 'pl-10',
+                  'pl-10', // Always padding left for icon
                   hasError
                     ? 'border-ink-error text-ink-error focus:border-ink-error focus:ring-ink-error'
                     : 'border-inputs-border text-inputs-title focus:border-inputs-border focus:ring-inputs-border',
                   'bg-inputs-background placeholder:text-inputs-text-off',
+                  'appearance-none', // Remove default browser styling
                 )}
+                min={min}
+                max={max}
+                step={step}
                 aria-invalid={hasError ? 'true' : 'false'}
                 aria-required={isRequired ? 'true' : undefined}
                 aria-describedby={hasDescription ? descriptionId : undefined}
@@ -111,6 +142,6 @@ const Input = <T extends FieldValues = FieldValues>({
   )
 }
 
-Input.displayName = 'Input'
+DateTimePicker.displayName = 'DateTimePicker'
 
-export default Input
+export default DateTimePicker
