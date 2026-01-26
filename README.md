@@ -29,6 +29,180 @@ npm run test
 
 This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 
+## Common Components
+
+This project includes a set of reusable common components located in `src/common/`. These components follow consistent patterns and are designed to be easily customizable.
+
+### Modal Components
+
+The project includes a flexible modal system with three components:
+
+#### 1. Base Modal ([`Modal`](src/common/Modal.tsx:1))
+
+A flexible, accessible modal component that can be used as a base for custom modals.
+
+**Features:**
+- Configurable sizes (sm, md, lg, xl, full)
+- Optional header (headerless modals available)
+- Configurable close button (can be hidden)
+- Close on overlay click (configurable)
+- Close on escape key (configurable)
+- Focus management for accessibility
+- Scrollable content area
+- Customizable styling
+- Headerless mode: When `showHeader={false}`, no header border is shown and close button appears in top-right corner
+
+**Usage:**
+```tsx
+import { Modal } from '../common'
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Open Modal</button>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="My Modal"
+        size="md"
+        showHeader={true}
+        showCloseButton={true}
+      >
+        <p>Modal content goes here</p>
+      </Modal>
+    </>
+  )
+}
+```
+
+**Headerless Modal Example:**
+```tsx
+<Modal
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+  showHeader={false}
+  showCloseButton={true}
+>
+  <p>Content without header - close button in top-right corner</p>
+</Modal>
+```
+
+#### 2. Confirmation Modal ([`ConfirmationModal`](src/common/ConfirmationModal.tsx:1))
+
+A pre-built modal for confirming destructive actions or important decisions.
+
+**Features:**
+- Three variants: danger, warning, info
+- Customizable title, message, and button text
+- Icon display based on variant
+- Confirm and cancel buttons
+- Optional header (headerless mode available)
+- Configurable close button
+
+**Usage:**
+```tsx
+import { ConfirmationModal } from '../common'
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const handleDelete = () => {
+    console.log('Item deleted!')
+  }
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Delete Item</button>
+      <ConfirmationModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Delete Item"
+        message="Are you sure you want to delete this item? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleDelete}
+        variant="danger"
+      />
+    </>
+  )
+}
+```
+
+#### 3. Form Modal ([`FormModal`](src/common/FormModal.tsx:1))
+
+A modal designed specifically for forms with built-in submit/cancel functionality.
+
+**Features:**
+- Form submission handling
+- Loading states for async operations
+- Customizable submit/cancel buttons
+- Optional description text
+- Configurable size
+- Optional header (headerless mode available)
+- Configurable close button
+- Custom footer actions support
+
+**Usage:**
+```tsx
+import { FormModal } from '../common'
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    // Submit your form data
+    setTimeout(() => {
+      console.log('Form submitted!')
+      setIsSubmitting(false)
+      setIsOpen(false)
+    }, 1500)
+  }
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Create Item</button>
+      <FormModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Create New Item"
+        description="Fill in the details below to create a new item."
+        submitText="Create"
+        cancelText="Cancel"
+        onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+        size="md"
+      >
+        <div className="space-y-4">
+          <input type="text" name="name" placeholder="Name" />
+          <input type="email" name="email" placeholder="Email" />
+        </div>
+      </FormModal>
+    </>
+  )
+}
+```
+
+### Testing the Modals
+
+A test page is available at [`/modal-test`](src/routes/modal-test.tsx:1) to see all modals in action. Navigate to this route to interact with:
+- Delete Confirmation Modal (danger variant)
+- Form Modal with sample form fields
+- Headerless Modal with close button in top-right corner
+
+The test page demonstrates:
+- Modal opening/closing
+- Form submission with loading states
+- Confirmation dialogs
+- Headerless modals without header borders
+- Configurable close button visibility
+- Responsive layout
+
 
 ## Linting & Formatting
 

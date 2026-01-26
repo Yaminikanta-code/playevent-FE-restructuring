@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestRouteImport } from './routes/test'
+import { Route as ModalTestRouteImport } from './routes/modal-test'
 import { Route as FormTestRouteImport } from './routes/form-test'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
@@ -17,6 +18,11 @@ import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-qu
 const TestRoute = TestRouteImport.update({
   id: '/test',
   path: '/test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModalTestRoute = ModalTestRouteImport.update({
+  id: '/modal-test',
+  path: '/modal-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FormTestRoute = FormTestRouteImport.update({
@@ -38,12 +44,14 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/form-test': typeof FormTestRoute
+  '/modal-test': typeof ModalTestRoute
   '/test': typeof TestRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/form-test': typeof FormTestRoute
+  '/modal-test': typeof ModalTestRoute
   '/test': typeof TestRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
@@ -51,20 +59,33 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/form-test': typeof FormTestRoute
+  '/modal-test': typeof ModalTestRoute
   '/test': typeof TestRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/form-test' | '/test' | '/demo/tanstack-query'
+  fullPaths:
+    | '/'
+    | '/form-test'
+    | '/modal-test'
+    | '/test'
+    | '/demo/tanstack-query'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/form-test' | '/test' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/form-test' | '/test' | '/demo/tanstack-query'
+  to: '/' | '/form-test' | '/modal-test' | '/test' | '/demo/tanstack-query'
+  id:
+    | '__root__'
+    | '/'
+    | '/form-test'
+    | '/modal-test'
+    | '/test'
+    | '/demo/tanstack-query'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FormTestRoute: typeof FormTestRoute
+  ModalTestRoute: typeof ModalTestRoute
   TestRoute: typeof TestRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
 }
@@ -76,6 +97,13 @@ declare module '@tanstack/react-router' {
       path: '/test'
       fullPath: '/test'
       preLoaderRoute: typeof TestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modal-test': {
+      id: '/modal-test'
+      path: '/modal-test'
+      fullPath: '/modal-test'
+      preLoaderRoute: typeof ModalTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/form-test': {
@@ -105,6 +133,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FormTestRoute: FormTestRoute,
+  ModalTestRoute: ModalTestRoute,
   TestRoute: TestRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
 }
