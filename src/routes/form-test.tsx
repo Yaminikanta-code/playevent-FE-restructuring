@@ -158,7 +158,7 @@ function RouteComponent() {
             label="Status"
             control={form.control}
             rules={{ required: 'Status is required' }}
-            helperText="Select your current status"
+            // helperText="Select your current status"
           />
 
           {/* Radio Buttons */}

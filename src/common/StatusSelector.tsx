@@ -2,6 +2,7 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 import type { Control, FieldValues, Path } from 'react-hook-form'
 import { cn } from '../lib/utils'
+import Select, { type SelectOption } from './Select'
 
 export type StatusType =
   | 'available'
@@ -59,6 +60,13 @@ const StatusSelector = <T extends FieldValues = FieldValues>({
 }: StatusSelectorProps<T>) => {
   const selectorId = id || name
 
+  // Convert StatusOption[] to SelectOption[]
+  const selectOptions: SelectOption[] = options.map((option) => ({
+    value: option.value,
+    label: option.label,
+    disabled: false,
+  }))
+
   return (
     <Controller
       name={name}
@@ -69,91 +77,34 @@ const StatusSelector = <T extends FieldValues = FieldValues>({
         const errorMessage = fieldState.error?.message || externalError
         const selectedOption = options.find((opt) => opt.value === field.value)
 
+        // Determine trigger className based on selected status
+        const triggerClassName = selectedOption
+          ? cn(
+              selectedOption.colorClass,
+              'text-white border-transparent',
+              'hover:opacity-90',
+              hasError &&
+                'border-ink-error text-ink-error focus:border-ink-error focus:ring-ink-error',
+            )
+          : hasError
+            ? 'border-ink-error text-ink-error focus:border-ink-error focus:ring-ink-error'
+            : ''
+
         return (
-          <div className={cn('flex flex-col', className)}>
-            {label && (
-              <label
-                htmlFor={selectorId}
-                className="block text-sm font-medium text-inputs-title mb-3"
-              >
-                {label}
-              </label>
-            )}
-
-            {/* Select Dropdown with Applied Styles */}
-            <div className="relative">
-              <select
-                id={selectorId}
-                data-testid={selectorId}
-                className={cn(
-                  'flex h-10 w-full px-3 py-2 text-base transition-all duration-200',
-                  'border-2 rounded-md',
-                  'focus:outline-none focus:ring-2 focus:ring-offset-2',
-                  'disabled:cursor-not-allowed disabled:opacity-50',
-                  'md:text-sm',
-                  'appearance-none cursor-pointer',
-                  disabled && 'cursor-not-allowed',
-                  // Apply status color styling when a status is selected
-                  selectedOption
-                    ? cn(
-                        selectedOption.colorClass,
-                        'text-white border-transparent',
-                        'hover:opacity-90',
-                      )
-                    : cn(
-                        'border-inputs-border text-inputs-title',
-                        'bg-inputs-background',
-                        'hover:border-inputs-border/80',
-                      ),
-                  hasError && !selectedOption
-                    ? 'border-ink-error text-ink-error focus:border-ink-error focus:ring-ink-error'
-                    : '',
-                )}
-                {...field}
-                disabled={disabled}
-              >
-                <option value="" disabled>
-                  Select status
-                </option>
-                {options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-
-              {/* Custom dropdown arrow - white when status selected, dark when not */}
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg
-                  className={cn(
-                    'w-4 h-4',
-                    selectedOption ? 'text-white' : 'text-inputs-text',
-                  )}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {hasError && (
-              <span className="text-sm text-ink-error mt-2">
-                {errorMessage}
-              </span>
-            )}
-            {!hasError && helperText && (
-              <span className="text-sm text-inputs-text-off mt-2">
-                {helperText}
-              </span>
-            )}
-          </div>
+          <Select
+            id={selectorId}
+            label={label}
+            className={className}
+            triggerClassName={triggerClassName}
+            control={control}
+            name={name}
+            rules={rules}
+            options={selectOptions}
+            error={errorMessage}
+            helperText={helperText}
+            disabled={disabled}
+            placeholder="Select status"
+          />
         )
       }}
     />

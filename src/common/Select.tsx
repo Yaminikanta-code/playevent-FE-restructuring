@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Controller } from 'react-hook-form'
 import type { Control, FieldValues, Path } from 'react-hook-form'
+import { ChevronDown, Check } from 'lucide-react'
 import { cn } from '../lib/utils'
 
 export interface SelectOption {
@@ -17,6 +18,7 @@ export interface SelectProps<T extends FieldValues = FieldValues> extends Omit<
   label?: string
   placeholder?: string
   className?: string
+  triggerClassName?: string
   control: Control<T>
   name: Path<T>
   rules?: object
@@ -30,15 +32,51 @@ const Select = <T extends FieldValues = FieldValues>({
   label = '',
   placeholder = 'Select an option',
   className = '',
+  triggerClassName = '',
   control,
   name,
   rules = {},
   options,
   error: externalError,
   helperText,
+  disabled,
   ...props
 }: SelectProps<T>) => {
   const selectId = id || name
+  const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isOpen) return
+
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen])
 
   return (
     <Controller
@@ -49,8 +87,14 @@ const Select = <T extends FieldValues = FieldValues>({
         const hasError = fieldState.error || externalError
         const errorMessage = fieldState.error?.message || externalError
 
+        const selectedOption = options.find((opt) => opt.value === field.value)
+        const displayValue = selectedOption ? selectedOption.label : placeholder
+
         return (
-          <div className={cn('flex flex-col', className)}>
+          <div
+            className={cn('flex flex-col relative', className)}
+            ref={containerRef}
+          >
             {label && (
               <label
                 htmlFor={selectId}
@@ -59,11 +103,14 @@ const Select = <T extends FieldValues = FieldValues>({
                 {label}
               </label>
             )}
-            <select
+
+            {/* Custom Select Trigger */}
+            <button
+              type="button"
               id={selectId}
               data-testid={selectId}
               className={cn(
-                'flex h-10 w-full px-3 py-2 text-base transition-all duration-200',
+                'flex h-10 w-full px-3 py-2 text-base items-center justify-between transition-all duration-200',
                 'border-2 rounded-md',
                 'focus:outline-none focus:ring-2 focus:ring-offset-2',
                 'disabled:cursor-not-allowed disabled:opacity-50',
@@ -71,24 +118,80 @@ const Select = <T extends FieldValues = FieldValues>({
                 hasError
                   ? 'border-ink-error text-ink-error focus:border-ink-error focus:ring-ink-error'
                   : 'border-inputs-border text-inputs-title focus:border-inputs-border focus:ring-inputs-border',
-                'bg-inputs-background',
+                'bg-inputs-background hover:bg-inputs-background-off',
+                isOpen &&
+                  !hasError &&
+                  'border-ink-highlight ring-2 ring-ink-highlight/20',
+                triggerClassName,
               )}
-              {...field}
-              {...props}
+              onClick={() => !disabled && setIsOpen(!isOpen)}
+              disabled={disabled}
+              aria-haspopup="listbox"
+              aria-expanded={isOpen}
+              aria-labelledby={`${selectId}-label`}
             >
-              <option value="" disabled>
-                {placeholder}
-              </option>
-              {options.map((option) => (
-                <option
-                  key={option.value}
-                  value={option.value}
-                  disabled={option.disabled}
-                >
-                  {option.label}
-                </option>
-              ))}
-            </select>
+              <span
+                className={cn(
+                  'truncate',
+                  !field.value && 'text-inputs-text-off',
+                )}
+              >
+                {displayValue}
+              </span>
+              <ChevronDown
+                size={20}
+                className={cn(
+                  'text-inputs-text transition-transform duration-200',
+                  isOpen && 'rotate-180',
+                )}
+              />
+            </button>
+
+            {/* Custom Dropdown */}
+            {isOpen && (
+              <div
+                ref={dropdownRef}
+                className="absolute top-full left-0 right-0 z-50 mt-1 max-h-64 overflow-y-auto rounded-lg border border-inputs-border bg-inputs-background shadow-2xl"
+                role="listbox"
+                aria-labelledby={`${selectId}-label`}
+              >
+                {options.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={cn(
+                      'flex w-full items-center justify-between px-4 py-3 text-left transition-colors duration-150',
+                      'hover:bg-midnight-light focus:bg-midnight-light focus:outline-none',
+                      option.disabled && 'cursor-not-allowed opacity-50',
+                      field.value === option.value &&
+                        'bg-midnight-light text-ink-highlight',
+                    )}
+                    onClick={() => {
+                      if (!option.disabled) {
+                        field.onChange(option.value)
+                        setIsOpen(false)
+                      }
+                    }}
+                    disabled={option.disabled}
+                    role="option"
+                    aria-selected={field.value === option.value}
+                  >
+                    <span
+                      className={cn(
+                        'text-inputs-title',
+                        field.value === option.value && 'font-medium',
+                      )}
+                    >
+                      {option.label}
+                    </span>
+                    {field.value === option.value && (
+                      <Check size={18} className="text-ink-highlight" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {hasError && (
               <span className="text-sm text-ink-error mt-1">
                 {errorMessage}
