@@ -50,3 +50,9 @@ export type { TimePickerProps } from './TimePicker'
 
 export { default as DateTimePicker } from './DateTimePicker'
 export type { DateTimePickerProps } from './DateTimePicker'
+
+export { default as Table } from './Table'
+export type { TableProps, Column, Action, SortDirection } from './Table'
+
+export { default as StatusBadge } from './StatusBadge'
+export type { StatusBadgeProps, BadgeStatusType } from './StatusBadge'
