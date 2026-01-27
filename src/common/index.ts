@@ -59,3 +59,6 @@ export type { StatusBadgeProps, BadgeStatusType } from './StatusBadge'
 
 export { default as Collapsible } from './Collapsible'
 export type { CollapsibleProps } from './Collapsible'
+
+export { default as ContextMenu } from './ContextMenu'
+export type { ContextMenuProps, ContextMenuItem } from './ContextMenu'

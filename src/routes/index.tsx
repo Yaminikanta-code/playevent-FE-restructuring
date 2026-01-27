@@ -8,6 +8,7 @@ export const Route = createFileRoute('/')({
 function App() {
   const demoRoutes = [
     { path: '/collapsible-demo', label: 'Collapsible Demo' },
+    { path: '/context-menu-demo', label: 'Context Menu Demo' },
     { path: '/form-test', label: 'Form Test' },
     { path: '/modal-test', label: 'Modal Test' },
     { path: '/table-demo', label: 'Table Demo' },
