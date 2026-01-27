@@ -13,6 +13,7 @@ import { Route as TestRouteImport } from './routes/test'
 import { Route as TableDemoRouteImport } from './routes/table-demo'
 import { Route as ModalTestRouteImport } from './routes/modal-test'
 import { Route as FormTestRouteImport } from './routes/form-test'
+import { Route as CollapsibleDemoRouteImport } from './routes/collapsible-demo'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 
@@ -36,6 +37,11 @@ const FormTestRoute = FormTestRouteImport.update({
   path: '/form-test',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CollapsibleDemoRoute = CollapsibleDemoRouteImport.update({
+  id: '/collapsible-demo',
+  path: '/collapsible-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,6 +55,7 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/collapsible-demo': typeof CollapsibleDemoRoute
   '/form-test': typeof FormTestRoute
   '/modal-test': typeof ModalTestRoute
   '/table-demo': typeof TableDemoRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/collapsible-demo': typeof CollapsibleDemoRoute
   '/form-test': typeof FormTestRoute
   '/modal-test': typeof ModalTestRoute
   '/table-demo': typeof TableDemoRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/collapsible-demo': typeof CollapsibleDemoRoute
   '/form-test': typeof FormTestRoute
   '/modal-test': typeof ModalTestRoute
   '/table-demo': typeof TableDemoRoute
@@ -76,6 +85,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/collapsible-demo'
     | '/form-test'
     | '/modal-test'
     | '/table-demo'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/collapsible-demo'
     | '/form-test'
     | '/modal-test'
     | '/table-demo'
@@ -92,6 +103,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/collapsible-demo'
     | '/form-test'
     | '/modal-test'
     | '/table-demo'
@@ -101,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CollapsibleDemoRoute: typeof CollapsibleDemoRoute
   FormTestRoute: typeof FormTestRoute
   ModalTestRoute: typeof ModalTestRoute
   TableDemoRoute: typeof TableDemoRoute
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FormTestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/collapsible-demo': {
+      id: '/collapsible-demo'
+      path: '/collapsible-demo'
+      fullPath: '/collapsible-demo'
+      preLoaderRoute: typeof CollapsibleDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -157,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CollapsibleDemoRoute: CollapsibleDemoRoute,
   FormTestRoute: FormTestRoute,
   ModalTestRoute: ModalTestRoute,
   TableDemoRoute: TableDemoRoute,
