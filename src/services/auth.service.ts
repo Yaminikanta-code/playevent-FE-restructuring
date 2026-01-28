@@ -1,6 +1,6 @@
 import { nonAuthenticatedAxios } from './api.service'
 import type { UserPayload } from '../stores/useAuthStore'
-import { AUTH_URL } from '@/constants/authUrl.constant'
+import { AUTH_URL } from '../constants/authUrl.constant'
 
 export interface LoginCredentials {
   email: string

@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { useAuthStore } from '../stores/useAuthStore'
-import { config } from '@/config'
+import { config } from '../config'
 
 declare module 'axios' {
   export interface AxiosRequestConfig {
