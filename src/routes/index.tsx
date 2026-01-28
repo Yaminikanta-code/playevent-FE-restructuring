@@ -11,6 +11,7 @@ function App() {
     { path: '/context-menu-demo', label: 'Context Menu Demo' },
     { path: '/form-test', label: 'Form Test' },
     { path: '/modal-test', label: 'Modal Test' },
+    { path: '/scroll-area-demo', label: 'Scroll Area Demo' },
     { path: '/table-demo', label: 'Table Demo' },
     { path: '/test', label: 'Test' },
     { path: '/demo/tanstack-query', label: 'TanStack Query Demo' },

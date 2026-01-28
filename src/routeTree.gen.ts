@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestRouteImport } from './routes/test'
 import { Route as TableDemoRouteImport } from './routes/table-demo'
+import { Route as ScrollAreaDemoRouteImport } from './routes/scroll-area-demo'
 import { Route as ModalTestRouteImport } from './routes/modal-test'
 import { Route as FormTestRouteImport } from './routes/form-test'
 import { Route as ContextMenuDemoRouteImport } from './routes/context-menu-demo'
@@ -26,6 +27,11 @@ const TestRoute = TestRouteImport.update({
 const TableDemoRoute = TableDemoRouteImport.update({
   id: '/table-demo',
   path: '/table-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScrollAreaDemoRoute = ScrollAreaDemoRouteImport.update({
+  id: '/scroll-area-demo',
+  path: '/scroll-area-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModalTestRoute = ModalTestRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/context-menu-demo': typeof ContextMenuDemoRoute
   '/form-test': typeof FormTestRoute
   '/modal-test': typeof ModalTestRoute
+  '/scroll-area-demo': typeof ScrollAreaDemoRoute
   '/table-demo': typeof TableDemoRoute
   '/test': typeof TestRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/context-menu-demo': typeof ContextMenuDemoRoute
   '/form-test': typeof FormTestRoute
   '/modal-test': typeof ModalTestRoute
+  '/scroll-area-demo': typeof ScrollAreaDemoRoute
   '/table-demo': typeof TableDemoRoute
   '/test': typeof TestRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/context-menu-demo': typeof ContextMenuDemoRoute
   '/form-test': typeof FormTestRoute
   '/modal-test': typeof ModalTestRoute
+  '/scroll-area-demo': typeof ScrollAreaDemoRoute
   '/table-demo': typeof TableDemoRoute
   '/test': typeof TestRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/context-menu-demo'
     | '/form-test'
     | '/modal-test'
+    | '/scroll-area-demo'
     | '/table-demo'
     | '/test'
     | '/demo/tanstack-query'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/context-menu-demo'
     | '/form-test'
     | '/modal-test'
+    | '/scroll-area-demo'
     | '/table-demo'
     | '/test'
     | '/demo/tanstack-query'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/context-menu-demo'
     | '/form-test'
     | '/modal-test'
+    | '/scroll-area-demo'
     | '/table-demo'
     | '/test'
     | '/demo/tanstack-query'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   ContextMenuDemoRoute: typeof ContextMenuDemoRoute
   FormTestRoute: typeof FormTestRoute
   ModalTestRoute: typeof ModalTestRoute
+  ScrollAreaDemoRoute: typeof ScrollAreaDemoRoute
   TableDemoRoute: typeof TableDemoRoute
   TestRoute: typeof TestRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/table-demo'
       fullPath: '/table-demo'
       preLoaderRoute: typeof TableDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scroll-area-demo': {
+      id: '/scroll-area-demo'
+      path: '/scroll-area-demo'
+      fullPath: '/scroll-area-demo'
+      preLoaderRoute: typeof ScrollAreaDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/modal-test': {
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContextMenuDemoRoute: ContextMenuDemoRoute,
   FormTestRoute: FormTestRoute,
   ModalTestRoute: ModalTestRoute,
+  ScrollAreaDemoRoute: ScrollAreaDemoRoute,
   TableDemoRoute: TableDemoRoute,
   TestRoute: TestRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
