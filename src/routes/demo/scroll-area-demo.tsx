@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Save, MoreHorizontal } from 'lucide-react'
-import ScrollArea from '../common/ScrollArea'
-import IconButton from '../common/IconButton'
+import ScrollArea from '../../common/ScrollArea'
+import IconButton from '../../common/IconButton'
 
-export const Route = createFileRoute('/scroll-area-demo')({
+export const Route = createFileRoute('/demo/scroll-area-demo')({
   component: ScrollAreaDemo,
 })
 
@@ -51,7 +51,7 @@ function ScrollAreaDemo() {
         </h1>
 
         {/* Example 1: With tabs and actions */}
-        <div className="h-[400px]">
+        <div className="h-100">
           <ScrollArea
             title="New Event"
             headerActions={headerActions}
@@ -88,7 +88,9 @@ function ScrollAreaDemo() {
         <ScrollArea
           title="With Actions"
           maxHeight={200}
-          headerActions={<IconButton icon={Save} onClick={() => {}} tooltip="Save" />}
+          headerActions={
+            <IconButton icon={Save} onClick={() => {}} tooltip="Save" />
+          }
         >
           <p className="text-inputs-text">
             This ScrollArea has header actions but no extra header content.

@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import Table from '../common/Table'
-import type { Column, Action } from '../common/Table'
-import StatusBadge from '../common/StatusBadge'
+import Table from '../../common/Table'
+import type { Column, Action } from '../../common/Table'
+import StatusBadge from '../../common/StatusBadge'
 import { Pencil, Trash2 } from 'lucide-react'
 
 interface User {
@@ -14,7 +14,7 @@ interface User {
   createdAt: string
 }
 
-export const Route = createFileRoute('/table-demo')({
+export const Route = createFileRoute('/demo/table-demo')({
   component: TableDemo,
 })
 

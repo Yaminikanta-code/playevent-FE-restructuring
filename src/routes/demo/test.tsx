@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Button, IconButton } from '../common'
+import { Button, IconButton } from '../../common'
 import { Plus, Trash2, Check, X, Settings, Search } from 'lucide-react'
 
-export const Route = createFileRoute('/test')({
+export const Route = createFileRoute('/demo/test')({
   component: RouteComponent,
 })
 

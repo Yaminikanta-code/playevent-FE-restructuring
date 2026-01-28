@@ -1,6 +1,6 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { ContextMenu, Button } from '../common'
+import { ContextMenu, Button } from '../../common'
 import {
   MoreHorizontal,
   Edit,
@@ -16,7 +16,7 @@ import {
   X,
 } from 'lucide-react'
 
-export const Route = createFileRoute('/context-menu-demo')({
+export const Route = createFileRoute('/demo/context-menu-demo')({
   component: ContextMenuDemo,
 })
 

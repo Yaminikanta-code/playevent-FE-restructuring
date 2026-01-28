@@ -9,54 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TestRouteImport } from './routes/test'
-import { Route as TableDemoRouteImport } from './routes/table-demo'
-import { Route as ScrollAreaDemoRouteImport } from './routes/scroll-area-demo'
-import { Route as ModalTestRouteImport } from './routes/modal-test'
-import { Route as FormTestRouteImport } from './routes/form-test'
-import { Route as ContextMenuDemoRouteImport } from './routes/context-menu-demo'
-import { Route as CollapsibleDemoRouteImport } from './routes/collapsible-demo'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as DemoIndexRouteImport } from './routes/demo/index'
+import { Route as DemoTestRouteImport } from './routes/demo/test'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as DemoTableDemoRouteImport } from './routes/demo/table-demo'
+import { Route as DemoScrollAreaDemoRouteImport } from './routes/demo/scroll-area-demo'
+import { Route as DemoModalTestRouteImport } from './routes/demo/modal-test'
+import { Route as DemoFormTestRouteImport } from './routes/demo/form-test'
+import { Route as DemoContextMenuDemoRouteImport } from './routes/demo/context-menu-demo'
+import { Route as DemoCollapsibleDemoRouteImport } from './routes/demo/collapsible-demo'
 
-const TestRoute = TestRouteImport.update({
-  id: '/test',
-  path: '/test',
+const DemoIndexRoute = DemoIndexRouteImport.update({
+  id: '/demo/',
+  path: '/demo/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TableDemoRoute = TableDemoRouteImport.update({
-  id: '/table-demo',
-  path: '/table-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ScrollAreaDemoRoute = ScrollAreaDemoRouteImport.update({
-  id: '/scroll-area-demo',
-  path: '/scroll-area-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ModalTestRoute = ModalTestRouteImport.update({
-  id: '/modal-test',
-  path: '/modal-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FormTestRoute = FormTestRouteImport.update({
-  id: '/form-test',
-  path: '/form-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContextMenuDemoRoute = ContextMenuDemoRouteImport.update({
-  id: '/context-menu-demo',
-  path: '/context-menu-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CollapsibleDemoRoute = CollapsibleDemoRouteImport.update({
-  id: '/collapsible-demo',
-  path: '/collapsible-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const DemoTestRoute = DemoTestRouteImport.update({
+  id: '/demo/test',
+  path: '/demo/test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -64,145 +34,133 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DemoTableDemoRoute = DemoTableDemoRouteImport.update({
+  id: '/demo/table-demo',
+  path: '/demo/table-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoScrollAreaDemoRoute = DemoScrollAreaDemoRouteImport.update({
+  id: '/demo/scroll-area-demo',
+  path: '/demo/scroll-area-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoModalTestRoute = DemoModalTestRouteImport.update({
+  id: '/demo/modal-test',
+  path: '/demo/modal-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoFormTestRoute = DemoFormTestRouteImport.update({
+  id: '/demo/form-test',
+  path: '/demo/form-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoContextMenuDemoRoute = DemoContextMenuDemoRouteImport.update({
+  id: '/demo/context-menu-demo',
+  path: '/demo/context-menu-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoCollapsibleDemoRoute = DemoCollapsibleDemoRouteImport.update({
+  id: '/demo/collapsible-demo',
+  path: '/demo/collapsible-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/collapsible-demo': typeof CollapsibleDemoRoute
-  '/context-menu-demo': typeof ContextMenuDemoRoute
-  '/form-test': typeof FormTestRoute
-  '/modal-test': typeof ModalTestRoute
-  '/scroll-area-demo': typeof ScrollAreaDemoRoute
-  '/table-demo': typeof TableDemoRoute
-  '/test': typeof TestRoute
+  '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
+  '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
+  '/demo/form-test': typeof DemoFormTestRoute
+  '/demo/modal-test': typeof DemoModalTestRoute
+  '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
+  '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/test': typeof DemoTestRoute
+  '/demo/': typeof DemoIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/collapsible-demo': typeof CollapsibleDemoRoute
-  '/context-menu-demo': typeof ContextMenuDemoRoute
-  '/form-test': typeof FormTestRoute
-  '/modal-test': typeof ModalTestRoute
-  '/scroll-area-demo': typeof ScrollAreaDemoRoute
-  '/table-demo': typeof TableDemoRoute
-  '/test': typeof TestRoute
+  '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
+  '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
+  '/demo/form-test': typeof DemoFormTestRoute
+  '/demo/modal-test': typeof DemoModalTestRoute
+  '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
+  '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/test': typeof DemoTestRoute
+  '/demo': typeof DemoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/collapsible-demo': typeof CollapsibleDemoRoute
-  '/context-menu-demo': typeof ContextMenuDemoRoute
-  '/form-test': typeof FormTestRoute
-  '/modal-test': typeof ModalTestRoute
-  '/scroll-area-demo': typeof ScrollAreaDemoRoute
-  '/table-demo': typeof TableDemoRoute
-  '/test': typeof TestRoute
+  '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
+  '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
+  '/demo/form-test': typeof DemoFormTestRoute
+  '/demo/modal-test': typeof DemoModalTestRoute
+  '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
+  '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/demo/test': typeof DemoTestRoute
+  '/demo/': typeof DemoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/collapsible-demo'
-    | '/context-menu-demo'
-    | '/form-test'
-    | '/modal-test'
-    | '/scroll-area-demo'
-    | '/table-demo'
-    | '/test'
+    | '/demo/collapsible-demo'
+    | '/demo/context-menu-demo'
+    | '/demo/form-test'
+    | '/demo/modal-test'
+    | '/demo/scroll-area-demo'
+    | '/demo/table-demo'
     | '/demo/tanstack-query'
+    | '/demo/test'
+    | '/demo/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/collapsible-demo'
-    | '/context-menu-demo'
-    | '/form-test'
-    | '/modal-test'
-    | '/scroll-area-demo'
-    | '/table-demo'
-    | '/test'
+    | '/demo/collapsible-demo'
+    | '/demo/context-menu-demo'
+    | '/demo/form-test'
+    | '/demo/modal-test'
+    | '/demo/scroll-area-demo'
+    | '/demo/table-demo'
     | '/demo/tanstack-query'
+    | '/demo/test'
+    | '/demo'
   id:
     | '__root__'
-    | '/'
-    | '/collapsible-demo'
-    | '/context-menu-demo'
-    | '/form-test'
-    | '/modal-test'
-    | '/scroll-area-demo'
-    | '/table-demo'
-    | '/test'
+    | '/demo/collapsible-demo'
+    | '/demo/context-menu-demo'
+    | '/demo/form-test'
+    | '/demo/modal-test'
+    | '/demo/scroll-area-demo'
+    | '/demo/table-demo'
     | '/demo/tanstack-query'
+    | '/demo/test'
+    | '/demo/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CollapsibleDemoRoute: typeof CollapsibleDemoRoute
-  ContextMenuDemoRoute: typeof ContextMenuDemoRoute
-  FormTestRoute: typeof FormTestRoute
-  ModalTestRoute: typeof ModalTestRoute
-  ScrollAreaDemoRoute: typeof ScrollAreaDemoRoute
-  TableDemoRoute: typeof TableDemoRoute
-  TestRoute: typeof TestRoute
+  DemoCollapsibleDemoRoute: typeof DemoCollapsibleDemoRoute
+  DemoContextMenuDemoRoute: typeof DemoContextMenuDemoRoute
+  DemoFormTestRoute: typeof DemoFormTestRoute
+  DemoModalTestRoute: typeof DemoModalTestRoute
+  DemoScrollAreaDemoRoute: typeof DemoScrollAreaDemoRoute
+  DemoTableDemoRoute: typeof DemoTableDemoRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  DemoTestRoute: typeof DemoTestRoute
+  DemoIndexRoute: typeof DemoIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestRouteImport
+    '/demo/': {
+      id: '/demo/'
+      path: '/demo'
+      fullPath: '/demo/'
+      preLoaderRoute: typeof DemoIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/table-demo': {
-      id: '/table-demo'
-      path: '/table-demo'
-      fullPath: '/table-demo'
-      preLoaderRoute: typeof TableDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/scroll-area-demo': {
-      id: '/scroll-area-demo'
-      path: '/scroll-area-demo'
-      fullPath: '/scroll-area-demo'
-      preLoaderRoute: typeof ScrollAreaDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/modal-test': {
-      id: '/modal-test'
-      path: '/modal-test'
-      fullPath: '/modal-test'
-      preLoaderRoute: typeof ModalTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/form-test': {
-      id: '/form-test'
-      path: '/form-test'
-      fullPath: '/form-test'
-      preLoaderRoute: typeof FormTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/context-menu-demo': {
-      id: '/context-menu-demo'
-      path: '/context-menu-demo'
-      fullPath: '/context-menu-demo'
-      preLoaderRoute: typeof ContextMenuDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/collapsible-demo': {
-      id: '/collapsible-demo'
-      path: '/collapsible-demo'
-      fullPath: '/collapsible-demo'
-      preLoaderRoute: typeof CollapsibleDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/demo/test': {
+      id: '/demo/test'
+      path: '/demo/test'
+      fullPath: '/demo/test'
+      preLoaderRoute: typeof DemoTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -212,19 +170,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/demo/table-demo': {
+      id: '/demo/table-demo'
+      path: '/demo/table-demo'
+      fullPath: '/demo/table-demo'
+      preLoaderRoute: typeof DemoTableDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/scroll-area-demo': {
+      id: '/demo/scroll-area-demo'
+      path: '/demo/scroll-area-demo'
+      fullPath: '/demo/scroll-area-demo'
+      preLoaderRoute: typeof DemoScrollAreaDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/modal-test': {
+      id: '/demo/modal-test'
+      path: '/demo/modal-test'
+      fullPath: '/demo/modal-test'
+      preLoaderRoute: typeof DemoModalTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/form-test': {
+      id: '/demo/form-test'
+      path: '/demo/form-test'
+      fullPath: '/demo/form-test'
+      preLoaderRoute: typeof DemoFormTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/context-menu-demo': {
+      id: '/demo/context-menu-demo'
+      path: '/demo/context-menu-demo'
+      fullPath: '/demo/context-menu-demo'
+      preLoaderRoute: typeof DemoContextMenuDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/collapsible-demo': {
+      id: '/demo/collapsible-demo'
+      path: '/demo/collapsible-demo'
+      fullPath: '/demo/collapsible-demo'
+      preLoaderRoute: typeof DemoCollapsibleDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CollapsibleDemoRoute: CollapsibleDemoRoute,
-  ContextMenuDemoRoute: ContextMenuDemoRoute,
-  FormTestRoute: FormTestRoute,
-  ModalTestRoute: ModalTestRoute,
-  ScrollAreaDemoRoute: ScrollAreaDemoRoute,
-  TableDemoRoute: TableDemoRoute,
-  TestRoute: TestRoute,
+  DemoCollapsibleDemoRoute: DemoCollapsibleDemoRoute,
+  DemoContextMenuDemoRoute: DemoContextMenuDemoRoute,
+  DemoFormTestRoute: DemoFormTestRoute,
+  DemoModalTestRoute: DemoModalTestRoute,
+  DemoScrollAreaDemoRoute: DemoScrollAreaDemoRoute,
+  DemoTableDemoRoute: DemoTableDemoRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  DemoTestRoute: DemoTestRoute,
+  DemoIndexRoute: DemoIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import logo from '../logo.svg'
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/demo/')({
   component: App,
 })
 
