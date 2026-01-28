@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import Table from '../../common/Table'
-import type { Column, Action } from '../../common/Table'
-import StatusBadge from '../../common/StatusBadge'
+import Table from '../../components/common/Table'
+import type { Column, Action } from '../../components/common/Table'
+import StatusBadge from '../../components/common/StatusBadge'
 import { Pencil, Trash2 } from 'lucide-react'
 
 interface User {

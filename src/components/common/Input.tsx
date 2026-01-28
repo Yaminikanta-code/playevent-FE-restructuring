@@ -2,7 +2,7 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 import type { Control, FieldValues, Path } from 'react-hook-form'
 import type { LucideIcon } from 'lucide-react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 export interface InputProps<T extends FieldValues = FieldValues> extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,

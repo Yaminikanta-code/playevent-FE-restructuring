@@ -13,7 +13,7 @@ import {
   DatePicker,
   TimePicker,
   DateTimePicker,
-} from '../../common'
+} from '../../components/common'
 import { Mail, Lock, User, Phone } from 'lucide-react'
 
 export const Route = createFileRoute('/demo/form-test')({

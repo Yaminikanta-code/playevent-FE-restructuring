@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm, FormProvider as RHFormProvider } from 'react-hook-form'
 import type { UseFormReturn, FieldValues } from 'react-hook-form'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 export interface FormProps<T extends FieldValues = FieldValues> extends Omit<
   React.HTMLAttributes<HTMLFormElement>,

@@ -3,7 +3,7 @@ import { Controller } from 'react-hook-form'
 import type { Control, FieldValues, Path } from 'react-hook-form'
 import type { LucideIcon } from 'lucide-react'
 import { HexAlphaColorPicker } from 'react-colorful'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 export interface ColorInputProps<
   T extends FieldValues = FieldValues,

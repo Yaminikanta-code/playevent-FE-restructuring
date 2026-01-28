@@ -1,8 +1,8 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { Collapsible } from '../../common'
+import { Collapsible } from '../../components/common'
 import { Edit, Trash2, Eye, MoreHorizontal, Plus, Settings } from 'lucide-react'
-import { Button, IconButton } from '../../common'
+import { Button, IconButton } from '../../components/common'
 
 export const Route = createFileRoute('/demo/collapsible-demo')({
   component: CollapsibleDemo,

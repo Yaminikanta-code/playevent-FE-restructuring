@@ -109,6 +109,19 @@ export function createApiHooks<
   // Generate default alerts and merge with custom ones
   const defaultAlerts = generateAlerts(serviceName)
   const alerts = { ...defaultAlerts, ...customAlerts }
+  // Ensure error is always a function
+  const errorFn = (action: string) => {
+    if (typeof alerts.error === 'function') {
+      return alerts.error(action)
+    }
+    // Fallback to default error message
+    const defaultError = defaultAlerts?.error
+    if (typeof defaultError === 'function') {
+      return defaultError(action)
+    }
+    // Ultimate fallback
+    return `Failed to ${action}`
+  }
 
   // ============ LIST HOOK ============
 
@@ -142,7 +155,7 @@ export function createApiHooks<
     useEffect(() => {
       if (query.error) {
         showAlert({
-          message: query.error?.message || alerts.error('fetch'),
+          message: query.error?.message || errorFn('fetch'),
           type: 'error',
         })
       }
@@ -176,7 +189,7 @@ export function createApiHooks<
     useEffect(() => {
       if (query.error) {
         showAlert({
-          message: query.error?.message || alerts.error('fetch'),
+          message: query.error?.message || errorFn('fetch'),
           type: 'error',
         })
       }
@@ -207,7 +220,7 @@ export function createApiHooks<
       },
       onError: (error: any) => {
         showAlert({
-          message: error?.message || alerts.error('create'),
+          message: error?.message || errorFn('create'),
           type: 'error',
         })
       },
@@ -243,7 +256,7 @@ export function createApiHooks<
       },
       onError: (error: any) => {
         showAlert({
-          message: error?.message || alerts.error('update'),
+          message: error?.message || errorFn('update'),
           type: 'error',
         })
       },
@@ -276,7 +289,7 @@ export function createApiHooks<
       },
       onError: (error: any) => {
         showAlert({
-          message: error?.message || alerts.error('delete'),
+          message: error?.message || errorFn('delete'),
           type: 'error',
         })
       },
@@ -309,7 +322,7 @@ export function createApiHooks<
       },
       onError: (error: any) => {
         showAlert({
-          message: error?.message || alerts.error('restore'),
+          message: error?.message || errorFn('restore'),
           type: 'error',
         })
       },
@@ -342,7 +355,7 @@ export function createApiHooks<
       },
       onError: (error: any) => {
         showAlert({
-          message: error?.message || alerts.error('hard delete'),
+          message: error?.message || errorFn('hard delete'),
           type: 'error',
         })
       },

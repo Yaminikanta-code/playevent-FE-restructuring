@@ -1,5 +1,5 @@
 import React from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 export interface ScrollAreaProps {
   /** Title displayed in the header */
@@ -59,10 +59,7 @@ const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
 
         {/* Scrollable content area */}
         <div
-          className={cn(
-            'flex-1 overflow-y-auto px-6 pb-6',
-            contentClassName,
-          )}
+          className={cn('flex-1 overflow-y-auto px-6 pb-6', contentClassName)}
         >
           {children}
         </div>

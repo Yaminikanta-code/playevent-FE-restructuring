@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Save, MoreHorizontal } from 'lucide-react'
-import ScrollArea from '../../common/ScrollArea'
-import IconButton from '../../common/IconButton'
+import ScrollArea from '../../components/common/ScrollArea'
+import IconButton from '../../components/common/IconButton'
 
 export const Route = createFileRoute('/demo/scroll-area-demo')({
   component: ScrollAreaDemo,

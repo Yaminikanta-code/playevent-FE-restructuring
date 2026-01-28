@@ -1,6 +1,6 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { ContextMenu, Button } from '../../common'
+import { ContextMenu, Button } from '../../components/common'
 import {
   MoreHorizontal,
   Edit,

@@ -1,6 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Button, ConfirmationModal, FormModal, Modal } from '../../common'
+import {
+  Button,
+  ConfirmationModal,
+  FormModal,
+  Modal,
+} from '../../components/common'
 
 export const Route = createFileRoute('/demo/modal-test')({
   component: ModalTest,
