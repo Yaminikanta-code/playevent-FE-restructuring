@@ -1,6 +1,38 @@
 # Common Components
 
-This directory contains reusable UI components for the Play Event application, including buttons and form components.
+This directory contains reusable UI components for the Play Event application, including buttons, form components, layout components, and data display components.
+
+## Table of Contents
+
+- [Button Components](#button-components)
+  - [Button](#button)
+  - [IconButton](#iconbutton)
+- [Form Components](#form-components)
+  - [Form](#form)
+  - [Input](#input)
+  - [Select](#select)
+  - [Checkbox](#checkbox)
+  - [Radio](#radio)
+  - [Textarea](#textarea)
+  - [DatePicker](#datepicker)
+  - [TimePicker](#timepicker)
+  - [DateTimePicker](#datetimepicker)
+  - [ColorInput](#colorinput)
+  - [StatusSelector](#statusselector)
+- [Modal Components](#modal-components)
+  - [Modal](#modal)
+  - [ConfirmationModal](#confirmationmodal)
+  - [FormModal](#formmodal)
+- [Layout Components](#layout-components)
+  - [Collapsible](#collapsible)
+  - [ScrollArea](#scrollarea)
+- [Data Display Components](#data-display-components)
+  - [Table](#table)
+  - [StatusBadge](#statusbadge)
+- [Menu Components](#menu-components)
+  - [ContextMenu](#contextmenu)
+
+---
 
 ## Button Components
 
@@ -10,50 +42,39 @@ A versatile button component with multiple variants, sizes, and states.
 
 #### Props
 
-- `variant`: `'primary' | 'secondary' | 'destructive' | 'success' | 'outline' | 'ghost'` (default: `'primary'`)
-- `size`: `'sm' | 'md' | 'lg'` (default: `'md'`)
-- `icon`: `LucideIcon` - Optional icon component from lucide-react
-- `iconPosition`: `'left' | 'right'` (default: `'left'`)
-- `isLoading`: `boolean` - Shows loading spinner (default: `false`)
-- `fullWidth`: `boolean` - Makes button full width (default: `false`)
-- `disabled`: `boolean` - Disables the button (default: `false`)
-- All standard HTML button attributes
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `variant` | `'primary' \| 'secondary' \| 'destructive' \| 'success' \| 'outline' \| 'ghost'` | `'primary'` | Button style variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Button size |
+| `icon` | `LucideIcon` | - | Optional icon component |
+| `iconPosition` | `'left' \| 'right'` | `'left'` | Icon placement |
+| `isLoading` | `boolean` | `false` | Shows loading spinner |
+| `fullWidth` | `boolean` | `false` | Makes button full width |
+| `disabled` | `boolean` | `false` | Disables the button |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { Button } from '@/common'
+import { Button } from '../common'
 import { Plus, Settings } from 'lucide-react'
 
-// Basic button
-<Button>Click me</Button>
-
-// Different variants
+// Basic variants
 <Button variant="primary">Primary</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="destructive">Delete</Button>
 <Button variant="success">Success</Button>
-<Button variant="outline">Outline</Button>
-<Button variant="ghost">Ghost</Button>
-
-// Different sizes
-<Button size="sm">Small</Button>
-<Button size="md">Medium</Button>
-<Button size="lg">Large</Button>
 
 // With icons
 <Button icon={Plus} iconPosition="left">Add New</Button>
 <Button icon={Settings} iconPosition="right">Settings</Button>
 
-// Loading state
+// States
 <Button isLoading>Loading...</Button>
-
-// Full width
-<Button fullWidth>Full Width Button</Button>
-
-// Disabled
+<Button fullWidth>Full Width</Button>
 <Button disabled>Disabled</Button>
 ```
+
+---
 
 ### IconButton
 
@@ -61,82 +82,57 @@ A button component that displays only an icon, perfect for toolbar buttons and a
 
 #### Props
 
-- `icon`: `LucideIcon` - Required icon component from lucide-react
-- `variant`: `'primary' | 'secondary' | 'destructive' | 'success' | 'outline' | 'ghost'` (default: `'primary'`)
-- `size`: `'sm' | 'md' | 'lg'` (default: `'md'`)
-- `isLoading`: `boolean` - Shows loading spinner (default: `false`)
-- `tooltip`: `string` - Optional tooltip text
-- `disabled`: `boolean` - Disables the button (default: `false`)
-- All standard HTML button attributes
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `icon` | `LucideIcon` | Required | Icon component from lucide-react |
+| `variant` | `'primary' \| 'secondary' \| 'destructive' \| 'success' \| 'outline' \| 'ghost'` | `'primary'` | Button style variant |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Button size |
+| `isLoading` | `boolean` | `false` | Shows loading spinner |
+| `tooltip` | `string` | - | Tooltip text on hover |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { IconButton } from '@/common'
-import { Plus, Settings, Trash2, Search } from 'lucide-react'
+import { IconButton } from '../common'
+import { Plus, Trash2, Settings } from 'lucide-react'
 
-// Basic icon button
-<IconButton icon={Plus} />
-
-// Different variants
-<IconButton variant="primary" icon={Plus} />
-<IconButton variant="secondary" icon={Settings} />
-<IconButton variant="destructive" icon={Trash2} />
-<IconButton variant="success" icon={Check} />
-<IconButton variant="outline" icon={Search} />
-<IconButton variant="ghost" icon={X} />
-
-// Different sizes
-<IconButton icon={Plus} size="sm" />
-<IconButton icon={Plus} size="md" />
-<IconButton icon={Plus} size="lg" />
-
-// With tooltip
-<IconButton icon={Settings} tooltip="Settings" />
-
-// Loading state
-<IconButton icon={Plus} isLoading />
-
-// Disabled
-<IconButton icon={Plus} disabled />
+<IconButton icon={Plus} tooltip="Add" />
+<IconButton icon={Trash2} variant="destructive" tooltip="Delete" />
+<IconButton icon={Settings} size="lg" isLoading />
 ```
+
+---
 
 ## Form Components
 
-All form components are built with React Hook Form and provide seamless integration with form validation.
+All form components integrate with React Hook Form for validation and state management.
 
 ### Form
 
-A wrapper component that provides React Hook Form context to all child form components.
+A wrapper component that provides React Hook Form context.
 
 #### Props
 
-- `form`: `UseFormReturn<T>` - The form instance from `useForm()`
-- `onSubmit`: `(data: T) => void | Promise<void>` - Form submission handler
-- `children`: `React.ReactNode` - Form child components
-- All standard HTML form attributes
+| Prop | Type | Description |
+|------|------|-------------|
+| `form` | `UseFormReturn<T>` | Form instance from `useForm()` |
+| `onSubmit` | `(data: T) => void \| Promise<void>` | Form submission handler |
+| `children` | `React.ReactNode` | Form child components |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { Form } from '@/common'
+import { Form } from '../common'
 import { useForm } from 'react-hook-form'
 
-const form = useForm({
-  defaultValues: {
-    email: '',
-    password: '',
-  },
-})
+const form = useForm({ defaultValues: { email: '' } })
 
-const onSubmit = (data) => {
-  console.log(data)
-}
-
-;<Form form={form} onSubmit={onSubmit}>
-  {/* Form fields go here */}
+<Form form={form} onSubmit={(data) => console.log(data)}>
+  {/* Form fields */}
 </Form>
 ```
+
+---
 
 ### Input
 
@@ -144,44 +140,24 @@ A text input field with label, icon, error handling, and validation support.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Field label
-- `placeholder`: `string` - Placeholder text
-- `type`: `'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search'` (default: `'text'`)
-- `icon`: `LucideIcon` - Optional icon to display inside input
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below input
-- All standard HTML input attributes
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Path<T>` | Required | Field name in form data |
+| `control` | `Control<T>` | Required | React Hook Form control |
+| `label` | `string` | `''` | Field label |
+| `placeholder` | `string` | `''` | Placeholder text |
+| `type` | `'text' \| 'email' \| 'password' \| 'number' \| 'tel' \| 'url' \| 'search'` | `'text'` | Input type |
+| `icon` | `LucideIcon` | - | Icon inside input |
+| `rules` | `object` | - | Validation rules |
+| `error` | `string` | - | External error message |
+| `helperText` | `string` | - | Helper text below input |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { Input } from '@/common'
-import { Mail, Lock } from 'lucide-react'
+import { Input } from '../common'
+import { Mail } from 'lucide-react'
 
-// Basic input
-<Input
-  name="email"
-  label="Email"
-  placeholder="Enter your email"
-  control={form.control}
-  rules={{ required: 'Email is required' }}
-/>
-
-// With icon
-<Input
-  name="password"
-  type="password"
-  label="Password"
-  placeholder="Enter your password"
-  icon={Lock}
-  control={form.control}
-  rules={{ required: 'Password is required' }}
-/>
-
-// With validation
 <Input
   name="email"
   type="email"
@@ -189,478 +165,655 @@ import { Mail, Lock } from 'lucide-react'
   placeholder="john@example.com"
   icon={Mail}
   control={form.control}
-  rules={{
-    required: 'Email is required',
-    pattern: {
-      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-      message: 'Invalid email address',
-    },
-  }}
-  helperText="We'll never share your email."
+  rules={{ required: 'Email is required' }}
 />
 ```
 
+---
+
 ### Select
 
-A dropdown select field with options, label, error handling, and validation support.
+A dropdown select field with custom styling.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Field label
-- `placeholder`: `string` - Placeholder text (default: `'Select an option'`)
-- `className`: `string` - Additional CSS classes for the container
-- `triggerClassName`: `string` - Additional CSS classes for the trigger button (useful for custom styling like status colors)
-- `options`: `SelectOption[]` - Array of options with value and label
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below select
-- `disabled`: `boolean` - Disables the select
-- All standard HTML select attributes
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Path<T>` | Required | Field name |
+| `control` | `Control<T>` | Required | React Hook Form control |
+| `label` | `string` | - | Field label |
+| `placeholder` | `string` | `'Select an option'` | Placeholder |
+| `options` | `SelectOption[]` | Required | Array of `{ value, label }` |
+| `triggerClassName` | `string` | - | Custom trigger button styling |
+| `rules` | `object` | - | Validation rules |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { Select } from '@/common'
+import { Select } from '../common'
 
-const countryOptions = [
+const options = [
   { value: 'us', label: 'United States' },
   { value: 'uk', label: 'United Kingdom' },
-  { value: 'ca', label: 'Canada' },
 ]
 
 <Select
   name="country"
   label="Country"
-  placeholder="Select your country"
   control={form.control}
-  options={countryOptions}
+  options={options}
   rules={{ required: 'Country is required' }}
 />
 ```
 
+---
+
 ### Checkbox
 
-A checkbox field with label, error handling, and validation support.
+A checkbox field with label and validation support.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Checkbox label
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below checkbox
-- All standard HTML input attributes
+| Prop | Type | Description |
+|------|------|-------------|
+| `name` | `Path<T>` | Field name |
+| `control` | `Control<T>` | React Hook Form control |
+| `label` | `string` | Checkbox label |
+| `rules` | `object` | Validation rules |
+| `helperText` | `string` | Helper text |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { Checkbox } from '@/common'
+import { Checkbox } from '../common'
 
 <Checkbox
   name="terms"
   label="I agree to the Terms and Conditions"
   control={form.control}
-  rules={{ required: 'You must agree to terms' }}
-/>
-
-<Checkbox
-  name="newsletter"
-  label="Subscribe to our newsletter"
-  control={form.control}
-  helperText="Get the latest updates."
+  rules={{ required: 'You must agree' }}
 />
 ```
 
+---
+
 ### Radio
 
-A radio button group with options, label, error handling, and validation support.
+A radio button group with options.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Field label
-- `options`: `RadioOption[]` - Array of options with value and label
-- `orientation`: `'vertical' | 'horizontal'` (default: `'vertical'`)
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below radio group
-- All standard HTML input attributes
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Path<T>` | Required | Field name |
+| `control` | `Control<T>` | Required | React Hook Form control |
+| `label` | `string` | - | Field label |
+| `options` | `RadioOption[]` | Required | Array of `{ value, label }` |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Layout direction |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { Radio } from '@/common'
-
-const genderOptions = [
-  { value: 'male', label: 'Male' },
-  { value: 'female', label: 'Female' },
-  { value: 'other', label: 'Other' },
-]
+import { Radio } from '../common'
 
 <Radio
   name="gender"
   label="Gender"
   control={form.control}
-  options={genderOptions}
+  options={[
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' },
+  ]}
   orientation="horizontal"
-  rules={{ required: 'Gender is required' }}
 />
 ```
 
+---
+
 ### Textarea
 
-A multi-line text input field with label, error handling, and validation support.
+A multi-line text input field.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Field label
-- `placeholder`: `string` - Placeholder text
-- `rows`: `number` - Number of visible rows (default: `4`)
-- `resize`: `'none' | 'both' | 'horizontal' | 'vertical'` (default: `'vertical'`)
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below textarea
-- All standard HTML textarea attributes
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Path<T>` | Required | Field name |
+| `control` | `Control<T>` | Required | React Hook Form control |
+| `label` | `string` | - | Field label |
+| `rows` | `number` | `4` | Number of visible rows |
+| `resize` | `'none' \| 'both' \| 'horizontal' \| 'vertical'` | `'vertical'` | Resize behavior |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { Textarea } from '@/common'
-;<Textarea
+import { Textarea } from '../common'
+
+<Textarea
   name="bio"
   label="About You"
   placeholder="Tell us about yourself..."
   rows={4}
   control={form.control}
-  rules={{
-    maxLength: {
-      value: 500,
-      message: 'Bio must be less than 500 characters',
-    },
-  }}
-  helperText="Maximum 500 characters"
 />
 ```
+
+---
 
 ### DatePicker
 
-A date input field with label, icon, error handling, and validation support. Uses native HTML5 date picker with enhanced clickability.
+A date input field with native browser date picker.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Field label
-- `placeholder`: `string` - Placeholder text
-- `icon`: `LucideIcon` - Optional icon to display inside input
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below input
-- `min`: `string` - Minimum date (YYYY-MM-DD format)
-- `max`: `string` - Maximum date (YYYY-MM-DD format)
-- All standard HTML input attributes
+| Prop | Type | Description |
+|------|------|-------------|
+| `name` | `Path<T>` | Field name |
+| `control` | `Control<T>` | React Hook Form control |
+| `label` | `string` | Field label |
+| `min` | `string` | Minimum date (YYYY-MM-DD) |
+| `max` | `string` | Maximum date (YYYY-MM-DD) |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { DatePicker } from '@/common'
+import { DatePicker } from '../common'
 
-;<DatePicker
+<DatePicker
   name="birthDate"
   label="Birth Date"
   control={form.control}
-  rules={{ required: 'Birth date is required' }}
   min="1900-01-01"
-  max={new Date().toISOString().split('T')[0]}
-  helperText="Select your date of birth"
+  max="2024-12-31"
 />
 ```
+
+---
 
 ### TimePicker
 
-A time input field with label, icon, error handling, and validation support. Uses native HTML5 time picker with enhanced clickability.
+A time input field with native browser time picker.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Field label
-- `placeholder`: `string` - Placeholder text
-- `icon`: `LucideIcon` - Optional icon to display inside input
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below input
-- `min`: `string` - Minimum time (HH:MM format)
-- `max`: `string` - Maximum time (HH:MM format)
-- `step`: `string | number` - Time step in seconds (e.g., 900 for 15-minute intervals)
-- All standard HTML input attributes
+| Prop | Type | Description |
+|------|------|-------------|
+| `name` | `Path<T>` | Field name |
+| `control` | `Control<T>` | React Hook Form control |
+| `label` | `string` | Field label |
+| `step` | `string \| number` | Time step in seconds |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { TimePicker } from '@/common'
+import { TimePicker } from '../common'
 
-;<TimePicker
+<TimePicker
   name="meetingTime"
   label="Meeting Time"
   control={form.control}
-  rules={{ required: 'Meeting time is required' }}
-  step="900"
-  helperText="Select time in 15-minute intervals"
+  step="900" // 15-minute intervals
 />
 ```
+
+---
 
 ### DateTimePicker
 
-A date and time input field with label, icon, error handling, and validation support. Uses native HTML5 datetime-local picker with enhanced clickability.
+A combined date and time input field.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Field label
-- `placeholder`: `string` - Placeholder text
-- `icon`: `LucideIcon` - Optional icon to display inside input
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below input
-- `min`: `string` - Minimum datetime (YYYY-MM-DDTHH:MM format)
-- `max`: `string` - Maximum datetime (YYYY-MM-DDTHH:MM format)
-- `step`: `string | number` - Time step in seconds
-- All standard HTML input attributes
+| Prop | Type | Description |
+|------|------|-------------|
+| `name` | `Path<T>` | Field name |
+| `control` | `Control<T>` | React Hook Form control |
+| `label` | `string` | Field label |
+| `min` | `string` | Minimum datetime (YYYY-MM-DDTHH:MM) |
+| `max` | `string` | Maximum datetime |
 
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { DateTimePicker } from '@/common'
+import { DateTimePicker } from '../common'
 
-;<DateTimePicker
+<DateTimePicker
   name="eventDateTime"
   label="Event Date & Time"
   control={form.control}
-  rules={{ required: 'Event date and time is required' }}
-  min={new Date().toISOString().slice(0, 16)}
-  helperText="Select future date and time"
 />
 ```
 
-### StatusSelector
+---
 
-A specialized status selector component built on top of the [`Select`](src/common/Select.tsx:1) component that applies status color styling to the dropdown trigger.
+### ColorInput
+
+A color picker input with hex and opacity support.
 
 #### Props
 
-- `name`: `Path<T>` - Field name in form data
-- `control`: `Control<T>` - React Hook Form control object
-- `label`: `string` - Field label
-- `options`: `StatusOption[]` - Array of status options (default: built-in status options)
-- `rules`: `object` - React Hook Form validation rules
-- `error`: `string` - External error message
-- `helperText`: `string` - Helper text displayed below selector
-- `disabled`: `boolean` - Disables the selector (default: `false`)
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Path<T>` | Required | Field name |
+| `control` | `Control<T>` | Required | React Hook Form control |
+| `label` | `string` | - | Field label |
+| `placeholder` | `string` | `'#000000FF'` | Placeholder text |
+| `dotSize` | `number` | `20` | Size of the color preview dot |
+| `showOpacity` | `boolean` | `true` | Show opacity slider |
 
-#### Status Types
-
-The component includes built-in status options with color styling:
-
-- `available` - Green (bg-statuszen-base)
-- `busy` - Orange (bg-statusalert-base)
-- `away` - Purple (bg-statusneutral-base)
-- `offline` - Dark (bg-statusneutral-darkest)
-- `alert` - Orange (bg-statusalert-base)
-- `success` - Green (bg-statuszen-base)
-- `neutral` - Purple (bg-statusneutral-base)
-
-#### Component Behavior
-
-**Built on Select Component:**
-The StatusSelector leverages the enhanced dropdown UI from the [`Select`](src/common/Select.tsx:1) component while adding status-specific styling:
-
-**When a status is selected:**
-
-- Full colored background matching the status (via `colorClass`)
-- White text for contrast
-- Transparent border
-- Hover effect with reduced opacity
-
-**Unselected State:**
-
-- Uses the standard Select component styling
-- Neutral background (bg-inputs-background)
-- Border with inputs-border color
-- Dark text (text-inputs-title)
-- Hover effect on border
-
-**Error State:**
-
-- Red border and text when validation fails (only when no status is selected)
-- Focus ring in red color
-
-**Implementation Note:**
-The component internally converts `StatusOption[]` to `SelectOption[]` and uses the `Select` component's `triggerClassName` prop to apply status-specific styling.
-
-#### Usage Examples
+#### Usage
 
 ```tsx
-import { StatusSelector } from '@/common'
+import { ColorInput } from '../common'
 
-// Using default status options
+<ColorInput
+  name="primaryColor"
+  label="Primary Color"
+  control={form.control}
+  dotSize={24}
+/>
+```
+
+---
+
+### StatusSelector
+
+A specialized select for status values with colored backgrounds.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `name` | `Path<T>` | Required | Field name |
+| `control` | `Control<T>` | Required | React Hook Form control |
+| `label` | `string` | - | Field label |
+| `options` | `StatusOption[]` | Default statuses | Custom status options |
+
+#### Built-in Statuses
+
+- `available` - Green
+- `busy` - Orange
+- `away` - Purple
+- `offline` - Dark
+- `alert` - Orange
+- `success` - Green
+- `neutral` - Purple
+
+#### Usage
+
+```tsx
+import { StatusSelector } from '../common'
+
 <StatusSelector
   name="status"
   label="Status"
   control={form.control}
-  rules={{ required: 'Status is required' }}
-  helperText="Select your current status"
-/>
-
-// Using custom status options
-const customStatuses = [
-  { value: 'draft', label: 'Draft', colorClass: 'bg-statusneutral-base' },
-  { value: 'published', label: 'Published', colorClass: 'bg-statuszen-base' },
-  { value: 'archived', label: 'Archived', colorClass: 'bg-statusneutral-darkest' },
-]
-
-<StatusSelector
-  name="contentStatus"
-  label="Content Status"
-  control={form.control}
-  options={customStatuses}
 />
 ```
 
-## Complete Form Example
+---
+
+## Modal Components
+
+### Modal
+
+A base modal component with focus management and keyboard support.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `isOpen` | `boolean` | Required | Modal visibility |
+| `onClose` | `() => void` | Required | Close handler |
+| `title` | `string` | - | Modal title |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'full'` | `'md'` | Modal size |
+| `showHeader` | `boolean` | `true` | Show header |
+| `showCloseButton` | `boolean` | `true` | Show close button |
+| `closeOnOverlayClick` | `boolean` | `true` | Close when clicking backdrop |
+| `closeOnEscape` | `boolean` | `true` | Close on Escape key |
+
+#### Usage
 
 ```tsx
-import {
-  Form,
-  Input,
-  Select,
-  Checkbox,
-  Radio,
-  Textarea,
-  Button,
-} from '@/common'
-import { useForm } from 'react-hook-form'
-import { Mail, Lock } from 'lucide-react'
+import { Modal } from '../common'
 
-type FormData = {
-  email: string
-  password: string
-  country: string
-  terms: boolean
-  gender: string
-  bio: string
-}
+<Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="My Modal">
+  <p>Modal content here</p>
+</Modal>
+```
 
-function MyForm() {
-  const form = useForm<FormData>({
-    defaultValues: {
-      email: '',
-      password: '',
-      country: '',
-      terms: false,
-      gender: '',
-      bio: '',
-    },
-  })
+---
 
-  const onSubmit = async (data: FormData) => {
-    console.log('Form submitted:', data)
-  }
+### ConfirmationModal
 
-  return (
-    <Form form={form} onSubmit={onSubmit}>
-      <Input
-        name="email"
-        type="email"
-        label="Email"
-        placeholder="john@example.com"
-        icon={Mail}
-        control={form.control}
-        rules={{ required: 'Email is required' }}
-      />
+A pre-styled modal for confirmation dialogs.
 
-      <Input
-        name="password"
-        type="password"
-        label="Password"
-        placeholder="••••••••"
-        icon={Lock}
-        control={form.control}
-        rules={{ required: 'Password is required' }}
-      />
+#### Props
 
-      <Select
-        name="country"
-        label="Country"
-        placeholder="Select your country"
-        control={form.control}
-        options={[{ value: 'us', label: 'United States' }]}
-      />
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `isOpen` | `boolean` | Required | Modal visibility |
+| `onClose` | `() => void` | Required | Close handler |
+| `title` | `string` | `'Confirm Action'` | Modal title |
+| `message` | `string` | Required | Confirmation message |
+| `confirmText` | `string` | `'Confirm'` | Confirm button text |
+| `cancelText` | `string` | `'Cancel'` | Cancel button text |
+| `onConfirm` | `() => void` | Required | Confirm handler |
+| `variant` | `'danger' \| 'warning' \| 'info'` | `'danger'` | Style variant |
 
-      <Radio
-        name="gender"
-        label="Gender"
-        control={form.control}
-        options={[{ value: 'male', label: 'Male' }]}
-      />
+#### Usage
 
-      <Checkbox
-        name="terms"
-        label="I agree to the Terms and Conditions"
-        control={form.control}
-        rules={{ required: 'You must agree to terms' }}
-      />
+```tsx
+import { ConfirmationModal } from '../common'
 
-      <Textarea
-        name="bio"
-        label="About You"
-        placeholder="Tell us about yourself..."
-        control={form.control}
-      />
+<ConfirmationModal
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+  title="Delete Item"
+  message="Are you sure you want to delete this item?"
+  onConfirm={handleDelete}
+  variant="danger"
+/>
+```
 
-      <Button type="submit">Submit</Button>
-    </Form>
-  )
+---
+
+### FormModal
+
+A modal pre-configured for forms with submit/cancel actions.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `isOpen` | `boolean` | Required | Modal visibility |
+| `onClose` | `() => void` | Required | Close handler |
+| `title` | `string` | Required | Modal title |
+| `description` | `string` | - | Description text |
+| `submitText` | `string` | `'Submit'` | Submit button text |
+| `cancelText` | `string` | `'Cancel'` | Cancel button text |
+| `onSubmit` | `(e: FormEvent) => void` | Required | Form submit handler |
+| `isSubmitting` | `boolean` | `false` | Loading state |
+| `submitDisabled` | `boolean` | `false` | Disable submit |
+| `footerActions` | `React.ReactNode` | - | Custom footer actions |
+
+#### Usage
+
+```tsx
+import { FormModal, Input } from '../common'
+
+<FormModal
+  isOpen={isOpen}
+  onClose={() => setIsOpen(false)}
+  title="Create Item"
+  onSubmit={handleSubmit}
+  isSubmitting={isLoading}
+>
+  <Input name="name" label="Name" control={form.control} />
+</FormModal>
+```
+
+---
+
+## Layout Components
+
+### Collapsible
+
+An expandable/collapsible section with smooth animations.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | Required | Header title |
+| `actions` | `React.ReactNode[]` | `[]` | Action buttons (max 4) |
+| `defaultExpanded` | `boolean` | `false` | Initially expanded |
+| `expanded` | `boolean` | - | Controlled expanded state |
+| `onExpandedChange` | `(expanded: boolean) => void` | - | State change callback |
+
+#### Usage
+
+```tsx
+import { Collapsible, IconButton } from '../common'
+import { Edit, Trash2 } from 'lucide-react'
+
+<Collapsible
+  title="Settings"
+  defaultExpanded={true}
+  actions={[
+    <IconButton key="edit" icon={Edit} size="sm" />,
+    <IconButton key="delete" icon={Trash2} size="sm" />,
+  ]}
+>
+  <p>Collapsible content here</p>
+</Collapsible>
+```
+
+---
+
+### ScrollArea
+
+A scrollable container with a fixed header area.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | Required | Header title |
+| `headerActions` | `React.ReactNode` | - | Actions on the right of title |
+| `headerContent` | `React.ReactNode` | - | Content below header (tabs, etc.) |
+| `maxHeight` | `string \| number` | - | Maximum height |
+| `contentClassName` | `string` | - | Classes for content area |
+
+#### Usage
+
+```tsx
+import { ScrollArea, IconButton } from '../common'
+import { Save } from 'lucide-react'
+
+<ScrollArea
+  title="New Event"
+  maxHeight={500}
+  headerActions={<IconButton icon={Save} />}
+  headerContent={<TabBar />}
+>
+  <div>Scrollable content here</div>
+</ScrollArea>
+```
+
+---
+
+## Data Display Components
+
+### Table
+
+A feature-rich data table with sorting, search, pagination, and row actions.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `T[]` | Required | Array of data objects |
+| `columns` | `Column<T>[]` | Required | Column definitions |
+| `actions` | `Action<T>[]` | - | Row action buttons |
+| `searchable` | `boolean` | `false` | Enable search |
+| `searchPlaceholder` | `string` | `'Search...'` | Search placeholder |
+| `searchableFields` | `(keyof T)[]` | - | Fields to search |
+| `pagination` | `boolean` | `false` | Enable pagination |
+| `pageSize` | `number` | `10` | Items per page |
+| `emptyMessage` | `string` | `'No data available'` | Empty state message |
+| `loading` | `boolean` | `false` | Loading state |
+| `onRowClick` | `(row: T, index: number) => void` | - | Row click handler |
+| `onSort` | `(column, direction) => void` | - | Sort handler |
+| `defaultSortColumn` | `string` | - | Initial sort column |
+| `defaultSortDirection` | `'asc' \| 'desc' \| null` | `null` | Initial sort direction |
+
+#### Column Definition
+
+```tsx
+interface Column<T> {
+  key: string
+  title: string
+  icon?: React.ElementType
+  width?: string
+  sortable?: boolean
+  align?: 'left' | 'center' | 'right'
+  render?: (value: any, row: T, index: number) => React.ReactNode
 }
 ```
+
+#### Action Definition
+
+```tsx
+interface Action<T> {
+  icon?: React.ElementType
+  label: string
+  onClick: (row: T, index: number) => void
+  variant?: 'primary' | 'secondary' | 'destructive' | 'ghost'
+  disabled?: (row: T) => boolean
+}
+```
+
+#### Usage
+
+```tsx
+import { Table } from '../common'
+import { Edit, Trash2 } from 'lucide-react'
+
+const columns = [
+  { key: 'name', title: 'Name', sortable: true },
+  { key: 'email', title: 'Email' },
+  { key: 'status', title: 'Status', align: 'center' },
+]
+
+const actions = [
+  { icon: Edit, label: 'Edit', onClick: (row) => editItem(row) },
+  { icon: Trash2, label: 'Delete', onClick: (row) => deleteItem(row), variant: 'destructive' },
+]
+
+<Table
+  data={users}
+  columns={columns}
+  actions={actions}
+  searchable
+  searchableFields={['name', 'email']}
+  pagination
+  pageSize={10}
+  onRowClick={(row) => console.log(row)}
+/>
+```
+
+---
+
+### StatusBadge
+
+A styled badge for displaying status indicators.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `status` | `BadgeStatusType` | Required | Status type |
+| `label` | `string` | - | Custom label (overrides default) |
+| `className` | `string` | - | Additional classes |
+
+#### Status Types
+
+| Status | Background | Text | Default Label |
+|--------|------------|------|---------------|
+| `active` | Light green | Green | Active |
+| `inactive` | Light gray | Gray | Inactive |
+| `pending` | Orange | White | Pending |
+| `success` | Light green | Dark green | Success |
+| `warning` | Light orange | Dark orange | Warning |
+| `error` | Dark red | White | Error |
+| `info` | Light purple | Purple | Info |
+
+#### Usage
+
+```tsx
+import { StatusBadge } from '../common'
+
+<StatusBadge status="active" />
+<StatusBadge status="error" label="Failed" />
+<StatusBadge status="pending" />
+```
+
+---
+
+## Menu Components
+
+### ContextMenu
+
+A dropdown menu triggered by clicking an element.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `ContextMenuItem[]` | Required | Menu items |
+| `trigger` | `React.ReactNode` | Required | Trigger element |
+| `position` | `'bottom-left' \| 'bottom-right' \| 'top-left' \| 'top-right'` | `'bottom-left'` | Menu position |
+| `offset` | `number` | `8` | Offset from trigger |
+| `onOpen` | `() => void` | - | Open callback |
+| `onClose` | `() => void` | - | Close callback |
+
+#### Menu Item Definition
+
+```tsx
+interface ContextMenuItem {
+  icon?: LucideIcon
+  label: string
+  onClick: () => void
+  disabled?: boolean
+  destructive?: boolean
+}
+```
+
+#### Usage
+
+```tsx
+import { ContextMenu, IconButton } from '../common'
+import { MoreHorizontal, Edit, Trash2 } from 'lucide-react'
+
+<ContextMenu
+  trigger={<IconButton icon={MoreHorizontal} />}
+  items={[
+    { icon: Edit, label: 'Edit', onClick: () => handleEdit() },
+    { icon: Trash2, label: 'Delete', onClick: () => handleDelete(), destructive: true },
+  ]}
+  position="bottom-right"
+/>
+```
+
+---
 
 ## Styling
 
-All components use CSS variables defined in `styles.css` for consistent theming:
+All components use CSS variables defined in `styles.css`:
 
-- `--variable-collection-divers-button` (#7e77e8) - Primary button color
-- `--variable-collection-ink-highlight` (#7e77e8) - Secondary button color
-- `--variable-collection-ink-error` (#da3c3c) - Destructive/error color
-- `--variable-collection-icons-green` (#34d399) - Success color
-- `--variable-collection-inputs-border` (#1c303b) - Input border color
-- `--variable-collection-inputs-background` (#020818) - Input background color
-- `--variable-collection-inputs-title` (#ffffff) - Input text color
-- `--variable-collection-inputs-text` (#b0afbd) - Input placeholder text color
-- `--variable-collection-inputs-text-off` (#465361) - Input disabled text color
+| Variable | Color | Usage |
+|----------|-------|-------|
+| `--variable-collection-divers-button` | #7e77e8 | Primary buttons |
+| `--variable-collection-ink-error` | #da3c3c | Errors, destructive actions |
+| `--variable-collection-icons-green` | #34d399 | Success states |
+| `--variable-collection-inputs-border` | #1c303b | Input borders |
+| `--variable-collection-inputs-background` | #020818 | Input backgrounds |
+| `--variable-collection-inputs-title` | #ffffff | Input text |
+| `--variable-collection-inputs-text` | #b0afbd | Placeholder text |
 
 ## Icons
 
-All icons are imported from `lucide-react`. Visit [lucide.dev](https://lucide.dev/) for available icons.
+All icons are from `lucide-react`. Visit [lucide.dev](https://lucide.dev/) for the full icon library.
 
-## Testing
+## Demo Pages
 
-To see all button components in action, visit the `/test` route in your application.
-
-To see all form components in action, visit the `/form-test` route in your application.
-
-## Accessibility
-
-- All buttons have proper focus states with ring indicators
-- Loading states disable user interaction
-- Icon buttons support tooltips for better UX
-- All buttons support keyboard navigation
-- All form fields have proper labels and error states
-- Form validation provides clear error messages
-- All interactive elements are keyboard accessible
+| Route | Components |
+|-------|------------|
+| `/test` | Button, IconButton |
+| `/form-test` | All form components |
+| `/modal-test` | Modal, ConfirmationModal, FormModal |
+| `/table-demo` | Table |
+| `/collapsible-demo` | Collapsible |
+| `/context-menu-demo` | ContextMenu |
+| `/scroll-area-demo` | ScrollArea |
