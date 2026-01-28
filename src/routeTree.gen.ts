@@ -18,6 +18,7 @@ import { Route as DemoModalTestRouteImport } from './routes/demo/modal-test'
 import { Route as DemoFormTestRouteImport } from './routes/demo/form-test'
 import { Route as DemoContextMenuDemoRouteImport } from './routes/demo/context-menu-demo'
 import { Route as DemoCollapsibleDemoRouteImport } from './routes/demo/collapsible-demo'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
 
 const DemoIndexRoute = DemoIndexRouteImport.update({
   id: '/demo/',
@@ -64,8 +65,14 @@ const DemoCollapsibleDemoRoute = DemoCollapsibleDemoRouteImport.update({
   path: '/demo/collapsible-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/admin/login': typeof AdminLoginRoute
   '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
   '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
   '/demo/form-test': typeof DemoFormTestRoute
@@ -77,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/demo/': typeof DemoIndexRoute
 }
 export interface FileRoutesByTo {
+  '/admin/login': typeof AdminLoginRoute
   '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
   '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
   '/demo/form-test': typeof DemoFormTestRoute
@@ -89,6 +97,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/admin/login': typeof AdminLoginRoute
   '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
   '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
   '/demo/form-test': typeof DemoFormTestRoute
@@ -102,6 +111,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/admin/login'
     | '/demo/collapsible-demo'
     | '/demo/context-menu-demo'
     | '/demo/form-test'
@@ -113,6 +123,7 @@ export interface FileRouteTypes {
     | '/demo/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/admin/login'
     | '/demo/collapsible-demo'
     | '/demo/context-menu-demo'
     | '/demo/form-test'
@@ -124,6 +135,7 @@ export interface FileRouteTypes {
     | '/demo'
   id:
     | '__root__'
+    | '/admin/login'
     | '/demo/collapsible-demo'
     | '/demo/context-menu-demo'
     | '/demo/form-test'
@@ -136,6 +148,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
   DemoCollapsibleDemoRoute: typeof DemoCollapsibleDemoRoute
   DemoContextMenuDemoRoute: typeof DemoContextMenuDemoRoute
   DemoFormTestRoute: typeof DemoFormTestRoute
@@ -212,10 +225,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoCollapsibleDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
   DemoCollapsibleDemoRoute: DemoCollapsibleDemoRoute,
   DemoContextMenuDemoRoute: DemoContextMenuDemoRoute,
   DemoFormTestRoute: DemoFormTestRoute,
