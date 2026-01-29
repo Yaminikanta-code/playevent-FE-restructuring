@@ -13,6 +13,7 @@ import { Route as DemoIndexRouteImport } from './routes/demo/index'
 import { Route as DemoTestRouteImport } from './routes/demo/test'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoTableDemoRouteImport } from './routes/demo/table-demo'
+import { Route as DemoSidebarDemoRouteImport } from './routes/demo/sidebar-demo'
 import { Route as DemoScrollAreaDemoRouteImport } from './routes/demo/scroll-area-demo'
 import { Route as DemoModalTestRouteImport } from './routes/demo/modal-test'
 import { Route as DemoFormTestRouteImport } from './routes/demo/form-test'
@@ -38,6 +39,11 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
 const DemoTableDemoRoute = DemoTableDemoRouteImport.update({
   id: '/demo/table-demo',
   path: '/demo/table-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoSidebarDemoRoute = DemoSidebarDemoRouteImport.update({
+  id: '/demo/sidebar-demo',
+  path: '/demo/sidebar-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoScrollAreaDemoRoute = DemoScrollAreaDemoRouteImport.update({
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/demo/form-test': typeof DemoFormTestRoute
   '/demo/modal-test': typeof DemoModalTestRoute
   '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
+  '/demo/sidebar-demo': typeof DemoSidebarDemoRoute
   '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/demo/form-test': typeof DemoFormTestRoute
   '/demo/modal-test': typeof DemoModalTestRoute
   '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
+  '/demo/sidebar-demo': typeof DemoSidebarDemoRoute
   '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/demo/form-test': typeof DemoFormTestRoute
   '/demo/modal-test': typeof DemoModalTestRoute
   '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
+  '/demo/sidebar-demo': typeof DemoSidebarDemoRoute
   '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/demo/form-test'
     | '/demo/modal-test'
     | '/demo/scroll-area-demo'
+    | '/demo/sidebar-demo'
     | '/demo/table-demo'
     | '/demo/tanstack-query'
     | '/demo/test'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/demo/form-test'
     | '/demo/modal-test'
     | '/demo/scroll-area-demo'
+    | '/demo/sidebar-demo'
     | '/demo/table-demo'
     | '/demo/tanstack-query'
     | '/demo/test'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/demo/form-test'
     | '/demo/modal-test'
     | '/demo/scroll-area-demo'
+    | '/demo/sidebar-demo'
     | '/demo/table-demo'
     | '/demo/tanstack-query'
     | '/demo/test'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   DemoFormTestRoute: typeof DemoFormTestRoute
   DemoModalTestRoute: typeof DemoModalTestRoute
   DemoScrollAreaDemoRoute: typeof DemoScrollAreaDemoRoute
+  DemoSidebarDemoRoute: typeof DemoSidebarDemoRoute
   DemoTableDemoRoute: typeof DemoTableDemoRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoTestRoute: typeof DemoTestRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/demo/table-demo'
       fullPath: '/demo/table-demo'
       preLoaderRoute: typeof DemoTableDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/sidebar-demo': {
+      id: '/demo/sidebar-demo'
+      path: '/demo/sidebar-demo'
+      fullPath: '/demo/sidebar-demo'
+      preLoaderRoute: typeof DemoSidebarDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/scroll-area-demo': {
@@ -242,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoFormTestRoute: DemoFormTestRoute,
   DemoModalTestRoute: DemoModalTestRoute,
   DemoScrollAreaDemoRoute: DemoScrollAreaDemoRoute,
+  DemoSidebarDemoRoute: DemoSidebarDemoRoute,
   DemoTableDemoRoute: DemoTableDemoRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoTestRoute: DemoTestRoute,

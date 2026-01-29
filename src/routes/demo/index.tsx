@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import logo from '../logo.svg'
+import logo from '@/logo.svg'
 
 export const Route = createFileRoute('/demo/')({
   component: App,
@@ -15,6 +15,7 @@ function App() {
     { path: '/table-demo', label: 'Table Demo' },
     { path: '/test', label: 'Test' },
     { path: '/demo/tanstack-query', label: 'TanStack Query Demo' },
+    { path: '/demo/sidebar-demo', label: 'Sidebar Demo' },
   ]
 
   return (
