@@ -9,7 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as DemoIndexRouteImport } from './routes/demo/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as DemoTestRouteImport } from './routes/demo/test'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoTableDemoRouteImport } from './routes/demo/table-demo'
@@ -21,10 +23,20 @@ import { Route as DemoContextMenuDemoRouteImport } from './routes/demo/context-m
 import { Route as DemoCollapsibleDemoRouteImport } from './routes/demo/collapsible-demo'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoIndexRoute = DemoIndexRouteImport.update({
   id: '/demo/',
   path: '/demo/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const DemoTestRoute = DemoTestRouteImport.update({
   id: '/demo/test',
@@ -72,12 +84,13 @@ const DemoCollapsibleDemoRoute = DemoCollapsibleDemoRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
   '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
@@ -88,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
+  '/admin/': typeof AdminIndexRoute
   '/demo/': typeof DemoIndexRoute
 }
 export interface FileRoutesByTo {
@@ -101,10 +115,12 @@ export interface FileRoutesByTo {
   '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
+  '/admin': typeof AdminIndexRoute
   '/demo': typeof DemoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/admin': typeof AdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
   '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
@@ -115,11 +131,13 @@ export interface FileRoutesById {
   '/demo/table-demo': typeof DemoTableDemoRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
+  '/admin/': typeof AdminIndexRoute
   '/demo/': typeof DemoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/admin'
     | '/admin/login'
     | '/demo/collapsible-demo'
     | '/demo/context-menu-demo'
@@ -130,6 +148,7 @@ export interface FileRouteTypes {
     | '/demo/table-demo'
     | '/demo/tanstack-query'
     | '/demo/test'
+    | '/admin/'
     | '/demo/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,9 +162,11 @@ export interface FileRouteTypes {
     | '/demo/table-demo'
     | '/demo/tanstack-query'
     | '/demo/test'
+    | '/admin'
     | '/demo'
   id:
     | '__root__'
+    | '/admin'
     | '/admin/login'
     | '/demo/collapsible-demo'
     | '/demo/context-menu-demo'
@@ -156,11 +177,12 @@ export interface FileRouteTypes {
     | '/demo/table-demo'
     | '/demo/tanstack-query'
     | '/demo/test'
+    | '/admin/'
     | '/demo/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AdminLoginRoute: typeof AdminLoginRoute
+  AdminRoute: typeof AdminRouteWithChildren
   DemoCollapsibleDemoRoute: typeof DemoCollapsibleDemoRoute
   DemoContextMenuDemoRoute: typeof DemoContextMenuDemoRoute
   DemoFormTestRoute: typeof DemoFormTestRoute
@@ -175,12 +197,26 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/': {
       id: '/demo/'
       path: '/demo'
       fullPath: '/demo/'
       preLoaderRoute: typeof DemoIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/demo/test': {
       id: '/demo/test'
@@ -247,16 +283,28 @@ declare module '@tanstack/react-router' {
     }
     '/admin/login': {
       id: '/admin/login'
-      path: '/admin/login'
+      path: '/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AdminRoute: AdminRouteWithChildren,
   DemoCollapsibleDemoRoute: DemoCollapsibleDemoRoute,
   DemoContextMenuDemoRoute: DemoContextMenuDemoRoute,
   DemoFormTestRoute: DemoFormTestRoute,
