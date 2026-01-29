@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
-import { Form, Input, Button } from '../../components/common'
+import { Form, Input, Button, Card } from '../../components/common'
 import { useLogin, useAuth } from '../../api/auth.api'
 import { useAlertStore } from '../../stores/useAlertStore'
 import { useEffect } from 'react'
@@ -67,7 +67,7 @@ function RouteComponent() {
           <p className="text-muted-foreground mt-2">Admin Back Office Login</p>
         </div>
 
-        <div className="bg-card rounded-lg shadow-sm p-8">
+        <Card>
           <div className="space-y-1 mb-6">
             <h2 className="text-2xl font-bold text-card-foreground">
               Welcome Back
@@ -106,7 +106,7 @@ function RouteComponent() {
               {isPending ? 'Signing in...' : 'Sign In'}
             </Button>
           </Form>
-        </div>
+        </Card>
       </div>
     </div>
   )

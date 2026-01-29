@@ -62,3 +62,13 @@ export type { CollapsibleProps } from './Collapsible'
 
 export { default as ContextMenu } from './ContextMenu'
 export type { ContextMenuProps, ContextMenuItem } from './ContextMenu'
+
+export { default as Card } from './Card'
+export type {
+  CardProps,
+  CardHeaderProps,
+  CardTitleProps,
+  CardDescriptionProps,
+  CardContentProps,
+  CardFooterProps,
+} from './Card'
