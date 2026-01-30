@@ -51,9 +51,7 @@ const eventColumns: Column<EventRead>[] = [
     key: 'name',
     title: 'Event Name',
     sortable: true,
-    render: (value: string) => (
-      <span className="font-medium">{value}</span>
-    ),
+    render: (value: string) => <span className="font-medium">{value}</span>,
   },
   {
     key: 'client_name',
@@ -88,7 +86,9 @@ const eventColumns: Column<EventRead>[] = [
       }
       const statusLabel = value?.replace(/_/g, ' ') ?? 'Unknown'
       return (
-        <span className={`px-2 py-1 rounded-full text-xs capitalize ${statusColors[value ?? ''] ?? 'bg-gray-500/20 text-gray-400'}`}>
+        <span
+          className={`px-2 py-1 rounded-full text-xs capitalize ${statusColors[value ?? ''] ?? 'bg-gray-500/20 text-gray-400'}`}
+        >
           {statusLabel}
         </span>
       )
@@ -158,131 +158,130 @@ function AdminDashboard() {
           </p>
         </div>
       </div>
-      <div className="mt-8 bg-inputs-background border border-inputs-border rounded-lg p-6">
-        <h2 className="text-2xl font-semibold text-inputs-title mb-4">
-          Recent Activity
-        </h2>
-        <p className="text-inputs-text">No recent activity to display.</p>
-      </div>
-
-      {/* Clients Table Section */}
-      <div className="mt-8 bg-inputs-background border border-inputs-border rounded-lg p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-semibold text-inputs-title">
-            Clients {tenantTotalCount > 0 && `(${tenantTotalCount})`}
-          </h2>
-          <button className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition">
-            <Plus className="h-5 w-5" />
-            <span>New</span>
-          </button>
-        </div>
-
-        <Table<TenantOutDto>
-          data={tenants}
-          columns={tenantColumns}
-          loading={tenantsLoading}
-          emptyMessage="No clients found"
-          searchable
-          searchPlaceholder="Search Client..."
-          searchableFields={['name']}
-          defaultSortColumn="name"
-          defaultSortDirection="asc"
-        />
-
-        {/* Server-side Pagination */}
-        {tenantTotalPages > 1 && (
-          <div className="mt-8 flex justify-end items-center gap-3">
-            <button
-              disabled={tenantPage === 1}
-              onClick={() => setTenantPage((p) => p - 1)}
-              className="p-2 rounded-lg border border-white/10 hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-
-            {Array.from({ length: tenantTotalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setTenantPage(page)}
-                className={`px-4 py-2 rounded-xl font-medium transition ${
-                  page === tenantPage
-                    ? 'bg-divers-button text-white'
-                    : 'border border-white/10 hover:bg-white/5 text-inputs-text'
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-
-            <button
-              disabled={tenantPage === tenantTotalPages}
-              onClick={() => setTenantPage((p) => p + 1)}
-              className="p-2 rounded-lg border border-white/10 hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <ChevronRight className="h-5 w-5" />
+      <div className="grid grid-cols-2 gap-2">
+        {/* Clients Table Section */}
+        <div className="mt-8 bg-inputs-background border border-inputs-border rounded-lg p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-inputs-title">
+              Clients {tenantTotalCount > 0 && `(${tenantTotalCount})`}
+            </h2>
+            <button className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition">
+              <Plus className="h-5 w-5" />
+              <span>New</span>
             </button>
           </div>
-        )}
-      </div>
 
-      {/* Events Table Section */}
-      <div className="mt-8 bg-inputs-background border border-inputs-border rounded-lg p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-semibold text-inputs-title">
-            Events {eventTotalCount > 0 && `(${eventTotalCount})`}
-          </h2>
-          <button className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition">
-            <Plus className="h-5 w-5" />
-            <span>New</span>
-          </button>
+          <Table<TenantOutDto>
+            data={tenants}
+            columns={tenantColumns}
+            loading={tenantsLoading}
+            emptyMessage="No clients found"
+            searchable
+            searchPlaceholder="Search Client..."
+            searchableFields={['name']}
+            defaultSortColumn="name"
+            defaultSortDirection="asc"
+          />
+
+          {/* Server-side Pagination */}
+          {tenantTotalPages > 1 && (
+            <div className="mt-8 flex justify-end items-center gap-3">
+              <button
+                disabled={tenantPage === 1}
+                onClick={() => setTenantPage((p) => p - 1)}
+                className="p-2 rounded-lg border border-white/10 hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+
+              {Array.from({ length: tenantTotalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => setTenantPage(page)}
+                    className={`px-4 py-2 rounded-xl font-medium transition ${
+                      page === tenantPage
+                        ? 'bg-divers-button text-white'
+                        : 'border border-white/10 hover:bg-white/5 text-inputs-text'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+
+              <button
+                disabled={tenantPage === tenantTotalPages}
+                onClick={() => setTenantPage((p) => p + 1)}
+                className="p-2 rounded-lg border border-white/10 hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          )}
         </div>
 
-        <Table<EventRead>
-          data={events}
-          columns={eventColumns}
-          loading={eventsLoading}
-          emptyMessage="No events found"
-          searchable
-          searchPlaceholder="Search Event..."
-          searchableFields={['name', 'client_name']}
-          defaultSortColumn="start_at"
-          defaultSortDirection="desc"
-        />
-
-        {/* Server-side Pagination */}
-        {eventTotalPages > 1 && (
-          <div className="mt-8 flex justify-end items-center gap-3">
-            <button
-              disabled={eventPage === 1}
-              onClick={() => setEventPage((p) => p - 1)}
-              className="p-2 rounded-lg border border-white/10 hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-
-            {Array.from({ length: eventTotalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setEventPage(page)}
-                className={`px-4 py-2 rounded-xl font-medium transition ${
-                  page === eventPage
-                    ? 'bg-divers-button text-white'
-                    : 'border border-white/10 hover:bg-white/5 text-inputs-text'
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-
-            <button
-              disabled={eventPage === eventTotalPages}
-              onClick={() => setEventPage((p) => p + 1)}
-              className="p-2 rounded-lg border border-white/10 hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              <ChevronRight className="h-5 w-5" />
+        {/* Events Table Section */}
+        <div className="mt-8 bg-inputs-background border border-inputs-border rounded-lg p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-inputs-title">
+              Events {eventTotalCount > 0 && `(${eventTotalCount})`}
+            </h2>
+            <button className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition">
+              <Plus className="h-5 w-5" />
+              <span>New</span>
             </button>
           </div>
-        )}
+
+          <Table<EventRead>
+            data={events}
+            columns={eventColumns}
+            loading={eventsLoading}
+            emptyMessage="No events found"
+            searchable
+            searchPlaceholder="Search Event..."
+            searchableFields={['name', 'client_name']}
+            defaultSortColumn="start_at"
+            defaultSortDirection="desc"
+          />
+
+          {/* Server-side Pagination */}
+          {eventTotalPages > 1 && (
+            <div className="mt-8 flex justify-end items-center gap-3">
+              <button
+                disabled={eventPage === 1}
+                onClick={() => setEventPage((p) => p - 1)}
+                className="p-2 rounded-lg border border-white/10 hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+
+              {Array.from({ length: eventTotalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => setEventPage(page)}
+                    className={`px-4 py-2 rounded-xl font-medium transition ${
+                      page === eventPage
+                        ? 'bg-divers-button text-white'
+                        : 'border border-white/10 hover:bg-white/5 text-inputs-text'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+
+              <button
+                disabled={eventPage === eventTotalPages}
+                onClick={() => setEventPage((p) => p + 1)}
+                className="p-2 rounded-lg border border-white/10 hover:bg-white/5 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
