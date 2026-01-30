@@ -59,21 +59,23 @@ function RouteComponent() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background from-background to-muted p-4">
       <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
+        {/* <div className="text-center">
           <h1 className="text-4xl font-bold text-primary bg-clip-text text-transparent">
             Play Event
           </h1>
           <p className="text-muted-foreground mt-2">Admin Back Office Login</p>
-        </div>
+        </div> */}
 
         <Card>
           <div className="space-y-1 mb-6">
-            <h2 className="text-2xl font-bold text-card-foreground">
-              Welcome Back
-            </h2>
-            <p className="text-muted-foreground">
-              Enter your credentials to access your account
-            </p>
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-primary bg-clip-text text-transparent">
+                Play Event
+              </h1>
+              <p className="text-muted-foreground mt-2">
+                Admin Back Office Login
+              </p>
+            </div>
           </div>
 
           <Form form={form} onSubmit={onSubmit} className="space-y-4">
