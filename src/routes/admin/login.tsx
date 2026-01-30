@@ -78,7 +78,7 @@ function RouteComponent() {
             </div>
           </div>
 
-          <Form form={form} onSubmit={onSubmit} className="space-y-4">
+          <Form form={form} onSubmit={onSubmit} className="space-y-6">
             <Input
               name="email"
               type="email"
@@ -100,7 +100,7 @@ function RouteComponent() {
             <Button
               type="submit"
               variant="primary"
-              size="lg"
+              size="md"
               className="w-full"
               disabled={isPending}
             >
