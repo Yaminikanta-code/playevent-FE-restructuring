@@ -101,7 +101,7 @@ function RouteComponent() {
               type="submit"
               variant="primary"
               size="md"
-              className="w-full"
+              className="w-full mt-2"
               disabled={isPending}
             >
               {isPending ? 'Signing in...' : 'Sign In'}
