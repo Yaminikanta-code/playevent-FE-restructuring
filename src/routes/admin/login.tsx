@@ -1,10 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useForm } from 'react-hook-form'
 import { Form, Input, Button, Card } from '../../components/common'
-import { useLogin, useAuth } from '../../api/auth.api'
+import { useLogin } from '../../api/auth.api'
 import { useAlertStore } from '../../stores/useAlertStore'
-import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useAuthStore } from '../../stores/useAuthStore'
 
 type LoginFormData = {
   email: string
@@ -12,12 +12,18 @@ type LoginFormData = {
 }
 
 export const Route = createFileRoute('/admin/login')({
+  // Redirect authenticated users BEFORE the component renders
+  beforeLoad: () => {
+    const { access_token } = useAuthStore.getState()
+    if (access_token) {
+      throw redirect({ to: '/admin/dashboard' })
+    }
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
   const { mutate: login, isPending } = useLogin()
   const showAlert = useAlertStore((state) => state.showAlert)
 
@@ -27,13 +33,6 @@ function RouteComponent() {
       password: '',
     },
   })
-
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate({ to: '/demo' })
-    }
-  }, [isAuthenticated, navigate])
 
   const onSubmit = (data: LoginFormData) => {
     // Ensure data matches LoginCredentials interface
@@ -48,7 +47,7 @@ function RouteComponent() {
           message: 'Login successful!',
           type: 'success',
         })
-        navigate({ to: '/demo' })
+        navigate({ to: '/admin/dashboard' })
       },
       onError: (error: any) => {
         // Error handling is already done in the useLogin hook

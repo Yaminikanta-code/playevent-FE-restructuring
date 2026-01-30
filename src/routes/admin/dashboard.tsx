@@ -7,7 +7,7 @@ import type { TenantOutDto } from '../../types/tenant.types'
 
 import { useState } from 'react'
 import { authRedirect } from '@/lib/authRedirect'
-export const Route = createFileRoute('/admin/')({
+export const Route = createFileRoute('/admin/dashboard')({
   beforeLoad: authRedirect,
   component: AdminDashboard,
 })

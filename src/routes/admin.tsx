@@ -1,4 +1,4 @@
-import { Outlet, createFileRoute, useRouter } from '@tanstack/react-router'
+import { Outlet, createFileRoute, useRouterState } from '@tanstack/react-router'
 import { useState } from 'react'
 import { AppSidebar } from '@/components/AppSidebar'
 import { Button } from '@/components/common'
@@ -9,12 +9,13 @@ export const Route = createFileRoute('/admin')({
 })
 
 function AdminLayout() {
-  const router = useRouter()
+  // Use useRouterState for reactive pathname updates
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
 
   // Check if current route is /admin/login
-  const isLoginRoute = router.state.location.pathname === '/admin/login'
+  const isLoginRoute = pathname === '/admin/login'
 
   // If it's the login route, don't render the sidebar layout
   if (isLoginRoute) {
