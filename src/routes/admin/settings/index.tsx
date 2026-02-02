@@ -8,7 +8,9 @@ import {
   Code,
   UserCheck,
   LayoutGrid,
+  type LucideIcon,
 } from 'lucide-react'
+import { ROUTES } from '../../../constants/routes.constant'
 import {
   Card,
   CardContent,
@@ -17,7 +19,7 @@ import {
 } from '../../../components/common/Card'
 
 interface SettingsTileProps {
-  icon: React.ComponentType<{ className?: string }>
+  icon: LucideIcon
   title: string
   to: string
 }
@@ -42,11 +44,24 @@ const SettingsTile: React.FC<SettingsTileProps> = ({
   )
 }
 
+const settingsData = [
+  { title: 'App Shells', icon: Code, route: ROUTES.SETTINGS_APP_SHELLS },
+  { title: 'Navigation', icon: Compass, route: ROUTES.SETTINGS_NAVIGATION },
+  { title: 'User Rights', icon: UserCheck, route: ROUTES.SETTINGS_USER_RIGHTS },
+  { title: 'Modules', icon: LayoutGrid, route: ROUTES.SETTINGS_MODULES },
+  {
+    title: 'Deletion Management',
+    icon: Trash2,
+    route: ROUTES.SETTINGS_DELETION_MANAGEMENT,
+  },
+  { title: 'Fonts', icon: Type, route: ROUTES.SETTINGS_FONTS },
+]
+
 function RouteComponent() {
   return (
     <div className="space-y-6">
       <Link
-        to="/admin"
+        to={ROUTES.DASHBOARD}
         className="inline-flex items-center text-sm font-medium text-[--variable-collection-inputs-text] hover:text-[--variable-collection-inputs-title] transition-colors"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
@@ -65,16 +80,14 @@ function RouteComponent() {
 
         <CardContent className="pt-0">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
-            <SettingsTile title="App Shells" icon={Code} to="/admin" />
-            <SettingsTile title="Navigation" icon={Compass} to="/admin" />
-            <SettingsTile title="User Rights" icon={UserCheck} to="/admin" />
-            <SettingsTile title="Modules" icon={LayoutGrid} to="/admin" />
-            <SettingsTile
-              title="Deletion Management"
-              icon={Trash2}
-              to="/admin"
-            />
-            <SettingsTile title="Fonts" icon={Type} to="/admin" />
+            {settingsData.map((setting) => (
+              <SettingsTile
+                key={setting.title}
+                title={setting.title}
+                icon={setting.icon}
+                to={setting.route}
+              />
+            ))}
           </div>
         </CardContent>
       </Card>

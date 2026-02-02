@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import React from 'react'
-import { ArrowLeft, Users, Trophy, MapPin } from 'lucide-react'
+import { ArrowLeft, Users, Trophy, MapPin, type LucideIcon } from 'lucide-react'
+import { ROUTES } from '../../../constants/routes.constant'
 import {
   Card,
   CardContent,
@@ -9,7 +10,7 @@ import {
 } from '../../../components/common/Card'
 
 interface AssetTileProps {
-  icon: React.ComponentType<{ className?: string }>
+  icon: LucideIcon
   title: string
   to: string
 }
@@ -30,11 +31,17 @@ const AssetTile: React.FC<AssetTileProps> = ({ icon: Icon, title, to }) => {
   )
 }
 
+const assetsData = [
+  { title: 'Team members', icon: Users, route: ROUTES.ASSETS_TEAM_MEMBERS },
+  { title: 'Trials', icon: Trophy, route: ROUTES.ASSETS_TRIALS },
+  { title: 'Places', icon: MapPin, route: ROUTES.ASSETS_PLACES },
+]
+
 function RouteComponent() {
   return (
     <div className="space-y-6">
       <Link
-        to="/admin/dashboard"
+        to={ROUTES.DASHBOARD}
         className="inline-flex items-center text-sm font-medium text-[--variable-collection-inputs-text] hover:text-[--variable-collection-inputs-title] transition-colors"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
@@ -53,9 +60,14 @@ function RouteComponent() {
 
         <CardContent className="pt-0">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
-            <AssetTile title="Team members" icon={Users} to="/admin" />
-            <AssetTile title="Trials" icon={Trophy} to="/admin" />
-            <AssetTile title="Places" icon={MapPin} to="/admin" />
+            {assetsData.map((asset) => (
+              <AssetTile
+                key={asset.title}
+                title={asset.title}
+                icon={asset.icon}
+                to={asset.route}
+              />
+            ))}
           </div>
         </CardContent>
       </Card>
