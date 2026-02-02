@@ -7,8 +7,8 @@ import IconButton from '../../../components/common/IconButton'
 import ContextMenu from '../../../components/common/ContextMenu'
 import Input from '../../../components/common/Input'
 import Select from '../../../components/common/Select'
-import DatePicker from '../../../components/common/DatePicker'
-import Textarea from '../../../components/common/Textarea'
+import StatusSelector from '../../../components/common/StatusSelector'
+import type { StatusOption } from '../../../components/common/StatusSelector'
 import type {
   TrialRead,
   TrialCreate,
@@ -21,6 +21,7 @@ import {
   useDeleteTrial,
 } from '../../../api/trial.api'
 import ConfirmationModal from '../../../components/common/ConfirmationModal'
+import { DateTimePicker } from '@/components/common'
 
 type FormMode = 'new' | 'edit' | 'duplicate'
 
@@ -56,18 +57,22 @@ const TrialForm = ({ trial, tenants, mode, onClose }: TrialFormProps) => {
     disabled: false,
   }))
 
-  const statusOptions = [
-    { value: 'active', label: 'Active', disabled: false },
-    { value: 'inactive', label: 'Inactive', disabled: false },
-    { value: 'pending', label: 'Pending', disabled: false },
-    { value: 'completed', label: 'Completed', disabled: false },
+  const statusOptions: StatusOption[] = [
+    { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
+    {
+      value: 'inactive',
+      label: 'Inactive',
+      colorClass: 'bg-statusneutral-base',
+    },
+    // { value: 'pending', label: 'Pending', colorClass: 'bg-statusalert-base' },
+    // { value: 'completed', label: 'Completed', colorClass: 'bg-statuszen-base' },
   ]
 
   const form = useForm<FormData>({
     defaultValues: {
       name: '',
       client_id: '',
-      status: 'pending',
+      status: 'active',
       started_at: '',
       ends_at: '',
       data: '',
@@ -187,7 +192,7 @@ const TrialForm = ({ trial, tenants, mode, onClose }: TrialFormProps) => {
           <div className="flex items-center gap-2">
             <IconButton
               icon={Copy}
-              variant="secondary"
+              variant="ghost"
               size="md"
               tooltip="Copy Trial"
               onClick={handleCopy}
@@ -195,7 +200,7 @@ const TrialForm = ({ trial, tenants, mode, onClose }: TrialFormProps) => {
             />
             <IconButton
               icon={Save}
-              variant="primary"
+              variant="ghost"
               size="md"
               tooltip="Save Trial"
               onClick={() => form.handleSubmit(onSubmit)()}
@@ -233,41 +238,43 @@ const TrialForm = ({ trial, tenants, mode, onClose }: TrialFormProps) => {
         }
       >
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <Input
-            label="Trial Name"
-            placeholder="Enter trial name"
-            control={form.control}
-            name="name"
-            rules={{ required: 'Trial name is required' }}
-          />
+          <div className="grid grid-cols-2 gap-2">
+            <Input
+              label="Trial Name"
+              placeholder="Enter trial name"
+              control={form.control}
+              name="name"
+              rules={{ required: 'Trial name is required' }}
+            />
+            <div className="grid grid-cols-2 gap-2">
+              <Select
+                label="Client"
+                placeholder="Select a client"
+                control={form.control}
+                name="client_id"
+                rules={{ required: 'Client is required' }}
+                options={tenantOptions}
+              />
 
-          <Select
-            label="Client"
-            placeholder="Select a client"
-            control={form.control}
-            name="client_id"
-            rules={{ required: 'Client is required' }}
-            options={tenantOptions}
-          />
-
-          <Select
-            label="Status"
-            placeholder="Select status"
-            control={form.control}
-            name="status"
-            rules={{ required: 'Status is required' }}
-            options={statusOptions}
-          />
+              <StatusSelector
+                label="Status"
+                control={form.control}
+                name="status"
+                rules={{ required: 'Status is required' }}
+                options={statusOptions}
+              />
+            </div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <DatePicker
+            <DateTimePicker
               label="Start Date"
               placeholder="Select start date"
               control={form.control}
               name="started_at"
             />
 
-            <DatePicker
+            <DateTimePicker
               label="End Date"
               placeholder="Select end date"
               control={form.control}
@@ -275,15 +282,6 @@ const TrialForm = ({ trial, tenants, mode, onClose }: TrialFormProps) => {
               min={form.watch('started_at') || undefined}
             />
           </div>
-
-          <Textarea
-            label="Data (JSON)"
-            placeholder="Enter additional data as JSON"
-            control={form.control}
-            name="data"
-            rows={6}
-            helperText="Enter valid JSON object for additional trial data"
-          />
         </form>
       </ScrollArea>
 

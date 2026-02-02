@@ -1,4 +1,3 @@
-import React from 'react'
 import { Controller } from 'react-hook-form'
 import type { Control, FieldValues, Path } from 'react-hook-form'
 import { cn } from '../../lib/utils'
@@ -12,6 +11,10 @@ export type StatusType =
   | 'alert'
   | 'success'
   | 'neutral'
+  | 'active'
+  | 'inactive'
+  | 'pending'
+  | 'completed'
 
 export interface StatusOption {
   value: StatusType
@@ -31,6 +34,10 @@ export const statusOptions: StatusOption[] = [
   { value: 'alert', label: 'Alert', colorClass: 'bg-statusalert-base' },
   { value: 'success', label: 'Success', colorClass: 'bg-statuszen-base' },
   { value: 'neutral', label: 'Neutral', colorClass: 'bg-statusneutral-base' },
+  { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
+  { value: 'inactive', label: 'Inactive', colorClass: 'bg-statusneutral-base' },
+  { value: 'pending', label: 'Pending', colorClass: 'bg-statusalert-base' },
+  { value: 'completed', label: 'Completed', colorClass: 'bg-statuszen-base' },
 ]
 
 export interface StatusSelectorProps<T extends FieldValues = FieldValues> {
