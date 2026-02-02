@@ -2,13 +2,12 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import React from 'react'
 import {
   ArrowLeft,
-  AppWindow,
   Compass,
-  Shield,
-  Puzzle,
   Trash2,
   Type,
   Code,
+  UserCheck,
+  LayoutGrid,
 } from 'lucide-react'
 import {
   Card,
@@ -68,8 +67,8 @@ function RouteComponent() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
             <SettingsTile title="App Shells" icon={Code} to="/admin" />
             <SettingsTile title="Navigation" icon={Compass} to="/admin" />
-            <SettingsTile title="User Rights" icon={Shield} to="/admin" />
-            <SettingsTile title="Modules" icon={Puzzle} to="/admin" />
+            <SettingsTile title="User Rights" icon={UserCheck} to="/admin" />
+            <SettingsTile title="Modules" icon={LayoutGrid} to="/admin" />
             <SettingsTile
               title="Deletion Management"
               icon={Trash2}
