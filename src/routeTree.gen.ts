@@ -24,6 +24,7 @@ import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin/assets/index'
+import { Route as AdminAssetsTeamsIndexRouteImport } from './routes/admin/assets/teams/index'
 
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
@@ -100,6 +101,11 @@ const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
   path: '/assets/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAssetsTeamsIndexRoute = AdminAssetsTeamsIndexRouteImport.update({
+  id: '/assets/teams/',
+  path: '/assets/teams/',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/demo/': typeof DemoIndexRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
+  '/admin/assets/teams/': typeof AdminAssetsTeamsIndexRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof AdminRouteWithChildren
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/demo': typeof DemoIndexRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
+  '/admin/assets/teams': typeof AdminAssetsTeamsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,6 +160,7 @@ export interface FileRoutesById {
   '/demo/': typeof DemoIndexRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
+  '/admin/assets/teams/': typeof AdminAssetsTeamsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/demo/'
     | '/admin/assets/'
     | '/admin/settings/'
+    | '/admin/assets/teams/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/demo'
     | '/admin/assets'
     | '/admin/settings'
+    | '/admin/assets/teams'
   id:
     | '__root__'
     | '/admin'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/demo/'
     | '/admin/assets/'
     | '/admin/settings/'
+    | '/admin/assets/teams/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -328,6 +340,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAssetsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/assets/teams/': {
+      id: '/admin/assets/teams/'
+      path: '/assets/teams'
+      fullPath: '/admin/assets/teams/'
+      preLoaderRoute: typeof AdminAssetsTeamsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
@@ -336,6 +355,7 @@ interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
   AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
+  AdminAssetsTeamsIndexRoute: typeof AdminAssetsTeamsIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -343,6 +363,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
   AdminSettingsIndexRoute: AdminSettingsIndexRoute,
+  AdminAssetsTeamsIndexRoute: AdminAssetsTeamsIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
