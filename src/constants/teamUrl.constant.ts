@@ -1,4 +1,4 @@
-const BASE_PATH = '/api/v1/teams'
+const BASE_PATH = '/v1/teams'
 
 export const TEAM_URLS = {
   CREATE: BASE_PATH,
