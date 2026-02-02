@@ -1,12 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {
-  Plus,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  Pencil,
-  Trash2,
-} from 'lucide-react'
+import { Plus, ChevronLeft, ChevronRight, Copy, Trash2 } from 'lucide-react'
 import { Table } from '../../../../components/common'
 import type { Column, Action } from '../../../../components/common/Table'
 import { useTeamList } from '../../../../api/team.api'
@@ -16,7 +9,7 @@ import type { TenantOutDto } from '../../../../types/tenant.types'
 import { useState, useMemo } from 'react'
 import { authRedirect } from '@/lib/authRedirect'
 
-export const Route = createFileRoute('/admin/assets/teams/')({
+export const Route = createFileRoute('/admin/assets/team-members/')({
   beforeLoad: authRedirect,
   component: TeamsPage,
 })
@@ -86,8 +79,8 @@ function TeamsPage() {
     console.log('View team:', team)
   }
 
-  const handleEdit = (team: TeamReadWithClient) => {
-    console.log('Edit team:', team)
+  const handleCopy = (team: TeamReadWithClient) => {
+    console.log('Copy team:', team)
   }
 
   const handleDelete = (team: TeamReadWithClient) => {
@@ -96,15 +89,9 @@ function TeamsPage() {
 
   const teamActions: Action<TeamReadWithClient>[] = [
     {
-      icon: Eye,
-      label: 'View',
-      onClick: handleView,
-      variant: 'ghost',
-    },
-    {
-      icon: Pencil,
-      label: 'Edit',
-      onClick: handleEdit,
+      icon: Copy,
+      label: 'Copy',
+      onClick: handleCopy,
       variant: 'ghost',
     },
     {
@@ -117,11 +104,10 @@ function TeamsPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-foreground mb-6">Team Members</h1>
       <div className="bg-inputs-background border border-inputs-border rounded-lg p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold text-inputs-title">
-            {totalCount > 0 && `Teams (${totalCount})`}
+            Team Members {totalCount > 0 && `(${totalCount})`}
           </h2>
           <button className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition">
             <Plus className="h-5 w-5" />
@@ -133,6 +119,7 @@ function TeamsPage() {
           data={teamsWithClientName}
           columns={teamColumns}
           actions={teamActions}
+          onRowClick={handleView}
           loading={teamsLoading}
           emptyMessage="No teams found"
           searchable
