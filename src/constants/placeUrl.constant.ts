@@ -1,4 +1,4 @@
-const BASE_PATH = '/api/v1/places'
+const BASE_PATH = '/v1/places'
 
 export const PLACE_URLS = {
   CREATE: BASE_PATH,
