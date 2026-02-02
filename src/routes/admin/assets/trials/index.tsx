@@ -8,6 +8,7 @@ import { useTenantList } from '../../../../api/tenant.api'
 import type { TenantOutDto } from '../../../../types/tenant.types'
 import { useState, useMemo } from 'react'
 import { authRedirect } from '@/lib/authRedirect'
+import { useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/assets/trials/')({
   beforeLoad: authRedirect,
@@ -64,6 +65,7 @@ const trialColumns: Column<TrialReadWithClient>[] = [
 ]
 
 function TrialsPage() {
+  const navigate = useNavigate()
   const [page, setPage] = useState(1)
 
   const { data: trialData, isLoading: trialsLoading } = useTrialList({
@@ -98,15 +100,29 @@ function TrialsPage() {
   }, [trials, clientNameMap])
 
   const handleView = (trial: TrialReadWithClient) => {
-    console.log('View trial:', trial)
+    if (trial.id) {
+      navigate({
+        to: '/admin/assets/trials/$trialId',
+        params: { trialId: trial.id },
+      })
+    }
   }
 
   const handleCopy = (trial: TrialReadWithClient) => {
-    console.log('Copy trial:', trial)
+    if (trial.id) {
+      navigate({
+        to: '/admin/assets/trials/$trialId/duplicate',
+        params: { trialId: trial.id },
+      })
+    }
   }
 
   const handleDelete = (trial: TrialReadWithClient) => {
     console.log('Delete trial:', trial)
+  }
+
+  const handleNew = () => {
+    navigate({ to: '/admin/assets/trials/new' })
   }
 
   const trialActions: Action<TrialReadWithClient>[] = [
@@ -131,7 +147,10 @@ function TrialsPage() {
           <h2 className="text-2xl font-semibold text-inputs-title">
             Trials {totalCount > 0 && `(${totalCount})`}
           </h2>
-          <button className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition">
+          <button
+            onClick={handleNew}
+            className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition"
+          >
             <Plus className="h-5 w-5" />
             <span>New</span>
           </button>
