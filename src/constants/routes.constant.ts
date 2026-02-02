@@ -7,5 +7,5 @@ export const ROUTES = {
   EVENTS: '/demo/scroll-area-demo',
   GROUPS: '/demo/modal-test',
   USERS: '/demo/form-test',
-  ASSETS: '/demo/context-menu-demo',
+  ASSETS: '/admin/assets',
 } as const
