@@ -95,7 +95,7 @@ export function AppSidebar({
 
   const collapsed = internalCollapsed
 
-  const isSuperAdmin = user?.role === 'super_admin'
+  const isSuperAdmin = user?.role === 'superadmin'
 
   const isActive = (path: string) =>
     router.state.location.pathname === path ||
