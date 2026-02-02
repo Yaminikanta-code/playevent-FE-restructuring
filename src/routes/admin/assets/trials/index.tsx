@@ -76,7 +76,7 @@ function TrialsPage() {
 
   const { data: tenantData } = useTenantList({
     page: 1,
-    page_size: 1000,
+    page_size: 200,
   })
   const tenants = tenantData?.data ?? []
 
