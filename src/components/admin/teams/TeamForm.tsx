@@ -420,134 +420,137 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="text-sm font-semibold text-inputs-title">Members</div>
+          <Collapsible title="MEMBERS" defaultExpanded={true}>
+            <div className="space-y-4">
+              {fields.length === 0 && (
+                <div className="rounded-lg border border-dashed border-inputs-border bg-inputs-background p-6 text-center text-inputs-text">
+                  No members added yet
+                </div>
+              )}
 
-            {fields.length === 0 && (
-              <div className="rounded-lg border border-dashed border-inputs-border bg-inputs-background p-6 text-center text-inputs-text">
-                No members added yet
-              </div>
-            )}
-
-            {fields.length > 0 && (
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-              >
-                <SortableContext
-                  items={fields.map((field) => field.id)}
-                  strategy={verticalListSortingStrategy}
+              {fields.length > 0 && (
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
                 >
-                  <div className="space-y-4">
-                    {fields.map((field, index) => {
-                      const titleName =
-                        watchedMembers?.[index]?.full_name || 'New Member'
-                      const titlePrefix = `#${index} - ${titleName}`
+                  <SortableContext
+                    items={fields.map((field) => field.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <div className="space-y-4">
+                      {fields.map((field, index) => {
+                        const titleName =
+                          watchedMembers?.[index]?.full_name || 'New Member'
+                        const titlePrefix = `#${index} - ${titleName}`
 
-                      return (
-                        <SortableItem key={field.id} id={field.id}>
-                          {(dragHandle) => (
-                            <Collapsible
-                              title={titlePrefix}
-                              defaultExpanded={true}
-                              actions={[
-                                dragHandle,
-                                <IconButton
-                                  key={`copy-${field.id}`}
-                                  icon={Copy}
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleDuplicateMember(index)}
-                                  tooltip="Duplicate member"
-                                />,
-                                <IconButton
-                                  key={`delete-${field.id}`}
-                                  icon={Trash2}
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleRemoveMember(index)}
-                                  tooltip="Delete member"
-                                />,
-                              ]}
-                            >
-                              <div className="space-y-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                  <Input
-                                    label="Fullname"
-                                    placeholder="Enter full name"
-                                    control={form.control}
-                                    name={`members.${index}.full_name`}
-                                    rules={{
-                                      required: 'Full name is required',
-                                    }}
-                                  />
+                        return (
+                          <SortableItem key={field.id} id={field.id}>
+                            {(dragHandle) => (
+                              <Collapsible
+                                title={titlePrefix}
+                                defaultExpanded={true}
+                                actions={[
+                                  dragHandle,
+                                  <IconButton
+                                    key={`copy-${field.id}`}
+                                    icon={Copy}
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                      handleDuplicateMember(index)
+                                    }
+                                    tooltip="Duplicate member"
+                                  />,
+                                  <IconButton
+                                    key={`delete-${field.id}`}
+                                    icon={Trash2}
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleRemoveMember(index)}
+                                    tooltip="Delete member"
+                                  />,
+                                ]}
+                              >
+                                <div className="space-y-4">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <Input
+                                      label="Fullname"
+                                      placeholder="Enter full name"
+                                      control={form.control}
+                                      name={`members.${index}.full_name`}
+                                      rules={{
+                                        required: 'Full name is required',
+                                      }}
+                                    />
 
-                                  <Input
-                                    label="Photo"
-                                    placeholder="https://..."
-                                    control={form.control}
-                                    name={`members.${index}.photo`}
-                                  />
+                                    <Input
+                                      label="Photo"
+                                      placeholder="https://..."
+                                      control={form.control}
+                                      name={`members.${index}.photo`}
+                                    />
+                                  </div>
+
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <Input
+                                      label="N°"
+                                      type="number"
+                                      placeholder="0"
+                                      control={form.control}
+                                      name={`members.${index}.kit_number`}
+                                      min={0}
+                                      rules={{
+                                        required: 'Number is required',
+                                        min: {
+                                          value: 0,
+                                          message:
+                                            'Number cannot be negative',
+                                        },
+                                      }}
+                                    />
+
+                                    <Select
+                                      label="Position"
+                                      placeholder="Select position"
+                                      control={form.control}
+                                      name={`members.${index}.position`}
+                                      rules={{ required: 'Position is required' }}
+                                      options={positionOptions}
+                                    />
+
+                                    <Select
+                                      label="Status"
+                                      placeholder="Select status"
+                                      control={form.control}
+                                      name={`members.${index}.status`}
+                                      rules={{ required: 'Status is required' }}
+                                      options={memberStatusOptions}
+                                    />
+                                  </div>
                                 </div>
+                              </Collapsible>
+                            )}
+                          </SortableItem>
+                        )
+                      })}
+                    </div>
+                  </SortableContext>
+                </DndContext>
+              )}
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                  <Input
-                                    label="N°"
-                                    type="number"
-                                    placeholder="0"
-                                    control={form.control}
-                                    name={`members.${index}.kit_number`}
-                                    min={0}
-                                    rules={{
-                                      required: 'Number is required',
-                                      min: {
-                                        value: 0,
-                                        message: 'Number cannot be negative',
-                                      },
-                                    }}
-                                  />
-
-                                  <Select
-                                    label="Position"
-                                    placeholder="Select position"
-                                    control={form.control}
-                                    name={`members.${index}.position`}
-                                    rules={{ required: 'Position is required' }}
-                                    options={positionOptions}
-                                  />
-
-                                  <Select
-                                    label="Status"
-                                    placeholder="Select status"
-                                    control={form.control}
-                                    name={`members.${index}.status`}
-                                    rules={{ required: 'Status is required' }}
-                                    options={memberStatusOptions}
-                                  />
-                                </div>
-                              </div>
-                            </Collapsible>
-                          )}
-                        </SortableItem>
-                      )
-                    })}
-                  </div>
-                </SortableContext>
-              </DndContext>
-            )}
-
-            <div className="flex justify-center">
-              <Button
-                type="button"
-                variant="outline"
-                icon={Plus}
-                onClick={handleAddMember}
-              >
-                Add a member
-              </Button>
+              <div className="flex justify-center">
+                <Button
+                  type="button"
+                  variant="outline"
+                  icon={Plus}
+                  onClick={handleAddMember}
+                >
+                  Add a member
+                </Button>
+              </div>
             </div>
-          </div>
+          </Collapsible>
 
           <div className="flex justify-center pt-2">
             <Button

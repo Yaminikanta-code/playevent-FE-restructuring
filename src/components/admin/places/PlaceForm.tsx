@@ -412,140 +412,139 @@ const PlaceForm = ({ place, tenants, mode, onClose }: PlaceFormProps) => {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="text-sm font-semibold text-inputs-title">
-              Sub Place
-            </div>
+          <Collapsible title="SUB PLACE" defaultExpanded={true}>
+            <div className="space-y-4">
+              {fields.length === 0 && (
+                <div className="rounded-lg border border-dashed border-inputs-border bg-inputs-background p-6 text-center text-inputs-text">
+                  No sub places added yet
+                </div>
+              )}
 
-            {fields.length === 0 && (
-              <div className="rounded-lg border border-dashed border-inputs-border bg-inputs-background p-6 text-center text-inputs-text">
-                No sub places added yet
-              </div>
-            )}
-
-            {fields.length > 0 && (
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-              >
-                <SortableContext
-                  items={fields.map((field) => field.id)}
-                  strategy={verticalListSortingStrategy}
+              {fields.length > 0 && (
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
                 >
-                  <div className="space-y-4">
-                    {fields.map((field, index) => {
-                      const titleName =
-                        watchedSubplaces?.[index]?.name || 'New Sub Place'
-                      const titlePrefix = `#${index} - ${titleName}`
+                  <SortableContext
+                    items={fields.map((field) => field.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <div className="space-y-4">
+                      {fields.map((field, index) => {
+                        const titleName =
+                          watchedSubplaces?.[index]?.name || 'New Sub Place'
+                        const titlePrefix = `#${index} - ${titleName}`
 
-                      return (
-                        <SortableItem key={field.id} id={field.id}>
-                          {(dragHandle) => (
-                            <Collapsible
-                              title={titlePrefix}
-                              defaultExpanded={true}
-                              actions={[
-                                dragHandle,
-                                <IconButton
-                                  key={`copy-${field.id}`}
-                                  icon={Copy}
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() =>
-                                    handleDuplicateSubplace(index)
-                                  }
-                                  tooltip="Duplicate sub place"
-                                />,
-                                <IconButton
-                                  key={`delete-${field.id}`}
-                                  icon={Trash2}
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleRemoveSubplace(index)}
-                                  tooltip="Delete sub place"
-                                />,
-                              ]}
-                            >
-                              <div className="space-y-4">
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                  <Input
-                                    label="Sub place name"
-                                    placeholder="Enter sub place name"
-                                    control={form.control}
-                                    name={`subplaces.${index}.name`}
-                                    rules={{
-                                      required: 'Sub place name is required',
-                                    }}
-                                  />
+                        return (
+                          <SortableItem key={field.id} id={field.id}>
+                            {(dragHandle) => (
+                              <Collapsible
+                                title={titlePrefix}
+                                defaultExpanded={true}
+                                actions={[
+                                  dragHandle,
+                                  <IconButton
+                                    key={`copy-${field.id}`}
+                                    icon={Copy}
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                      handleDuplicateSubplace(index)
+                                    }
+                                    tooltip="Duplicate sub place"
+                                  />,
+                                  <IconButton
+                                    key={`delete-${field.id}`}
+                                    icon={Trash2}
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleRemoveSubplace(index)}
+                                    tooltip="Delete sub place"
+                                  />,
+                                ]}
+                              >
+                                <div className="space-y-4">
+                                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                    <Input
+                                      label="Sub place name"
+                                      placeholder="Enter sub place name"
+                                      control={form.control}
+                                      name={`subplaces.${index}.name`}
+                                      rules={{
+                                        required: 'Sub place name is required',
+                                      }}
+                                    />
+
+                                    <Input
+                                      label="Number of winners"
+                                      type="number"
+                                      placeholder="0"
+                                      control={form.control}
+                                      name={`subplaces.${index}.number_of_winners`}
+                                      min={0}
+                                      rules={{
+                                        required:
+                                          'Number of winners is required',
+                                        min: {
+                                          value: 0,
+                                          message:
+                                            'Number of winners cannot be negative',
+                                        },
+                                      }}
+                                    />
+
+                                    <Input
+                                      label="Index"
+                                      type="number"
+                                      placeholder="0"
+                                      control={form.control}
+                                      name={`subplaces.${index}.index`}
+                                      min={0}
+                                      disabled
+                                      helperText="Auto-generated index"
+                                    />
+
+                                    <Select
+                                      label="Status"
+                                      placeholder="Select status"
+                                      control={form.control}
+                                      name={`subplaces.${index}.status`}
+                                      rules={{ required: 'Status is required' }}
+                                      options={statusOptions}
+                                    />
+                                  </div>
 
                                   <Input
-                                    label="Number of winners"
-                                    type="number"
-                                    placeholder="0"
+                                    label="Sub place id"
+                                    placeholder="Auto-generated"
                                     control={form.control}
-                                    name={`subplaces.${index}.number_of_winners`}
-                                    min={0}
-                                    rules={{
-                                      required: 'Number of winners is required',
-                                      min: {
-                                        value: 0,
-                                        message:
-                                          'Number of winners cannot be negative',
-                                      },
-                                    }}
-                                  />
-
-                                  <Input
-                                    label="Index"
-                                    type="number"
-                                    placeholder="0"
-                                    control={form.control}
-                                    name={`subplaces.${index}.index`}
-                                    min={0}
+                                    name={`subplaces.${index}.id`}
                                     disabled
-                                    helperText="Auto-generated index"
-                                  />
-
-                                  <Select
-                                    label="Status"
-                                    placeholder="Select status"
-                                    control={form.control}
-                                    name={`subplaces.${index}.status`}
-                                    rules={{ required: 'Status is required' }}
-                                    options={statusOptions}
                                   />
                                 </div>
+                              </Collapsible>
+                            )}
+                          </SortableItem>
+                        )
+                      })}
+                    </div>
+                  </SortableContext>
+                </DndContext>
+              )}
 
-                                <Input
-                                  label="Sub place id"
-                                  placeholder="Auto-generated"
-                                  control={form.control}
-                                  name={`subplaces.${index}.id`}
-                                  disabled
-                                />
-                              </div>
-                            </Collapsible>
-                          )}
-                        </SortableItem>
-                      )
-                    })}
-                  </div>
-                </SortableContext>
-              </DndContext>
-            )}
-
-            <div className="flex justify-center">
-              <Button
-                type="button"
-                variant="outline"
-                icon={Plus}
-                onClick={handleAddSubplace}
-              >
-                Add a sub place
-              </Button>
+              <div className="flex justify-center">
+                <Button
+                  type="button"
+                  variant="outline"
+                  icon={Plus}
+                  onClick={handleAddSubplace}
+                >
+                  Add a sub place
+                </Button>
+              </div>
             </div>
-          </div>
+          </Collapsible>
 
           <div className="flex justify-center pt-2">
             <Button
