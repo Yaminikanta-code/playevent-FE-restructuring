@@ -7,12 +7,12 @@ export const Route = createFileRoute('/demo/')({
 
 function App() {
   const demoRoutes = [
-    { path: '/collapsible-demo', label: 'Collapsible Demo' },
-    { path: '/context-menu-demo', label: 'Context Menu Demo' },
-    { path: '/form-test', label: 'Form Test' },
-    { path: '/modal-test', label: 'Modal Test' },
-    { path: '/scroll-area-demo', label: 'Scroll Area Demo' },
-    { path: '/table-demo', label: 'Table Demo' },
+    { path: '/demo/collapsible-demo', label: 'Collapsible Demo' },
+    { path: '/demo/context-menu-demo', label: 'Context Menu Demo' },
+    { path: '/demo/form-test', label: 'Form Test' },
+    { path: '/demo/modal-test', label: 'Modal Test' },
+    { path: '/demo/scroll-area-demo', label: 'Scroll Area Demo' },
+    { path: '/demo/table-demo', label: 'Table Demo' },
     { path: '/test', label: 'Test' },
     { path: '/demo/tanstack-query', label: 'TanStack Query Demo' },
     { path: '/demo/sidebar-demo', label: 'Sidebar Demo' },
