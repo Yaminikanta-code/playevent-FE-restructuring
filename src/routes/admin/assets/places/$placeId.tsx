@@ -2,8 +2,10 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { usePlaceById } from '../../../../api/place.api'
 import { useTenantList } from '../../../../api/tenant.api'
 import PlaceForm from '../../../../components/admin/places/PlaceForm'
+import { authRedirect } from '@/lib/authRedirect'
 
 export const Route = createFileRoute('/admin/assets/places/$placeId')({
+  beforeLoad: authRedirect,
   component: PlaceEditPage,
 })
 
