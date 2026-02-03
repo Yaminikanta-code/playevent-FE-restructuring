@@ -1,11 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Plus, ChevronLeft, ChevronRight, Copy, Trash2 } from 'lucide-react'
-import { Table } from '../../../../components/common'
-import type { Column, Action } from '../../../../components/common/Table'
-import { usePlaceList } from '../../../../api/place.api'
-import type { PlaceRead } from '../../../../types/place.types'
-import { useTenantList } from '../../../../api/tenant.api'
-import type { TenantOutDto } from '../../../../types/tenant.types'
+import { Table } from '@/components/common'
+import type { Column, Action } from '@/components/common/Table'
+import { usePlaceList } from '@/api/place.api'
+import type { PlaceRead } from '@/types/place.types'
+import { useTenantList } from '@/api/tenant.api'
+import type { TenantOutDto } from '@/types/tenant.types'
 import { useState, useMemo } from 'react'
 import { authRedirect } from '@/lib/authRedirect'
 
@@ -42,6 +42,7 @@ const placeColumns: Column<PlaceReadWithClient>[] = [
 ]
 
 function PlacesPage() {
+  const navigate = useNavigate()
   const [page, setPage] = useState(1)
 
   const { data: placeData, isLoading: placesLoading } = usePlaceList({
@@ -76,15 +77,29 @@ function PlacesPage() {
   }, [places, clientNameMap])
 
   const handleView = (place: PlaceReadWithClient) => {
-    console.log('View place:', place)
+    if (place.id) {
+      navigate({
+        to: '/admin/assets/places/$placeId',
+        params: { placeId: place.id },
+      })
+    }
   }
 
   const handleCopy = (place: PlaceReadWithClient) => {
-    console.log('Copy place:', place)
+    if (place.id) {
+      navigate({
+        to: '/admin/assets/places/$placeId/duplicate',
+        params: { placeId: place.id },
+      })
+    }
   }
 
   const handleDelete = (place: PlaceReadWithClient) => {
     console.log('Delete place:', place)
+  }
+
+  const handleNew = () => {
+    navigate({ to: '/admin/assets/places/new' })
   }
 
   const placeActions: Action<PlaceReadWithClient>[] = [
@@ -109,7 +124,10 @@ function PlacesPage() {
           <h2 className="text-2xl font-semibold text-inputs-title">
             Places {totalCount > 0 && `(${totalCount})`}
           </h2>
-          <button className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition">
+          <button
+            onClick={handleNew}
+            className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition"
+          >
             <Plus className="h-5 w-5" />
             <span>New</span>
           </button>
