@@ -29,9 +29,12 @@ import { Route as AdminAssetsTeamMembersIndexRouteImport } from './routes/admin/
 import { Route as AdminAssetsPlacesIndexRouteImport } from './routes/admin/assets/places/index'
 import { Route as AdminAssetsTrialsNewRouteImport } from './routes/admin/assets/trials/new'
 import { Route as AdminAssetsTrialsTrialIdRouteImport } from './routes/admin/assets/trials/$trialId'
+import { Route as AdminAssetsTeamMembersNewRouteImport } from './routes/admin/assets/team-members/new'
+import { Route as AdminAssetsTeamMembersTeamIdRouteImport } from './routes/admin/assets/team-members/$teamId'
 import { Route as AdminAssetsPlacesNewRouteImport } from './routes/admin/assets/places/new'
 import { Route as AdminAssetsPlacesPlaceIdRouteImport } from './routes/admin/assets/places/$placeId'
 import { Route as AdminAssetsTrialsTrialIdDuplicateRouteImport } from './routes/admin/assets/trials/$trialId/duplicate'
+import { Route as AdminAssetsTeamMembersTeamIdDuplicateRouteImport } from './routes/admin/assets/team-members/$teamId/duplicate'
 import { Route as AdminAssetsPlacesPlaceIdDuplicateRouteImport } from './routes/admin/assets/places/$placeId/duplicate'
 
 const AdminRoute = AdminRouteImport.update({
@@ -136,6 +139,18 @@ const AdminAssetsTrialsTrialIdRoute =
     path: '/assets/trials/$trialId',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminAssetsTeamMembersNewRoute =
+  AdminAssetsTeamMembersNewRouteImport.update({
+    id: '/assets/team-members/new',
+    path: '/assets/team-members/new',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminAssetsTeamMembersTeamIdRoute =
+  AdminAssetsTeamMembersTeamIdRouteImport.update({
+    id: '/assets/team-members/$teamId',
+    path: '/assets/team-members/$teamId',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminAssetsPlacesNewRoute = AdminAssetsPlacesNewRouteImport.update({
   id: '/assets/places/new',
   path: '/assets/places/new',
@@ -152,6 +167,12 @@ const AdminAssetsTrialsTrialIdDuplicateRoute =
     id: '/duplicate',
     path: '/duplicate',
     getParentRoute: () => AdminAssetsTrialsTrialIdRoute,
+  } as any)
+const AdminAssetsTeamMembersTeamIdDuplicateRoute =
+  AdminAssetsTeamMembersTeamIdDuplicateRouteImport.update({
+    id: '/duplicate',
+    path: '/duplicate',
+    getParentRoute: () => AdminAssetsTeamMembersTeamIdRoute,
   } as any)
 const AdminAssetsPlacesPlaceIdDuplicateRoute =
   AdminAssetsPlacesPlaceIdDuplicateRouteImport.update({
@@ -178,12 +199,15 @@ export interface FileRoutesByFullPath {
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
+  '/admin/assets/team-members/$teamId': typeof AdminAssetsTeamMembersTeamIdRouteWithChildren
+  '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
   '/admin/assets/places/': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members/': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials/': typeof AdminAssetsTrialsIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
+  '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
   '/admin/assets/trials/$trialId/duplicate': typeof AdminAssetsTrialsTrialIdDuplicateRoute
 }
 export interface FileRoutesByTo {
@@ -204,12 +228,15 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminSettingsIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
+  '/admin/assets/team-members/$teamId': typeof AdminAssetsTeamMembersTeamIdRouteWithChildren
+  '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
   '/admin/assets/places': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials': typeof AdminAssetsTrialsIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
+  '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
   '/admin/assets/trials/$trialId/duplicate': typeof AdminAssetsTrialsTrialIdDuplicateRoute
 }
 export interface FileRoutesById {
@@ -231,12 +258,15 @@ export interface FileRoutesById {
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
+  '/admin/assets/team-members/$teamId': typeof AdminAssetsTeamMembersTeamIdRouteWithChildren
+  '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
   '/admin/assets/places/': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members/': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials/': typeof AdminAssetsTrialsIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
+  '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
   '/admin/assets/trials/$trialId/duplicate': typeof AdminAssetsTrialsTrialIdDuplicateRoute
 }
 export interface FileRouteTypes {
@@ -259,12 +289,15 @@ export interface FileRouteTypes {
     | '/admin/settings/'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
+    | '/admin/assets/team-members/$teamId'
+    | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
     | '/admin/assets/places/'
     | '/admin/assets/team-members/'
     | '/admin/assets/trials/'
     | '/admin/assets/places/$placeId/duplicate'
+    | '/admin/assets/team-members/$teamId/duplicate'
     | '/admin/assets/trials/$trialId/duplicate'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -285,12 +318,15 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
+    | '/admin/assets/team-members/$teamId'
+    | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
     | '/admin/assets/places'
     | '/admin/assets/team-members'
     | '/admin/assets/trials'
     | '/admin/assets/places/$placeId/duplicate'
+    | '/admin/assets/team-members/$teamId/duplicate'
     | '/admin/assets/trials/$trialId/duplicate'
   id:
     | '__root__'
@@ -311,12 +347,15 @@ export interface FileRouteTypes {
     | '/admin/settings/'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
+    | '/admin/assets/team-members/$teamId'
+    | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
     | '/admin/assets/places/'
     | '/admin/assets/team-members/'
     | '/admin/assets/trials/'
     | '/admin/assets/places/$placeId/duplicate'
+    | '/admin/assets/team-members/$teamId/duplicate'
     | '/admin/assets/trials/$trialId/duplicate'
   fileRoutesById: FileRoutesById
 }
@@ -476,6 +515,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAssetsTrialsTrialIdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/assets/team-members/new': {
+      id: '/admin/assets/team-members/new'
+      path: '/assets/team-members/new'
+      fullPath: '/admin/assets/team-members/new'
+      preLoaderRoute: typeof AdminAssetsTeamMembersNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/assets/team-members/$teamId': {
+      id: '/admin/assets/team-members/$teamId'
+      path: '/assets/team-members/$teamId'
+      fullPath: '/admin/assets/team-members/$teamId'
+      preLoaderRoute: typeof AdminAssetsTeamMembersTeamIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/assets/places/new': {
       id: '/admin/assets/places/new'
       path: '/assets/places/new'
@@ -496,6 +549,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/assets/trials/$trialId/duplicate'
       preLoaderRoute: typeof AdminAssetsTrialsTrialIdDuplicateRouteImport
       parentRoute: typeof AdminAssetsTrialsTrialIdRoute
+    }
+    '/admin/assets/team-members/$teamId/duplicate': {
+      id: '/admin/assets/team-members/$teamId/duplicate'
+      path: '/duplicate'
+      fullPath: '/admin/assets/team-members/$teamId/duplicate'
+      preLoaderRoute: typeof AdminAssetsTeamMembersTeamIdDuplicateRouteImport
+      parentRoute: typeof AdminAssetsTeamMembersTeamIdRoute
     }
     '/admin/assets/places/$placeId/duplicate': {
       id: '/admin/assets/places/$placeId/duplicate'
@@ -522,6 +582,21 @@ const AdminAssetsPlacesPlaceIdRouteWithChildren =
     AdminAssetsPlacesPlaceIdRouteChildren,
   )
 
+interface AdminAssetsTeamMembersTeamIdRouteChildren {
+  AdminAssetsTeamMembersTeamIdDuplicateRoute: typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
+}
+
+const AdminAssetsTeamMembersTeamIdRouteChildren: AdminAssetsTeamMembersTeamIdRouteChildren =
+  {
+    AdminAssetsTeamMembersTeamIdDuplicateRoute:
+      AdminAssetsTeamMembersTeamIdDuplicateRoute,
+  }
+
+const AdminAssetsTeamMembersTeamIdRouteWithChildren =
+  AdminAssetsTeamMembersTeamIdRoute._addFileChildren(
+    AdminAssetsTeamMembersTeamIdRouteChildren,
+  )
+
 interface AdminAssetsTrialsTrialIdRouteChildren {
   AdminAssetsTrialsTrialIdDuplicateRoute: typeof AdminAssetsTrialsTrialIdDuplicateRoute
 }
@@ -544,6 +619,8 @@ interface AdminRouteChildren {
   AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
   AdminAssetsPlacesPlaceIdRoute: typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   AdminAssetsPlacesNewRoute: typeof AdminAssetsPlacesNewRoute
+  AdminAssetsTeamMembersTeamIdRoute: typeof AdminAssetsTeamMembersTeamIdRouteWithChildren
+  AdminAssetsTeamMembersNewRoute: typeof AdminAssetsTeamMembersNewRoute
   AdminAssetsTrialsTrialIdRoute: typeof AdminAssetsTrialsTrialIdRouteWithChildren
   AdminAssetsTrialsNewRoute: typeof AdminAssetsTrialsNewRoute
   AdminAssetsPlacesIndexRoute: typeof AdminAssetsPlacesIndexRoute
@@ -558,6 +635,9 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSettingsIndexRoute: AdminSettingsIndexRoute,
   AdminAssetsPlacesPlaceIdRoute: AdminAssetsPlacesPlaceIdRouteWithChildren,
   AdminAssetsPlacesNewRoute: AdminAssetsPlacesNewRoute,
+  AdminAssetsTeamMembersTeamIdRoute:
+    AdminAssetsTeamMembersTeamIdRouteWithChildren,
+  AdminAssetsTeamMembersNewRoute: AdminAssetsTeamMembersNewRoute,
   AdminAssetsTrialsTrialIdRoute: AdminAssetsTrialsTrialIdRouteWithChildren,
   AdminAssetsTrialsNewRoute: AdminAssetsTrialsNewRoute,
   AdminAssetsPlacesIndexRoute: AdminAssetsPlacesIndexRoute,
