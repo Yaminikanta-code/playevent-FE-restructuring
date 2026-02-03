@@ -40,7 +40,6 @@ const Select = <T extends FieldValues = FieldValues>({
   error: externalError,
   helperText,
   disabled,
-  ...props
 }: SelectProps<T>) => {
   const selectId = id || name
   const [isOpen, setIsOpen] = useState(false)

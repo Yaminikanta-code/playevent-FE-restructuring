@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link, useRouter } from '@tanstack/react-router'
-import logo from '@/logo.svg'
 import { useAuthStore } from '@/stores/useAuthStore'
 import { ROUTES } from '@/constants/routes.constant'
 import { MOCK_MODULES, type Module } from '@/constants/modules.constant'
