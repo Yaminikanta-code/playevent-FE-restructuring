@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Plus, ChevronLeft, ChevronRight, Copy, Trash2 } from 'lucide-react'
 import { Table } from '../../../../components/common'
 import type { Column, Action } from '../../../../components/common/Table'
@@ -42,6 +42,7 @@ const teamColumns: Column<TeamReadWithClient>[] = [
 ]
 
 function TeamsPage() {
+  const navigate = useNavigate()
   const [page, setPage] = useState(1)
 
   const { data: teamData, isLoading: teamsLoading } = useTeamList({
@@ -76,15 +77,29 @@ function TeamsPage() {
   }, [teams, clientNameMap])
 
   const handleView = (team: TeamReadWithClient) => {
-    console.log('View team:', team)
+    if (team.id) {
+      navigate({
+        to: '/admin/assets/team-members/$teamId',
+        params: { teamId: team.id },
+      })
+    }
   }
 
   const handleCopy = (team: TeamReadWithClient) => {
-    console.log('Copy team:', team)
+    if (team.id) {
+      navigate({
+        to: '/admin/assets/team-members/$teamId/duplicate',
+        params: { teamId: team.id },
+      })
+    }
   }
 
   const handleDelete = (team: TeamReadWithClient) => {
     console.log('Delete team:', team)
+  }
+
+  const handleNew = () => {
+    navigate({ to: '/admin/assets/team-members/new' })
   }
 
   const teamActions: Action<TeamReadWithClient>[] = [
@@ -109,7 +124,10 @@ function TeamsPage() {
           <h2 className="text-2xl font-semibold text-inputs-title">
             Team Members {totalCount > 0 && `(${totalCount})`}
           </h2>
-          <button className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition">
+          <button
+            onClick={handleNew}
+            className="flex items-center gap-2 px-4 py-2 bg-divers-button text-white rounded-lg hover:opacity-90 transition"
+          >
             <Plus className="h-5 w-5" />
             <span>New</span>
           </button>

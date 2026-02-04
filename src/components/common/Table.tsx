@@ -232,7 +232,7 @@ function Table<T>({
               key={rowIndex}
               onClick={() => onRowClick?.(row, rowIndex)}
               className={cn(
-                'flex items-center gap-6 px-6 py-1 rounded-2xl',
+                'flex items-center gap-6 px-6 py-1 rounded-lg',
                 'bg-midnight-light border border-white/5',
                 'shadow-sm transition-all duration-200',
                 'hover:bg-midnight-light hover:shadow-md',
