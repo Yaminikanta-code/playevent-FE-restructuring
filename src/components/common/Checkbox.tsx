@@ -64,7 +64,7 @@ const Checkbox = <T extends FieldValues = FieldValues>({
                 <Check
                   className={cn(
                     'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
-                    'h-3.5 w-3.5 text-white pointer-events-none',
+                    'h-3.5 w-3.5 text-primary pointer-events-none',
                     'transition-opacity duration-200',
                     'opacity-0 peer-checked:opacity-100',
                   )}

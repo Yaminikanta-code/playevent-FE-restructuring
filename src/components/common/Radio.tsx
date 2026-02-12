@@ -64,7 +64,13 @@ const Radio = <T extends FieldValues = FieldValues>({
               )}
             >
               {options.map((option) => (
-                <div key={option.value} className="flex items-center space-x-3">
+                <label
+                  key={option.value}
+                  className={cn(
+                    'flex items-center space-x-3 cursor-pointer',
+                    option.disabled && 'opacity-50 cursor-not-allowed',
+                  )}
+                >
                   <div className="relative flex items-center">
                     <input
                       id={`${radioId}-${option.value}`}
@@ -95,16 +101,14 @@ const Radio = <T extends FieldValues = FieldValues>({
                       )}
                     />
                   </div>
-                  <label
-                    htmlFor={`${radioId}-${option.value}`}
+                  <span
                     className={cn(
-                      'text-sm font-medium text-inputs-title cursor-pointer select-none',
-                      option.disabled && 'opacity-50 cursor-not-allowed',
+                      'text-sm font-medium text-inputs-title select-none',
                     )}
                   >
                     {option.label}
-                  </label>
-                </div>
+                  </span>
+                </label>
               ))}
             </div>
             {hasError && (
