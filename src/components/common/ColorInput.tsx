@@ -240,7 +240,7 @@ const ColorInput = <T extends FieldValues = FieldValues>({
                             handleColorChange(newColor + alpha)
                           }
                         }}
-                        className="w-36 px-3 py-2 border border-gray-300 rounded-lg text-sm font-mono bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-36 px-3 py-2 text-gray-900 border border-gray-300 rounded-lg text-sm font-mono bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
 
                       <div className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50">
@@ -261,7 +261,7 @@ const ColorInput = <T extends FieldValues = FieldValues>({
                                 : '#000000'
                             handleColorChange(baseColor + alphaHex)
                           }}
-                          className="w-10 text-sm font-medium bg-transparent border-none outline-none text-right"
+                          className="w-10 text-sm text-gray-900 font-medium bg-transparent border-none outline-none text-right"
                         />
                         <span className="text-sm text-gray-500">%</span>
                       </div>
