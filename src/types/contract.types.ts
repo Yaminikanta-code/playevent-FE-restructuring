@@ -1,4 +1,7 @@
-export type ContractStatus = 'active' | 'inactive'
+export enum ContractStatus {
+    ACTIVE = 'active',
+    INACTIVE = 'inactive',
+}
 
 export interface CreateContractDto {
     name: string
@@ -21,7 +24,7 @@ export interface UpdateContractDto {
     start_date?: string
     end_date?: string
     total_events?: number
-    status?: string
+    status?: ContractStatus
     allocated_modules?: Record<string, any>[]
     group_ids?: string[]
 }
@@ -35,7 +38,7 @@ export interface ContractOutDto {
     start_date: string
     end_date: string
     total_events: number
-    status: string
+    status: ContractStatus
     allocated_modules?: Record<string, any>[]
     created_at?: string
     updated_at?: string

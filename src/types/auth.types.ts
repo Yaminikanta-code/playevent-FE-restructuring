@@ -1,7 +1,12 @@
+export enum UserRole {
+    CLIENT_ADMIN = 'clientadmin',
+    SUPER_ADMIN = 'superadmin',
+}
+
 export interface UserOut {
     id: string
     email: string
-    role: string
+    role: UserRole
     client_id?: string
     first_name?: string
     last_name?: string

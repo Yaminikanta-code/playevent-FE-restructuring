@@ -1,5 +1,13 @@
-export type AdminRole = 'clientadmin' | 'superadmin'
-export type AdminStatus = 'active' | 'inactive' | 'archive'
+export enum AdminRole {
+    CLIENT_ADMIN = 'clientadmin',
+    SUPER_ADMIN = 'superadmin',
+}
+
+export enum AdminStatus {
+    ACTIVE = 'active',
+    INACTIVE = 'inactive',
+    ARCHIVE = 'archive',
+}
 
 export interface CreateAdminDto {
     email: string
@@ -26,8 +34,8 @@ export interface AdminOutDto {
     first_name?: string
     last_name?: string
     client_id?: string
-    status: string
-    role: string
+    status: AdminStatus
+    role: AdminRole
     rights?: Record<string, any>
     language_id?: number
     created_at?: string

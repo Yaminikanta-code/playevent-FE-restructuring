@@ -1,7 +1,12 @@
+export enum AppShellStatus {
+    ACTIVE = 'active',
+    INACTIVE = 'inactive',
+}
+
 export interface CreateAppShellDto {
     name: string
     client_id?: string
-    status?: 'active' | 'inactive'
+    status?: AppShellStatus
     shell_css?: string
     navigation_type?: string
     header_html?: string
@@ -11,7 +16,7 @@ export interface CreateAppShellDto {
 export interface UpdateAppShellDto {
     name?: string
     client_id?: string
-    status?: string
+    status?: AppShellStatus
     shell_css?: string
     navigation_type?: string
     header_html?: string
@@ -23,7 +28,7 @@ export interface AppShellOutDto {
     client_id?: string
     source_id?: string
     name: string
-    status: string
+    status: AppShellStatus
     shell_css?: string
     navigation_type?: string
     header_html?: string

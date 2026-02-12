@@ -1,4 +1,8 @@
-export type GroupStatus = 'active' | 'inactive' | 'archive'
+export enum GroupStatus {
+    ACTIVE = 'active',
+    INACTIVE = 'inactive',
+    ARCHIVE = 'archive',
+}
 
 export interface CreateGroupDto {
     name: string

@@ -1,7 +1,13 @@
+export enum TenantStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  ARCHIVE = 'archive',
+}
+
 export interface CreateTenantDto {
   name: string
   short_name?: string
-  status?: 'active' | 'inactive' | 'archive'
+  status?: TenantStatus
   activity_name?: string
   creation_step?: string
 }
@@ -9,7 +15,7 @@ export interface CreateTenantDto {
 export interface UpdateTenantDto {
   name?: string
   short_name?: string
-  status?: 'active' | 'inactive' | 'archive'
+  status?: TenantStatus
   activity_name?: string
   creation_step?: string
 }
@@ -18,7 +24,7 @@ export interface TenantOutDto {
   id: string
   name: string
   short_name?: string
-  status: string
+  status: TenantStatus
   activity_name?: string
   creation_step?: string
   created_at?: string
