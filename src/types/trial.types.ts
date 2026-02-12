@@ -1,7 +1,13 @@
+export enum TrialStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  ARCHIVE = 'archive',
+}
+
 export interface TrialCreate {
   name: string
   client_id: string
-  status?: string
+  status?: TrialStatus
   started_at?: string
   ends_at?: string
   data?: Record<string, any>
@@ -10,7 +16,7 @@ export interface TrialCreate {
 export interface TrialUpdate {
   name?: string
   client_id?: string
-  status?: string
+  status?: TrialStatus
   started_at?: string
   ends_at?: string
   data?: Record<string, any>
@@ -22,7 +28,7 @@ export interface TrialRead {
   id: string
   name: string
   client_id: string
-  status: string
+  status: TrialStatus
   started_at?: string
   ends_at?: string
   data?: Record<string, any>

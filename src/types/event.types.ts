@@ -1,3 +1,9 @@
+export enum EventStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  ARCHIVE = 'archive',
+}
+
 export interface EventCreate {
   client_id: string
   created_by: string
@@ -6,7 +12,7 @@ export interface EventCreate {
   subclient_id?: string
   contract_id?: string
   end_at?: string
-  status?: string
+  status?: EventStatus
   bookmark?: boolean
   host_name?: string
   guest_name?: string
@@ -19,7 +25,7 @@ export interface EventUpdate {
   name?: string
   start_at?: string
   end_at?: string
-  status?: string
+  status?: EventStatus
   bookmark?: boolean
   host_name?: string
   guest_name?: string
@@ -37,7 +43,7 @@ export interface EventRead {
   subclient_id?: string
   contract_id?: string
   end_at?: string
-  status?: string
+  status?: EventStatus
   bookmark?: boolean
   host_name?: string
   guest_name?: string
