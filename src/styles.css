@@ -1026,9 +1026,21 @@ body {
 }
 
 /* Focus styles using your ring variable */
+*:focus,
 *:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+  outline: none !important;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--ring) !important;
+}
+
+select:focus,
+select:focus-visible {
+  outline: none !important;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--ring) !important;
+  border-color: var(--ring) !important;
 }
 
 /* Selection styles using your primary variable */
