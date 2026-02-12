@@ -1,23 +1,15 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-
-export interface User {
-  id: string
-  email: string
-  first_name: string
-  last_name: string
-  is_super_admin: boolean
-  role: string | null
-}
+import type { UserOut } from '../types/auth.types'
 
 export interface UserPayload {
   access_token: string
   token_type: string
-  user: User
+  user: UserOut
 }
 
 interface AuthState {
-  user: User | null
+  user: UserOut | null
   access_token: string | null
   login: (userPayload: UserPayload) => void
   logout: () => void

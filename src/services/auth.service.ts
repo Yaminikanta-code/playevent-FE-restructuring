@@ -1,17 +1,33 @@
 import { nonAuthenticatedAxios } from './api.service'
-import type { UserPayload } from '../stores/useAuthStore'
+import type {
+  LoginCredentials,
+  AuthResponse,
+  AdminRegisterDto,
+  SuperAdminRegisterDto
+} from '../types/auth.types'
 import { AUTH_URL } from '../constants/authUrl.constant'
 
-export interface LoginCredentials {
-  email: string
-  password: string
-}
-
 class AuthService {
-  async login(credentials: LoginCredentials): Promise<UserPayload> {
-    const response = await nonAuthenticatedAxios.post<UserPayload>(
+  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+    const response = await nonAuthenticatedAxios.post<AuthResponse>(
       AUTH_URL.LOGIN,
       credentials,
+    )
+    return response.data
+  }
+
+  async registerAdmin(data: AdminRegisterDto): Promise<AuthResponse> {
+    const response = await nonAuthenticatedAxios.post<AuthResponse>(
+      AUTH_URL.REGISTER_ADMIN,
+      data,
+    )
+    return response.data
+  }
+
+  async registerSuperAdmin(data: SuperAdminRegisterDto): Promise<AuthResponse> {
+    const response = await nonAuthenticatedAxios.post<AuthResponse>(
+      AUTH_URL.REGISTER_SUPER_ADMIN,
+      data,
     )
     return response.data
   }

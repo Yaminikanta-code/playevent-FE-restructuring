@@ -1,34 +1,29 @@
 export interface CreateTenantDto {
   name: string
-  root_group_name: string
   short_name?: string
-  status?: string
+  status?: 'active' | 'inactive' | 'archive'
   activity_name?: string
+  creation_step?: string
 }
 
 export interface UpdateTenantDto {
   name?: string
   short_name?: string
-  status?: string
+  status?: 'active' | 'inactive' | 'archive'
   activity_name?: string
-  is_deleted?: boolean
-  onboarding_status?: string
+  creation_step?: string
 }
 
 export interface TenantOutDto {
   id: string
   name: string
   short_name?: string
-  status?: string
+  status: string
   activity_name?: string
-  root_group_name?: string
-  root_group_id?: string
-  created_at: string
-  is_deleted?: boolean
-  deleted_at?: string | null
-  onboarding_status?: string
-  total_users?: number
-  total_events?: number
+  creation_step?: string
+  created_at?: string
+  updated_at?: string
+  deleted_at?: string
 }
 
 export interface TenantOnboardingStatus {
