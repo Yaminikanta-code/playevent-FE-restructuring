@@ -55,7 +55,7 @@ function TeamsPage() {
 
   const { data: tenantData } = useTenantList({
     page: 1,
-    page_size: 200,
+    page_size: 100,
   })
   const tenants = tenantData?.data ?? []
 

@@ -290,7 +290,7 @@ export function AppSidebar({
         <div
           className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}
         >
-          <div className="h-10 w-10 rounded-full bg-gradient-primary flex items-center justify-center text-primary-foreground font-semibold flex-shrink-0">
+          <div className="h-10 w-10 rounded-full bg-accent flex items-center justify-center text-primary-foreground font-semibold flex-shrink-0">
             {user?.first_name?.[0]}
             {user?.last_name?.[0]}
           </div>

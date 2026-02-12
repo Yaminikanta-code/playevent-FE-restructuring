@@ -16,7 +16,7 @@ function TrialEditPage() {
   const { data: trial, isLoading: trialLoading } = useTrialById(trialId)
   const { data: tenantData, isLoading: tenantsLoading } = useTenantList({
     page: 1,
-    page_size: 200,
+    page_size: 100,
   })
 
   const tenants = tenantData?.data ?? []

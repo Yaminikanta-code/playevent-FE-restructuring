@@ -20,7 +20,7 @@ const AssetTile: React.FC<AssetTileProps> = ({ icon: Icon, title, to }) => {
     <Link to={to} className="w-full h-48 group cursor-pointer">
       <Card
         variant="default"
-        className="flex flex-col items-center justify-center h-full hover:shadow-xl hover:scale-[1.02] transition-all duration-300 border border-[--variable-collection-inputs-border] hover:border-[--variable-collection-statusneutral-base]"
+        className="flex flex-col items-center justify-center h-full hover:shadow-xl hover:scale-[1.02] transition-all duration-300 hover:border-[--variable-collection-statusneutral-base]"
       >
         <Icon className="w-16 h-16 text-[--variable-collection-icons-white] mb-4 transition-colors duration-300 group-hover:text-[--variable-collection-statusneutral-base]" />
         <span className="text-lg font-semibold text-[--variable-collection-inputs-title]">

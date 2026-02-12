@@ -16,7 +16,7 @@ function PlaceEditPage() {
   const { data: place, isLoading: placeLoading } = usePlaceById(placeId)
   const { data: tenantData, isLoading: tenantsLoading } = useTenantList({
     page: 1,
-    page_size: 200,
+    page_size: 100,
   })
 
   const tenants = tenantData?.data ?? []

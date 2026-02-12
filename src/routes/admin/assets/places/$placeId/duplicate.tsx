@@ -4,10 +4,12 @@ import { useTenantList } from '@/api/tenant.api'
 import PlaceForm from '@/components/admin/places/PlaceForm'
 import { authRedirect } from '@/lib/authRedirect'
 
-export const Route = createFileRoute('/admin/assets/places/$placeId/duplicate')({
-  beforeLoad: authRedirect,
-  component: PlaceDuplicatePage,
-})
+export const Route = createFileRoute('/admin/assets/places/$placeId/duplicate')(
+  {
+    beforeLoad: authRedirect,
+    component: PlaceDuplicatePage,
+  },
+)
 
 function PlaceDuplicatePage() {
   const { placeId } = Route.useParams()
@@ -16,7 +18,7 @@ function PlaceDuplicatePage() {
   const { data: place, isLoading: placeLoading } = usePlaceById(placeId)
   const { data: tenantData, isLoading: tenantsLoading } = useTenantList({
     page: 1,
-    page_size: 200,
+    page_size: 100,
   })
 
   const tenants = tenantData?.data ?? []

@@ -77,8 +77,14 @@ interface SortableItemProps {
 }
 
 const SortableItem = ({ id, children }: SortableItemProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id })
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -335,7 +341,7 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
     deleteMutation.isPending
 
   return (
-    <div className="relative">
+    <div className="h-[90vh]">
       <ScrollArea
         title={getFormTitle()}
         headerActions={
@@ -457,9 +463,7 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
                                     icon={Copy}
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() =>
-                                      handleDuplicateMember(index)
-                                    }
+                                    onClick={() => handleDuplicateMember(index)}
                                     tooltip="Duplicate member"
                                   />,
                                   <IconButton
@@ -504,8 +508,7 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
                                         required: 'Number is required',
                                         min: {
                                           value: 0,
-                                          message:
-                                            'Number cannot be negative',
+                                          message: 'Number cannot be negative',
                                         },
                                       }}
                                     />
@@ -515,7 +518,9 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
                                       placeholder="Select position"
                                       control={form.control}
                                       name={`members.${index}.position`}
-                                      rules={{ required: 'Position is required' }}
+                                      rules={{
+                                        required: 'Position is required',
+                                      }}
                                       options={positionOptions}
                                     />
 

@@ -75,8 +75,14 @@ interface SortableItemProps {
 }
 
 const SortableItem = ({ id, children }: SortableItemProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id })
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -273,7 +279,9 @@ const PlaceForm = ({ place, tenants, mode, onClose }: PlaceFormProps) => {
 
   const handleRemoveSubplace = (index: number) => {
     const current = form.getValues('subplaces') || []
-    const updated = normalizeSubplaces(current.filter((_, idx) => idx !== index))
+    const updated = normalizeSubplaces(
+      current.filter((_, idx) => idx !== index),
+    )
     replace(updated)
   }
 
@@ -325,7 +333,7 @@ const PlaceForm = ({ place, tenants, mode, onClose }: PlaceFormProps) => {
     deleteMutation.isPending
 
   return (
-    <div className="relative">
+    <div className="h-[90vh]">
       <ScrollArea
         title={getFormTitle()}
         headerActions={
@@ -379,9 +387,7 @@ const PlaceForm = ({ place, tenants, mode, onClose }: PlaceFormProps) => {
       >
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4 rounded-lg border border-inputs-border bg-inputs-background p-5">
-            <div className="text-sm font-semibold text-inputs-title">
-              Place
-            </div>
+            <div className="text-sm font-semibold text-inputs-title">Place</div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Input
