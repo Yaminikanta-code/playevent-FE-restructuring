@@ -1045,3 +1045,11 @@ body {
   pointer-events: none;
   cursor: not-allowed;
 }
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
