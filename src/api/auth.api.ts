@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { authService, type LoginCredentials } from '../services/auth.service'
+import { authService } from '../services/auth.service'
+import type { LoginCredentials } from '@/types/auth.types'
 import type { UserPayload } from '../stores/useAuthStore'
 import { useAuthStore } from '../stores/useAuthStore'
 import { useAlertStore } from '../stores/useAlertStore'
