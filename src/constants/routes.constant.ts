@@ -2,7 +2,7 @@ export const ROUTES = {
   LOGIN: '/admin/login',
   DASHBOARD: '/admin/dashboard',
   CLIENTS: '/demo/test',
-  CONTRACTS: '/demo/tanstack-query',
+  CONTRACTS: '/admin/contracts',
   SETTINGS: '/admin/settings',
   EVENTS: '/demo/scroll-area-demo',
   GROUPS: '/admin/groups',
