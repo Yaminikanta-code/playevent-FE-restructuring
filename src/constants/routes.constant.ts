@@ -5,7 +5,7 @@ export const ROUTES = {
   CONTRACTS: '/demo/tanstack-query',
   SETTINGS: '/admin/settings',
   EVENTS: '/demo/scroll-area-demo',
-  GROUPS: '/demo/modal-test',
+  GROUPS: '/admin/groups',
   USERS: '/demo/form-test',
   ASSETS: '/admin/assets',
   // Assets sub-routes

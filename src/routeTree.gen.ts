@@ -23,7 +23,10 @@ import { Route as DemoCollapsibleDemoRouteImport } from './routes/demo/collapsib
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
+import { Route as AdminGroupsIndexRouteImport } from './routes/admin/groups/index'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin/assets/index'
+import { Route as AdminGroupsNewRouteImport } from './routes/admin/groups/new'
+import { Route as AdminGroupsGroupIdRouteImport } from './routes/admin/groups/$groupId'
 import { Route as AdminSettingsModulesIndexRouteImport } from './routes/admin/settings/modules/index'
 import { Route as AdminSettingsFontsIndexRouteImport } from './routes/admin/settings/fonts/index'
 import { Route as AdminSettingsAppShellsIndexRouteImport } from './routes/admin/settings/app-shells/index'
@@ -34,6 +37,7 @@ import { Route as AdminSettingsFontsNewRouteImport } from './routes/admin/settin
 import { Route as AdminSettingsFontsFontIdRouteImport } from './routes/admin/settings/fonts/$fontId'
 import { Route as AdminSettingsAppShellsNewRouteImport } from './routes/admin/settings/app-shells/new'
 import { Route as AdminSettingsAppShellsAppShellIdRouteImport } from './routes/admin/settings/app-shells/$appShellId'
+import { Route as AdminGroupsGroupIdDuplicateRouteImport } from './routes/admin/groups/$groupId/duplicate'
 import { Route as AdminAssetsTrialsNewRouteImport } from './routes/admin/assets/trials/new'
 import { Route as AdminAssetsTrialsTrialIdRouteImport } from './routes/admin/assets/trials/$trialId'
 import { Route as AdminAssetsTeamMembersNewRouteImport } from './routes/admin/assets/team-members/new'
@@ -115,9 +119,24 @@ const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
   path: '/settings/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminGroupsIndexRoute = AdminGroupsIndexRouteImport.update({
+  id: '/groups/',
+  path: '/groups/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
   id: '/assets/',
   path: '/assets/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGroupsNewRoute = AdminGroupsNewRouteImport.update({
+  id: '/groups/new',
+  path: '/groups/new',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGroupsGroupIdRoute = AdminGroupsGroupIdRouteImport.update({
+  id: '/groups/$groupId',
+  path: '/groups/$groupId',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSettingsModulesIndexRoute =
@@ -175,6 +194,12 @@ const AdminSettingsAppShellsAppShellIdRoute =
     id: '/settings/app-shells/$appShellId',
     path: '/settings/app-shells/$appShellId',
     getParentRoute: () => AdminRoute,
+  } as any)
+const AdminGroupsGroupIdDuplicateRoute =
+  AdminGroupsGroupIdDuplicateRouteImport.update({
+    id: '/duplicate',
+    path: '/duplicate',
+    getParentRoute: () => AdminGroupsGroupIdRoute,
   } as any)
 const AdminAssetsTrialsNewRoute = AdminAssetsTrialsNewRouteImport.update({
   id: '/assets/trials/new',
@@ -249,7 +274,10 @@ export interface FileRoutesByFullPath {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
   '/demo/': typeof DemoIndexRoute
+  '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
+  '/admin/groups/new': typeof AdminGroupsNewRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
+  '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
@@ -257,6 +285,7 @@ export interface FileRoutesByFullPath {
   '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
+  '/admin/groups/$groupId/duplicate': typeof AdminGroupsGroupIdDuplicateRoute
   '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
@@ -286,7 +315,10 @@ export interface FileRoutesByTo {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
   '/demo': typeof DemoIndexRoute
+  '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
+  '/admin/groups/new': typeof AdminGroupsNewRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
+  '/admin/groups': typeof AdminGroupsIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
@@ -294,6 +326,7 @@ export interface FileRoutesByTo {
   '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
+  '/admin/groups/$groupId/duplicate': typeof AdminGroupsGroupIdDuplicateRoute
   '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
@@ -324,7 +357,10 @@ export interface FileRoutesById {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
   '/demo/': typeof DemoIndexRoute
+  '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
+  '/admin/groups/new': typeof AdminGroupsNewRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
+  '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
@@ -332,6 +368,7 @@ export interface FileRoutesById {
   '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
+  '/admin/groups/$groupId/duplicate': typeof AdminGroupsGroupIdDuplicateRoute
   '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
@@ -363,7 +400,10 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/test'
     | '/demo/'
+    | '/admin/groups/$groupId'
+    | '/admin/groups/new'
     | '/admin/assets/'
+    | '/admin/groups/'
     | '/admin/settings/'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
@@ -371,6 +411,7 @@ export interface FileRouteTypes {
     | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
+    | '/admin/groups/$groupId/duplicate'
     | '/admin/settings/app-shells/$appShellId'
     | '/admin/settings/app-shells/new'
     | '/admin/settings/fonts/$fontId'
@@ -400,7 +441,10 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/test'
     | '/demo'
+    | '/admin/groups/$groupId'
+    | '/admin/groups/new'
     | '/admin/assets'
+    | '/admin/groups'
     | '/admin/settings'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
@@ -408,6 +452,7 @@ export interface FileRouteTypes {
     | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
+    | '/admin/groups/$groupId/duplicate'
     | '/admin/settings/app-shells/$appShellId'
     | '/admin/settings/app-shells/new'
     | '/admin/settings/fonts/$fontId'
@@ -437,7 +482,10 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/test'
     | '/demo/'
+    | '/admin/groups/$groupId'
+    | '/admin/groups/new'
     | '/admin/assets/'
+    | '/admin/groups/'
     | '/admin/settings/'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
@@ -445,6 +493,7 @@ export interface FileRouteTypes {
     | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
+    | '/admin/groups/$groupId/duplicate'
     | '/admin/settings/app-shells/$appShellId'
     | '/admin/settings/app-shells/new'
     | '/admin/settings/fonts/$fontId'
@@ -575,11 +624,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/groups/': {
+      id: '/admin/groups/'
+      path: '/groups'
+      fullPath: '/admin/groups/'
+      preLoaderRoute: typeof AdminGroupsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/assets/': {
       id: '/admin/assets/'
       path: '/assets'
       fullPath: '/admin/assets/'
       preLoaderRoute: typeof AdminAssetsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/groups/new': {
+      id: '/admin/groups/new'
+      path: '/groups/new'
+      fullPath: '/admin/groups/new'
+      preLoaderRoute: typeof AdminGroupsNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/groups/$groupId': {
+      id: '/admin/groups/$groupId'
+      path: '/groups/$groupId'
+      fullPath: '/admin/groups/$groupId'
+      preLoaderRoute: typeof AdminGroupsGroupIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/settings/modules/': {
@@ -651,6 +721,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/settings/app-shells/$appShellId'
       preLoaderRoute: typeof AdminSettingsAppShellsAppShellIdRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/admin/groups/$groupId/duplicate': {
+      id: '/admin/groups/$groupId/duplicate'
+      path: '/duplicate'
+      fullPath: '/admin/groups/$groupId/duplicate'
+      preLoaderRoute: typeof AdminGroupsGroupIdDuplicateRouteImport
+      parentRoute: typeof AdminGroupsGroupIdRoute
     }
     '/admin/assets/trials/new': {
       id: '/admin/assets/trials/new'
@@ -725,6 +802,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminGroupsGroupIdRouteChildren {
+  AdminGroupsGroupIdDuplicateRoute: typeof AdminGroupsGroupIdDuplicateRoute
+}
+
+const AdminGroupsGroupIdRouteChildren: AdminGroupsGroupIdRouteChildren = {
+  AdminGroupsGroupIdDuplicateRoute: AdminGroupsGroupIdDuplicateRoute,
+}
+
+const AdminGroupsGroupIdRouteWithChildren =
+  AdminGroupsGroupIdRoute._addFileChildren(AdminGroupsGroupIdRouteChildren)
+
 interface AdminAssetsPlacesPlaceIdRouteChildren {
   AdminAssetsPlacesPlaceIdDuplicateRoute: typeof AdminAssetsPlacesPlaceIdDuplicateRoute
 }
@@ -788,7 +876,10 @@ const AdminSettingsAppShellsAppShellIdRouteWithChildren =
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminGroupsGroupIdRoute: typeof AdminGroupsGroupIdRouteWithChildren
+  AdminGroupsNewRoute: typeof AdminGroupsNewRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
+  AdminGroupsIndexRoute: typeof AdminGroupsIndexRoute
   AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
   AdminAssetsPlacesPlaceIdRoute: typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   AdminAssetsPlacesNewRoute: typeof AdminAssetsPlacesNewRoute
@@ -811,7 +902,10 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminGroupsGroupIdRoute: AdminGroupsGroupIdRouteWithChildren,
+  AdminGroupsNewRoute: AdminGroupsNewRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
+  AdminGroupsIndexRoute: AdminGroupsIndexRoute,
   AdminSettingsIndexRoute: AdminSettingsIndexRoute,
   AdminAssetsPlacesPlaceIdRoute: AdminAssetsPlacesPlaceIdRouteWithChildren,
   AdminAssetsPlacesNewRoute: AdminAssetsPlacesNewRoute,
