@@ -39,6 +39,7 @@ import type {
   TeamUpdate,
   TeamMember,
 } from '../../../types/team.types'
+import { TeamStatus } from '../../../types/team.types'
 import type { TenantOutDto } from '../../../types/tenant.types'
 import {
   useCreateTeam,
@@ -61,13 +62,13 @@ interface MemberFormData {
   index: number | string
   position: string
   kit_number: string
-  status: string
+  status: TeamStatus
 }
 
 interface FormData {
   name: string
   client_id: string
-  status: string
+  status: TeamStatus
   members: MemberFormData[]
 }
 
@@ -160,17 +161,17 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
     defaultValues: {
       name: '',
       client_id: '',
-      status: 'active',
+      status: TeamStatus.ACTIVE,
       members: [],
     },
   })
 
-  const { fields, append, replace, move } = useFieldArray({
+  const { fields, append, replace, move } = useFieldArray<FormData>({
     control: form.control,
     name: 'members',
   })
 
-  const watchedMembers = useWatch({
+  const watchedMembers = useWatch<FormData, 'members'>({
     control: form.control,
     name: 'members',
   })
@@ -284,7 +285,7 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
       index: fields.length,
       position: '',
       kit_number: '0',
-      status: 'active',
+      status: TeamStatus.ACTIVE,
     })
   }
 
