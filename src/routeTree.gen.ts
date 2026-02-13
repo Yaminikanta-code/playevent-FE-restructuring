@@ -25,10 +25,13 @@ import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin/assets/index'
 import { Route as AdminSettingsModulesIndexRouteImport } from './routes/admin/settings/modules/index'
+import { Route as AdminSettingsFontsIndexRouteImport } from './routes/admin/settings/fonts/index'
 import { Route as AdminSettingsAppShellsIndexRouteImport } from './routes/admin/settings/app-shells/index'
 import { Route as AdminAssetsTrialsIndexRouteImport } from './routes/admin/assets/trials/index'
 import { Route as AdminAssetsTeamMembersIndexRouteImport } from './routes/admin/assets/team-members/index'
 import { Route as AdminAssetsPlacesIndexRouteImport } from './routes/admin/assets/places/index'
+import { Route as AdminSettingsFontsNewRouteImport } from './routes/admin/settings/fonts/new'
+import { Route as AdminSettingsFontsFontIdRouteImport } from './routes/admin/settings/fonts/$fontId'
 import { Route as AdminSettingsAppShellsNewRouteImport } from './routes/admin/settings/app-shells/new'
 import { Route as AdminSettingsAppShellsAppShellIdRouteImport } from './routes/admin/settings/app-shells/$appShellId'
 import { Route as AdminAssetsTrialsNewRouteImport } from './routes/admin/assets/trials/new'
@@ -123,6 +126,11 @@ const AdminSettingsModulesIndexRoute =
     path: '/settings/modules/',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminSettingsFontsIndexRoute = AdminSettingsFontsIndexRouteImport.update({
+  id: '/settings/fonts/',
+  path: '/settings/fonts/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSettingsAppShellsIndexRoute =
   AdminSettingsAppShellsIndexRouteImport.update({
     id: '/settings/app-shells/',
@@ -145,6 +153,17 @@ const AdminAssetsPlacesIndexRoute = AdminAssetsPlacesIndexRouteImport.update({
   path: '/assets/places/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsFontsNewRoute = AdminSettingsFontsNewRouteImport.update({
+  id: '/settings/fonts/new',
+  path: '/settings/fonts/new',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsFontsFontIdRoute =
+  AdminSettingsFontsFontIdRouteImport.update({
+    id: '/settings/fonts/$fontId',
+    path: '/settings/fonts/$fontId',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminSettingsAppShellsNewRoute =
   AdminSettingsAppShellsNewRouteImport.update({
     id: '/settings/app-shells/new',
@@ -240,10 +259,13 @@ export interface FileRoutesByFullPath {
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
   '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
+  '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
+  '/admin/settings/fonts/new': typeof AdminSettingsFontsNewRoute
   '/admin/assets/places/': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members/': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials/': typeof AdminAssetsTrialsIndexRoute
   '/admin/settings/app-shells/': typeof AdminSettingsAppShellsIndexRoute
+  '/admin/settings/fonts/': typeof AdminSettingsFontsIndexRoute
   '/admin/settings/modules/': typeof AdminSettingsModulesIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
   '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
@@ -274,10 +296,13 @@ export interface FileRoutesByTo {
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
   '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
+  '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
+  '/admin/settings/fonts/new': typeof AdminSettingsFontsNewRoute
   '/admin/assets/places': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials': typeof AdminAssetsTrialsIndexRoute
   '/admin/settings/app-shells': typeof AdminSettingsAppShellsIndexRoute
+  '/admin/settings/fonts': typeof AdminSettingsFontsIndexRoute
   '/admin/settings/modules': typeof AdminSettingsModulesIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
   '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
@@ -309,10 +334,13 @@ export interface FileRoutesById {
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
   '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
+  '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
+  '/admin/settings/fonts/new': typeof AdminSettingsFontsNewRoute
   '/admin/assets/places/': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members/': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials/': typeof AdminAssetsTrialsIndexRoute
   '/admin/settings/app-shells/': typeof AdminSettingsAppShellsIndexRoute
+  '/admin/settings/fonts/': typeof AdminSettingsFontsIndexRoute
   '/admin/settings/modules/': typeof AdminSettingsModulesIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
   '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
@@ -345,10 +373,13 @@ export interface FileRouteTypes {
     | '/admin/assets/trials/new'
     | '/admin/settings/app-shells/$appShellId'
     | '/admin/settings/app-shells/new'
+    | '/admin/settings/fonts/$fontId'
+    | '/admin/settings/fonts/new'
     | '/admin/assets/places/'
     | '/admin/assets/team-members/'
     | '/admin/assets/trials/'
     | '/admin/settings/app-shells/'
+    | '/admin/settings/fonts/'
     | '/admin/settings/modules/'
     | '/admin/assets/places/$placeId/duplicate'
     | '/admin/assets/team-members/$teamId/duplicate'
@@ -379,10 +410,13 @@ export interface FileRouteTypes {
     | '/admin/assets/trials/new'
     | '/admin/settings/app-shells/$appShellId'
     | '/admin/settings/app-shells/new'
+    | '/admin/settings/fonts/$fontId'
+    | '/admin/settings/fonts/new'
     | '/admin/assets/places'
     | '/admin/assets/team-members'
     | '/admin/assets/trials'
     | '/admin/settings/app-shells'
+    | '/admin/settings/fonts'
     | '/admin/settings/modules'
     | '/admin/assets/places/$placeId/duplicate'
     | '/admin/assets/team-members/$teamId/duplicate'
@@ -413,10 +447,13 @@ export interface FileRouteTypes {
     | '/admin/assets/trials/new'
     | '/admin/settings/app-shells/$appShellId'
     | '/admin/settings/app-shells/new'
+    | '/admin/settings/fonts/$fontId'
+    | '/admin/settings/fonts/new'
     | '/admin/assets/places/'
     | '/admin/assets/team-members/'
     | '/admin/assets/trials/'
     | '/admin/settings/app-shells/'
+    | '/admin/settings/fonts/'
     | '/admin/settings/modules/'
     | '/admin/assets/places/$placeId/duplicate'
     | '/admin/assets/team-members/$teamId/duplicate'
@@ -552,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsModulesIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings/fonts/': {
+      id: '/admin/settings/fonts/'
+      path: '/settings/fonts'
+      fullPath: '/admin/settings/fonts/'
+      preLoaderRoute: typeof AdminSettingsFontsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/settings/app-shells/': {
       id: '/admin/settings/app-shells/'
       path: '/settings/app-shells'
@@ -578,6 +622,20 @@ declare module '@tanstack/react-router' {
       path: '/assets/places'
       fullPath: '/admin/assets/places/'
       preLoaderRoute: typeof AdminAssetsPlacesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings/fonts/new': {
+      id: '/admin/settings/fonts/new'
+      path: '/settings/fonts/new'
+      fullPath: '/admin/settings/fonts/new'
+      preLoaderRoute: typeof AdminSettingsFontsNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings/fonts/$fontId': {
+      id: '/admin/settings/fonts/$fontId'
+      path: '/settings/fonts/$fontId'
+      fullPath: '/admin/settings/fonts/$fontId'
+      preLoaderRoute: typeof AdminSettingsFontsFontIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/settings/app-shells/new': {
@@ -740,10 +798,13 @@ interface AdminRouteChildren {
   AdminAssetsTrialsNewRoute: typeof AdminAssetsTrialsNewRoute
   AdminSettingsAppShellsAppShellIdRoute: typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
   AdminSettingsAppShellsNewRoute: typeof AdminSettingsAppShellsNewRoute
+  AdminSettingsFontsFontIdRoute: typeof AdminSettingsFontsFontIdRoute
+  AdminSettingsFontsNewRoute: typeof AdminSettingsFontsNewRoute
   AdminAssetsPlacesIndexRoute: typeof AdminAssetsPlacesIndexRoute
   AdminAssetsTeamMembersIndexRoute: typeof AdminAssetsTeamMembersIndexRoute
   AdminAssetsTrialsIndexRoute: typeof AdminAssetsTrialsIndexRoute
   AdminSettingsAppShellsIndexRoute: typeof AdminSettingsAppShellsIndexRoute
+  AdminSettingsFontsIndexRoute: typeof AdminSettingsFontsIndexRoute
   AdminSettingsModulesIndexRoute: typeof AdminSettingsModulesIndexRoute
 }
 
@@ -762,10 +823,13 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSettingsAppShellsAppShellIdRoute:
     AdminSettingsAppShellsAppShellIdRouteWithChildren,
   AdminSettingsAppShellsNewRoute: AdminSettingsAppShellsNewRoute,
+  AdminSettingsFontsFontIdRoute: AdminSettingsFontsFontIdRoute,
+  AdminSettingsFontsNewRoute: AdminSettingsFontsNewRoute,
   AdminAssetsPlacesIndexRoute: AdminAssetsPlacesIndexRoute,
   AdminAssetsTeamMembersIndexRoute: AdminAssetsTeamMembersIndexRoute,
   AdminAssetsTrialsIndexRoute: AdminAssetsTrialsIndexRoute,
   AdminSettingsAppShellsIndexRoute: AdminSettingsAppShellsIndexRoute,
+  AdminSettingsFontsIndexRoute: AdminSettingsFontsIndexRoute,
   AdminSettingsModulesIndexRoute: AdminSettingsModulesIndexRoute,
 }
 
