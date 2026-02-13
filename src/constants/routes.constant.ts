@@ -6,7 +6,7 @@ export const ROUTES = {
   SETTINGS: '/admin/settings',
   EVENTS: '/demo/scroll-area-demo',
   GROUPS: '/admin/groups',
-  USERS: '/demo/form-test',
+  USERS: '/admin/users',
   ASSETS: '/admin/assets',
   // Assets sub-routes
   ASSETS_TEAM_MEMBERS: '/admin/assets/team-members',

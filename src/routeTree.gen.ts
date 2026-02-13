@@ -22,9 +22,12 @@ import { Route as DemoContextMenuDemoRouteImport } from './routes/demo/context-m
 import { Route as DemoCollapsibleDemoRouteImport } from './routes/demo/collapsible-demo'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
 import { Route as AdminGroupsIndexRouteImport } from './routes/admin/groups/index'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin/assets/index'
+import { Route as AdminUsersNewRouteImport } from './routes/admin/users/new'
+import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
 import { Route as AdminGroupsNewRouteImport } from './routes/admin/groups/new'
 import { Route as AdminGroupsGroupIdRouteImport } from './routes/admin/groups/$groupId'
 import { Route as AdminSettingsModulesIndexRouteImport } from './routes/admin/settings/modules/index'
@@ -33,6 +36,7 @@ import { Route as AdminSettingsAppShellsIndexRouteImport } from './routes/admin/
 import { Route as AdminAssetsTrialsIndexRouteImport } from './routes/admin/assets/trials/index'
 import { Route as AdminAssetsTeamMembersIndexRouteImport } from './routes/admin/assets/team-members/index'
 import { Route as AdminAssetsPlacesIndexRouteImport } from './routes/admin/assets/places/index'
+import { Route as AdminUsersUserIdDuplicateRouteImport } from './routes/admin/users/$userId/duplicate'
 import { Route as AdminSettingsFontsNewRouteImport } from './routes/admin/settings/fonts/new'
 import { Route as AdminSettingsFontsFontIdRouteImport } from './routes/admin/settings/fonts/$fontId'
 import { Route as AdminSettingsAppShellsNewRouteImport } from './routes/admin/settings/app-shells/new'
@@ -114,6 +118,11 @@ const AdminDashboardRoute = AdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminUsersIndexRoute = AdminUsersIndexRouteImport.update({
+  id: '/users/',
+  path: '/users/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
   id: '/settings/',
   path: '/settings/',
@@ -127,6 +136,16 @@ const AdminGroupsIndexRoute = AdminGroupsIndexRouteImport.update({
 const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
   id: '/assets/',
   path: '/assets/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersNewRoute = AdminUsersNewRouteImport.update({
+  id: '/users/new',
+  path: '/users/new',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersUserIdRoute = AdminUsersUserIdRouteImport.update({
+  id: '/users/$userId',
+  path: '/users/$userId',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminGroupsNewRoute = AdminGroupsNewRouteImport.update({
@@ -172,6 +191,12 @@ const AdminAssetsPlacesIndexRoute = AdminAssetsPlacesIndexRouteImport.update({
   path: '/assets/places/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminUsersUserIdDuplicateRoute =
+  AdminUsersUserIdDuplicateRouteImport.update({
+    id: '/duplicate',
+    path: '/duplicate',
+    getParentRoute: () => AdminUsersUserIdRoute,
+  } as any)
 const AdminSettingsFontsNewRoute = AdminSettingsFontsNewRouteImport.update({
   id: '/settings/fonts/new',
   path: '/settings/fonts/new',
@@ -276,9 +301,12 @@ export interface FileRoutesByFullPath {
   '/demo/': typeof DemoIndexRoute
   '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
   '/admin/groups/new': typeof AdminGroupsNewRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
+  '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
   '/admin/assets/team-members/$teamId': typeof AdminAssetsTeamMembersTeamIdRouteWithChildren
@@ -290,6 +318,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
   '/admin/settings/fonts/new': typeof AdminSettingsFontsNewRoute
+  '/admin/users/$userId/duplicate': typeof AdminUsersUserIdDuplicateRoute
   '/admin/assets/places/': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members/': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials/': typeof AdminAssetsTrialsIndexRoute
@@ -317,9 +346,12 @@ export interface FileRoutesByTo {
   '/demo': typeof DemoIndexRoute
   '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
   '/admin/groups/new': typeof AdminGroupsNewRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
+  '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
   '/admin/groups': typeof AdminGroupsIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
+  '/admin/users': typeof AdminUsersIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
   '/admin/assets/team-members/$teamId': typeof AdminAssetsTeamMembersTeamIdRouteWithChildren
@@ -331,6 +363,7 @@ export interface FileRoutesByTo {
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
   '/admin/settings/fonts/new': typeof AdminSettingsFontsNewRoute
+  '/admin/users/$userId/duplicate': typeof AdminUsersUserIdDuplicateRoute
   '/admin/assets/places': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials': typeof AdminAssetsTrialsIndexRoute
@@ -359,9 +392,12 @@ export interface FileRoutesById {
   '/demo/': typeof DemoIndexRoute
   '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
   '/admin/groups/new': typeof AdminGroupsNewRoute
+  '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
+  '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
+  '/admin/users/': typeof AdminUsersIndexRoute
   '/admin/assets/places/$placeId': typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   '/admin/assets/places/new': typeof AdminAssetsPlacesNewRoute
   '/admin/assets/team-members/$teamId': typeof AdminAssetsTeamMembersTeamIdRouteWithChildren
@@ -373,6 +409,7 @@ export interface FileRoutesById {
   '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/settings/fonts/$fontId': typeof AdminSettingsFontsFontIdRoute
   '/admin/settings/fonts/new': typeof AdminSettingsFontsNewRoute
+  '/admin/users/$userId/duplicate': typeof AdminUsersUserIdDuplicateRoute
   '/admin/assets/places/': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members/': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials/': typeof AdminAssetsTrialsIndexRoute
@@ -402,9 +439,12 @@ export interface FileRouteTypes {
     | '/demo/'
     | '/admin/groups/$groupId'
     | '/admin/groups/new'
+    | '/admin/users/$userId'
+    | '/admin/users/new'
     | '/admin/assets/'
     | '/admin/groups/'
     | '/admin/settings/'
+    | '/admin/users/'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
     | '/admin/assets/team-members/$teamId'
@@ -416,6 +456,7 @@ export interface FileRouteTypes {
     | '/admin/settings/app-shells/new'
     | '/admin/settings/fonts/$fontId'
     | '/admin/settings/fonts/new'
+    | '/admin/users/$userId/duplicate'
     | '/admin/assets/places/'
     | '/admin/assets/team-members/'
     | '/admin/assets/trials/'
@@ -443,9 +484,12 @@ export interface FileRouteTypes {
     | '/demo'
     | '/admin/groups/$groupId'
     | '/admin/groups/new'
+    | '/admin/users/$userId'
+    | '/admin/users/new'
     | '/admin/assets'
     | '/admin/groups'
     | '/admin/settings'
+    | '/admin/users'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
     | '/admin/assets/team-members/$teamId'
@@ -457,6 +501,7 @@ export interface FileRouteTypes {
     | '/admin/settings/app-shells/new'
     | '/admin/settings/fonts/$fontId'
     | '/admin/settings/fonts/new'
+    | '/admin/users/$userId/duplicate'
     | '/admin/assets/places'
     | '/admin/assets/team-members'
     | '/admin/assets/trials'
@@ -484,9 +529,12 @@ export interface FileRouteTypes {
     | '/demo/'
     | '/admin/groups/$groupId'
     | '/admin/groups/new'
+    | '/admin/users/$userId'
+    | '/admin/users/new'
     | '/admin/assets/'
     | '/admin/groups/'
     | '/admin/settings/'
+    | '/admin/users/'
     | '/admin/assets/places/$placeId'
     | '/admin/assets/places/new'
     | '/admin/assets/team-members/$teamId'
@@ -498,6 +546,7 @@ export interface FileRouteTypes {
     | '/admin/settings/app-shells/new'
     | '/admin/settings/fonts/$fontId'
     | '/admin/settings/fonts/new'
+    | '/admin/users/$userId/duplicate'
     | '/admin/assets/places/'
     | '/admin/assets/team-members/'
     | '/admin/assets/trials/'
@@ -617,6 +666,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDashboardRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/users/': {
+      id: '/admin/users/'
+      path: '/users'
+      fullPath: '/admin/users/'
+      preLoaderRoute: typeof AdminUsersIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/settings/': {
       id: '/admin/settings/'
       path: '/settings'
@@ -636,6 +692,20 @@ declare module '@tanstack/react-router' {
       path: '/assets'
       fullPath: '/admin/assets/'
       preLoaderRoute: typeof AdminAssetsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users/new': {
+      id: '/admin/users/new'
+      path: '/users/new'
+      fullPath: '/admin/users/new'
+      preLoaderRoute: typeof AdminUsersNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users/$userId': {
+      id: '/admin/users/$userId'
+      path: '/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof AdminUsersUserIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/groups/new': {
@@ -693,6 +763,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/assets/places/'
       preLoaderRoute: typeof AdminAssetsPlacesIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/admin/users/$userId/duplicate': {
+      id: '/admin/users/$userId/duplicate'
+      path: '/duplicate'
+      fullPath: '/admin/users/$userId/duplicate'
+      preLoaderRoute: typeof AdminUsersUserIdDuplicateRouteImport
+      parentRoute: typeof AdminUsersUserIdRoute
     }
     '/admin/settings/fonts/new': {
       id: '/admin/settings/fonts/new'
@@ -813,6 +890,17 @@ const AdminGroupsGroupIdRouteChildren: AdminGroupsGroupIdRouteChildren = {
 const AdminGroupsGroupIdRouteWithChildren =
   AdminGroupsGroupIdRoute._addFileChildren(AdminGroupsGroupIdRouteChildren)
 
+interface AdminUsersUserIdRouteChildren {
+  AdminUsersUserIdDuplicateRoute: typeof AdminUsersUserIdDuplicateRoute
+}
+
+const AdminUsersUserIdRouteChildren: AdminUsersUserIdRouteChildren = {
+  AdminUsersUserIdDuplicateRoute: AdminUsersUserIdDuplicateRoute,
+}
+
+const AdminUsersUserIdRouteWithChildren =
+  AdminUsersUserIdRoute._addFileChildren(AdminUsersUserIdRouteChildren)
+
 interface AdminAssetsPlacesPlaceIdRouteChildren {
   AdminAssetsPlacesPlaceIdDuplicateRoute: typeof AdminAssetsPlacesPlaceIdDuplicateRoute
 }
@@ -878,9 +966,12 @@ interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminGroupsGroupIdRoute: typeof AdminGroupsGroupIdRouteWithChildren
   AdminGroupsNewRoute: typeof AdminGroupsNewRoute
+  AdminUsersUserIdRoute: typeof AdminUsersUserIdRouteWithChildren
+  AdminUsersNewRoute: typeof AdminUsersNewRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
   AdminGroupsIndexRoute: typeof AdminGroupsIndexRoute
   AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
+  AdminUsersIndexRoute: typeof AdminUsersIndexRoute
   AdminAssetsPlacesPlaceIdRoute: typeof AdminAssetsPlacesPlaceIdRouteWithChildren
   AdminAssetsPlacesNewRoute: typeof AdminAssetsPlacesNewRoute
   AdminAssetsTeamMembersTeamIdRoute: typeof AdminAssetsTeamMembersTeamIdRouteWithChildren
@@ -904,9 +995,12 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminGroupsGroupIdRoute: AdminGroupsGroupIdRouteWithChildren,
   AdminGroupsNewRoute: AdminGroupsNewRoute,
+  AdminUsersUserIdRoute: AdminUsersUserIdRouteWithChildren,
+  AdminUsersNewRoute: AdminUsersNewRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
   AdminGroupsIndexRoute: AdminGroupsIndexRoute,
   AdminSettingsIndexRoute: AdminSettingsIndexRoute,
+  AdminUsersIndexRoute: AdminUsersIndexRoute,
   AdminAssetsPlacesPlaceIdRoute: AdminAssetsPlacesPlaceIdRouteWithChildren,
   AdminAssetsPlacesNewRoute: AdminAssetsPlacesNewRoute,
   AdminAssetsTeamMembersTeamIdRoute:
