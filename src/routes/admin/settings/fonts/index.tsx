@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Plus, Trash2 } from 'lucide-react'
-import { Table } from '../../../../components/common'
+import { Table, ConfirmationModal } from '../../../../components/common'
 import type { Action } from '../../../../components/common/Table'
-import { useFontList } from '../../../../api/font.api'
+import { useFontList, useDeleteFont } from '../../../../api/font.api'
 import type { FontOutDto } from '../../../../types/font.types'
 import { authRedirect } from '@/lib/authRedirect'
+import { useState } from 'react'
 
 export const Route = createFileRoute('/admin/settings/fonts/')({
   beforeLoad: authRedirect,
@@ -40,11 +41,14 @@ const fontColumns = [
 
 function FontsPage() {
   const navigate = useNavigate()
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [fontToDelete, setFontToDelete] = useState<FontOutDto | null>(null)
 
   const { data: fontData, isLoading } = useFontList({
     page: 1,
     page_size: 100,
   })
+  const deleteMutation = useDeleteFont()
   const fonts = fontData?.data ?? []
   const totalCount = fontData?.count ?? 0
 
@@ -58,7 +62,16 @@ function FontsPage() {
   }
 
   const handleDelete = (font: FontOutDto) => {
-    console.log('Delete font:', font)
+    setFontToDelete(font)
+    setShowDeleteModal(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (fontToDelete?.id) {
+      await deleteMutation.mutateAsync(fontToDelete.id)
+      setShowDeleteModal(false)
+      setFontToDelete(null)
+    }
   }
 
   const handleNew = () => {
@@ -104,6 +117,17 @@ function FontsPage() {
           defaultSortDirection="asc"
         />
       </div>
+
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete Font"
+        message={`Are you sure you want to delete "${fontToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        variant="danger"
+      />
     </div>
   )
 }

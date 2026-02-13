@@ -1,14 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Plus, ChevronLeft, ChevronRight, Copy, Trash2 } from 'lucide-react'
-import { Table } from '../../../../components/common'
+import { Table, ConfirmationModal } from '../../../../components/common'
 import type { Column, Action } from '../../../../components/common/Table'
-import { useTrialList } from '../../../../api/trial.api'
+import { useTrialList, useDeleteTrial } from '../../../../api/trial.api'
 import type { TrialRead } from '../../../../types/trial.types'
 import { useTenantList } from '../../../../api/tenant.api'
 import type { TenantOutDto } from '../../../../types/tenant.types'
 import { useState, useMemo } from 'react'
 import { authRedirect } from '@/lib/authRedirect'
-import { useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/assets/trials/')({
   beforeLoad: authRedirect,
@@ -67,11 +66,15 @@ const trialColumns: Column<TrialReadWithClient>[] = [
 function TrialsPage() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [trialToDelete, setTrialToDelete] =
+    useState<TrialReadWithClient | null>(null)
 
   const { data: trialData, isLoading: trialsLoading } = useTrialList({
     page,
     page_size: PAGE_SIZE,
   })
+  const deleteMutation = useDeleteTrial()
   const trials = trialData?.data ?? []
   const totalCount = trialData?.count ?? 0
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
@@ -118,7 +121,16 @@ function TrialsPage() {
   }
 
   const handleDelete = (trial: TrialReadWithClient) => {
-    console.log('Delete trial:', trial)
+    setTrialToDelete(trial)
+    setShowDeleteModal(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (trialToDelete?.id) {
+      await deleteMutation.mutateAsync(trialToDelete.id)
+      setShowDeleteModal(false)
+      setTrialToDelete(null)
+    }
   }
 
   const handleNew = () => {
@@ -206,6 +218,17 @@ function TrialsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete Trial"
+        message={`Are you sure you want to delete "${trialToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        variant="danger"
+      />
     </div>
   )
 }

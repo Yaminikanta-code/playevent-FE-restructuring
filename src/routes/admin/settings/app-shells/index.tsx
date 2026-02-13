@@ -1,8 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Plus, ChevronLeft, ChevronRight, Copy, Trash2 } from 'lucide-react'
-import { Table } from '../../../../components/common'
+import { Table, ConfirmationModal } from '../../../../components/common'
 import type { Column, Action } from '../../../../components/common/Table'
-import { useAppShellList } from '../../../../api/app-shell.api'
+import {
+  useAppShellList,
+  useDeleteAppShell,
+} from '../../../../api/app-shell.api'
 import type { AppShellOutDto } from '../../../../types/app-shell.types'
 import { useTenantList } from '../../../../api/tenant.api'
 import type { TenantOutDto } from '../../../../types/tenant.types'
@@ -48,11 +51,15 @@ const appShellColumns: Column<AppShellWithClient>[] = [
 function AppShellsPage() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [appShellToDelete, setAppShellToDelete] =
+    useState<AppShellWithClient | null>(null)
 
   const { data: appShellData, isLoading } = useAppShellList({
     page,
     page_size: PAGE_SIZE,
   })
+  const deleteMutation = useDeleteAppShell()
   const appShells = appShellData?.data ?? []
   const totalCount = appShellData?.count ?? 0
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
@@ -76,9 +83,7 @@ function AppShellsPage() {
   const appShellsWithClientName: AppShellWithClient[] = useMemo(() => {
     return appShells.map((shell: AppShellOutDto) => ({
       ...shell,
-      client_name: shell.client_id
-        ? clientNameMap[shell.client_id]
-        : undefined,
+      client_name: shell.client_id ? clientNameMap[shell.client_id] : undefined,
     }))
   }, [appShells, clientNameMap])
 
@@ -101,7 +106,16 @@ function AppShellsPage() {
   }
 
   const handleDelete = (shell: AppShellWithClient) => {
-    console.log('Delete app shell:', shell)
+    setAppShellToDelete(shell)
+    setShowDeleteModal(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (appShellToDelete?.id) {
+      await deleteMutation.mutateAsync(appShellToDelete.id)
+      setShowDeleteModal(false)
+      setAppShellToDelete(null)
+    }
   }
 
   const handleNew = () => {
@@ -189,6 +203,17 @@ function AppShellsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete App Shell"
+        message={`Are you sure you want to delete "${appShellToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        variant="danger"
+      />
     </div>
   )
 }

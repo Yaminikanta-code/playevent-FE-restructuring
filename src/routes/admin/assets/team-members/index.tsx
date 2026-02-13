@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Plus, ChevronLeft, ChevronRight, Copy, Trash2 } from 'lucide-react'
-import { Table } from '../../../../components/common'
+import { Table, ConfirmationModal } from '../../../../components/common'
 import type { Column, Action } from '../../../../components/common/Table'
-import { useTeamList } from '../../../../api/team.api'
+import { useTeamList, useDeleteTeam } from '../../../../api/team.api'
 import type { TeamRead } from '../../../../types/team.types'
 import { useTenantList } from '../../../../api/tenant.api'
 import type { TenantOutDto } from '../../../../types/tenant.types'
@@ -44,11 +44,16 @@ const teamColumns: Column<TeamReadWithClient>[] = [
 function TeamsPage() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [teamToDelete, setTeamToDelete] = useState<TeamReadWithClient | null>(
+    null,
+  )
 
   const { data: teamData, isLoading: teamsLoading } = useTeamList({
     page,
     page_size: PAGE_SIZE,
   })
+  const deleteMutation = useDeleteTeam()
   const teams = teamData?.data ?? []
   const totalCount = teamData?.count ?? 0
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
@@ -95,7 +100,16 @@ function TeamsPage() {
   }
 
   const handleDelete = (team: TeamReadWithClient) => {
-    console.log('Delete team:', team)
+    setTeamToDelete(team)
+    setShowDeleteModal(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (teamToDelete?.id) {
+      await deleteMutation.mutateAsync(teamToDelete.id)
+      setShowDeleteModal(false)
+      setTeamToDelete(null)
+    }
   }
 
   const handleNew = () => {
@@ -183,6 +197,17 @@ function TeamsPage() {
           </div>
         )}
       </div>
+
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete Team"
+        message={`Are you sure you want to delete "${teamToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        variant="danger"
+      />
     </div>
   )
 }

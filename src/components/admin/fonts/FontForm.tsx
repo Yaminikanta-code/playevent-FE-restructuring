@@ -4,7 +4,6 @@ import { useNavigate } from '@tanstack/react-router'
 import { MoreVertical, Save, Trash2, X } from 'lucide-react'
 import {
   Button,
-  Collapsible,
   ConfirmationModal,
   ContextMenu,
   IconButton,
@@ -132,7 +131,7 @@ const FontForm = ({ font, mode, onClose }: FontFormProps) => {
     deleteMutation.isPending
 
   return (
-    <div className="h-[90vh]">
+    <div className="relative">
       <ScrollArea
         title={getFormTitle()}
         headerActions={
@@ -177,43 +176,41 @@ const FontForm = ({ font, mode, onClose }: FontFormProps) => {
         }
       >
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <Collapsible title="FONT DETAILS" defaultExpanded={true}>
-            <div className="space-y-4">
+          <div className="space-y-4">
+            <Input
+              label="Name"
+              placeholder="Enter font name"
+              control={form.control}
+              name="name"
+              rules={{ required: 'Font name is required' }}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Input
-                label="Name"
-                placeholder="Enter font name"
+                label="Regular URL"
+                placeholder="https://..."
                 control={form.control}
-                name="name"
-                rules={{ required: 'Font name is required' }}
+                name="regular"
+                rules={{ required: 'Regular URL is required' }}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Input
-                  label="Regular URL"
-                  placeholder="https://..."
-                  control={form.control}
-                  name="regular"
-                  rules={{ required: 'Regular URL is required' }}
-                />
+              <Input
+                label="Bold URL"
+                placeholder="https://..."
+                control={form.control}
+                name="bold"
+                rules={{ required: 'Bold URL is required' }}
+              />
 
-                <Input
-                  label="Bold URL"
-                  placeholder="https://..."
-                  control={form.control}
-                  name="bold"
-                  rules={{ required: 'Bold URL is required' }}
-                />
-
-                <Input
-                  label="Italic URL"
-                  placeholder="https://..."
-                  control={form.control}
-                  name="italic"
-                  rules={{ required: 'Italic URL is required' }}
-                />
-              </div>
+              <Input
+                label="Italic URL"
+                placeholder="https://..."
+                control={form.control}
+                name="italic"
+                rules={{ required: 'Italic URL is required' }}
+              />
             </div>
-          </Collapsible>
+          </div>
 
           <div className="flex justify-center pt-2">
             <Button

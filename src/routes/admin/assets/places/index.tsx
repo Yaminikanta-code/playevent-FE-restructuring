@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Plus, ChevronLeft, ChevronRight, Copy, Trash2 } from 'lucide-react'
-import { Table } from '@/components/common'
+import { Table, ConfirmationModal } from '@/components/common'
 import type { Column, Action } from '@/components/common/Table'
-import { usePlaceList } from '@/api/place.api'
+import { usePlaceList, useDeletePlace } from '@/api/place.api'
 import type { PlaceRead } from '@/types/place.types'
 import { useTenantList } from '@/api/tenant.api'
 import type { TenantOutDto } from '@/types/tenant.types'
@@ -44,11 +44,15 @@ const placeColumns: Column<PlaceReadWithClient>[] = [
 function PlacesPage() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [placeToDelete, setPlaceToDelete] =
+    useState<PlaceReadWithClient | null>(null)
 
   const { data: placeData, isLoading: placesLoading } = usePlaceList({
     page,
     page_size: PAGE_SIZE,
   })
+  const deleteMutation = useDeletePlace()
   const places = placeData?.data ?? []
   const totalCount = placeData?.count ?? 0
   const totalPages = Math.ceil(totalCount / PAGE_SIZE)
@@ -95,7 +99,16 @@ function PlacesPage() {
   }
 
   const handleDelete = (place: PlaceReadWithClient) => {
-    console.log('Delete place:', place)
+    setPlaceToDelete(place)
+    setShowDeleteModal(true)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (placeToDelete?.id) {
+      await deleteMutation.mutateAsync(placeToDelete.id)
+      setShowDeleteModal(false)
+      setPlaceToDelete(null)
+    }
   }
 
   const handleNew = () => {
@@ -183,6 +196,17 @@ function PlacesPage() {
           </div>
         )}
       </div>
+
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete Place"
+        message={`Are you sure you want to delete "${placeToDelete?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleConfirmDelete}
+        variant="danger"
+      />
     </div>
   )
 }
