@@ -24,15 +24,19 @@ import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin/assets/index'
+import { Route as AdminSettingsAppShellsIndexRouteImport } from './routes/admin/settings/app-shells/index'
 import { Route as AdminAssetsTrialsIndexRouteImport } from './routes/admin/assets/trials/index'
 import { Route as AdminAssetsTeamMembersIndexRouteImport } from './routes/admin/assets/team-members/index'
 import { Route as AdminAssetsPlacesIndexRouteImport } from './routes/admin/assets/places/index'
+import { Route as AdminSettingsAppShellsNewRouteImport } from './routes/admin/settings/app-shells/new'
+import { Route as AdminSettingsAppShellsAppShellIdRouteImport } from './routes/admin/settings/app-shells/$appShellId'
 import { Route as AdminAssetsTrialsNewRouteImport } from './routes/admin/assets/trials/new'
 import { Route as AdminAssetsTrialsTrialIdRouteImport } from './routes/admin/assets/trials/$trialId'
 import { Route as AdminAssetsTeamMembersNewRouteImport } from './routes/admin/assets/team-members/new'
 import { Route as AdminAssetsTeamMembersTeamIdRouteImport } from './routes/admin/assets/team-members/$teamId'
 import { Route as AdminAssetsPlacesNewRouteImport } from './routes/admin/assets/places/new'
 import { Route as AdminAssetsPlacesPlaceIdRouteImport } from './routes/admin/assets/places/$placeId'
+import { Route as AdminSettingsAppShellsAppShellIdDuplicateRouteImport } from './routes/admin/settings/app-shells/$appShellId/duplicate'
 import { Route as AdminAssetsTrialsTrialIdDuplicateRouteImport } from './routes/admin/assets/trials/$trialId/duplicate'
 import { Route as AdminAssetsTeamMembersTeamIdDuplicateRouteImport } from './routes/admin/assets/team-members/$teamId/duplicate'
 import { Route as AdminAssetsPlacesPlaceIdDuplicateRouteImport } from './routes/admin/assets/places/$placeId/duplicate'
@@ -112,6 +116,12 @@ const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
   path: '/assets/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsAppShellsIndexRoute =
+  AdminSettingsAppShellsIndexRouteImport.update({
+    id: '/settings/app-shells/',
+    path: '/settings/app-shells/',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminAssetsTrialsIndexRoute = AdminAssetsTrialsIndexRouteImport.update({
   id: '/assets/trials/',
   path: '/assets/trials/',
@@ -128,6 +138,18 @@ const AdminAssetsPlacesIndexRoute = AdminAssetsPlacesIndexRouteImport.update({
   path: '/assets/places/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSettingsAppShellsNewRoute =
+  AdminSettingsAppShellsNewRouteImport.update({
+    id: '/settings/app-shells/new',
+    path: '/settings/app-shells/new',
+    getParentRoute: () => AdminRoute,
+  } as any)
+const AdminSettingsAppShellsAppShellIdRoute =
+  AdminSettingsAppShellsAppShellIdRouteImport.update({
+    id: '/settings/app-shells/$appShellId',
+    path: '/settings/app-shells/$appShellId',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminAssetsTrialsNewRoute = AdminAssetsTrialsNewRouteImport.update({
   id: '/assets/trials/new',
   path: '/assets/trials/new',
@@ -161,6 +183,12 @@ const AdminAssetsPlacesPlaceIdRoute =
     id: '/assets/places/$placeId',
     path: '/assets/places/$placeId',
     getParentRoute: () => AdminRoute,
+  } as any)
+const AdminSettingsAppShellsAppShellIdDuplicateRoute =
+  AdminSettingsAppShellsAppShellIdDuplicateRouteImport.update({
+    id: '/duplicate',
+    path: '/duplicate',
+    getParentRoute: () => AdminSettingsAppShellsAppShellIdRoute,
   } as any)
 const AdminAssetsTrialsTrialIdDuplicateRoute =
   AdminAssetsTrialsTrialIdDuplicateRouteImport.update({
@@ -203,12 +231,16 @@ export interface FileRoutesByFullPath {
   '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
+  '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
+  '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/assets/places/': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members/': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials/': typeof AdminAssetsTrialsIndexRoute
+  '/admin/settings/app-shells/': typeof AdminSettingsAppShellsIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
   '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
   '/admin/assets/trials/$trialId/duplicate': typeof AdminAssetsTrialsTrialIdDuplicateRoute
+  '/admin/settings/app-shells/$appShellId/duplicate': typeof AdminSettingsAppShellsAppShellIdDuplicateRoute
 }
 export interface FileRoutesByTo {
   '/admin': typeof AdminRouteWithChildren
@@ -232,12 +264,16 @@ export interface FileRoutesByTo {
   '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
+  '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
+  '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/assets/places': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials': typeof AdminAssetsTrialsIndexRoute
+  '/admin/settings/app-shells': typeof AdminSettingsAppShellsIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
   '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
   '/admin/assets/trials/$trialId/duplicate': typeof AdminAssetsTrialsTrialIdDuplicateRoute
+  '/admin/settings/app-shells/$appShellId/duplicate': typeof AdminSettingsAppShellsAppShellIdDuplicateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -262,12 +298,16 @@ export interface FileRoutesById {
   '/admin/assets/team-members/new': typeof AdminAssetsTeamMembersNewRoute
   '/admin/assets/trials/$trialId': typeof AdminAssetsTrialsTrialIdRouteWithChildren
   '/admin/assets/trials/new': typeof AdminAssetsTrialsNewRoute
+  '/admin/settings/app-shells/$appShellId': typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
+  '/admin/settings/app-shells/new': typeof AdminSettingsAppShellsNewRoute
   '/admin/assets/places/': typeof AdminAssetsPlacesIndexRoute
   '/admin/assets/team-members/': typeof AdminAssetsTeamMembersIndexRoute
   '/admin/assets/trials/': typeof AdminAssetsTrialsIndexRoute
+  '/admin/settings/app-shells/': typeof AdminSettingsAppShellsIndexRoute
   '/admin/assets/places/$placeId/duplicate': typeof AdminAssetsPlacesPlaceIdDuplicateRoute
   '/admin/assets/team-members/$teamId/duplicate': typeof AdminAssetsTeamMembersTeamIdDuplicateRoute
   '/admin/assets/trials/$trialId/duplicate': typeof AdminAssetsTrialsTrialIdDuplicateRoute
+  '/admin/settings/app-shells/$appShellId/duplicate': typeof AdminSettingsAppShellsAppShellIdDuplicateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -293,12 +333,16 @@ export interface FileRouteTypes {
     | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
+    | '/admin/settings/app-shells/$appShellId'
+    | '/admin/settings/app-shells/new'
     | '/admin/assets/places/'
     | '/admin/assets/team-members/'
     | '/admin/assets/trials/'
+    | '/admin/settings/app-shells/'
     | '/admin/assets/places/$placeId/duplicate'
     | '/admin/assets/team-members/$teamId/duplicate'
     | '/admin/assets/trials/$trialId/duplicate'
+    | '/admin/settings/app-shells/$appShellId/duplicate'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/admin'
@@ -322,12 +366,16 @@ export interface FileRouteTypes {
     | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
+    | '/admin/settings/app-shells/$appShellId'
+    | '/admin/settings/app-shells/new'
     | '/admin/assets/places'
     | '/admin/assets/team-members'
     | '/admin/assets/trials'
+    | '/admin/settings/app-shells'
     | '/admin/assets/places/$placeId/duplicate'
     | '/admin/assets/team-members/$teamId/duplicate'
     | '/admin/assets/trials/$trialId/duplicate'
+    | '/admin/settings/app-shells/$appShellId/duplicate'
   id:
     | '__root__'
     | '/admin'
@@ -351,12 +399,16 @@ export interface FileRouteTypes {
     | '/admin/assets/team-members/new'
     | '/admin/assets/trials/$trialId'
     | '/admin/assets/trials/new'
+    | '/admin/settings/app-shells/$appShellId'
+    | '/admin/settings/app-shells/new'
     | '/admin/assets/places/'
     | '/admin/assets/team-members/'
     | '/admin/assets/trials/'
+    | '/admin/settings/app-shells/'
     | '/admin/assets/places/$placeId/duplicate'
     | '/admin/assets/team-members/$teamId/duplicate'
     | '/admin/assets/trials/$trialId/duplicate'
+    | '/admin/settings/app-shells/$appShellId/duplicate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -480,6 +532,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAssetsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings/app-shells/': {
+      id: '/admin/settings/app-shells/'
+      path: '/settings/app-shells'
+      fullPath: '/admin/settings/app-shells/'
+      preLoaderRoute: typeof AdminSettingsAppShellsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/assets/trials/': {
       id: '/admin/assets/trials/'
       path: '/assets/trials'
@@ -499,6 +558,20 @@ declare module '@tanstack/react-router' {
       path: '/assets/places'
       fullPath: '/admin/assets/places/'
       preLoaderRoute: typeof AdminAssetsPlacesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings/app-shells/new': {
+      id: '/admin/settings/app-shells/new'
+      path: '/settings/app-shells/new'
+      fullPath: '/admin/settings/app-shells/new'
+      preLoaderRoute: typeof AdminSettingsAppShellsNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings/app-shells/$appShellId': {
+      id: '/admin/settings/app-shells/$appShellId'
+      path: '/settings/app-shells/$appShellId'
+      fullPath: '/admin/settings/app-shells/$appShellId'
+      preLoaderRoute: typeof AdminSettingsAppShellsAppShellIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/assets/trials/new': {
@@ -542,6 +615,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/assets/places/$placeId'
       preLoaderRoute: typeof AdminAssetsPlacesPlaceIdRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/admin/settings/app-shells/$appShellId/duplicate': {
+      id: '/admin/settings/app-shells/$appShellId/duplicate'
+      path: '/duplicate'
+      fullPath: '/admin/settings/app-shells/$appShellId/duplicate'
+      preLoaderRoute: typeof AdminSettingsAppShellsAppShellIdDuplicateRouteImport
+      parentRoute: typeof AdminSettingsAppShellsAppShellIdRoute
     }
     '/admin/assets/trials/$trialId/duplicate': {
       id: '/admin/assets/trials/$trialId/duplicate'
@@ -612,6 +692,21 @@ const AdminAssetsTrialsTrialIdRouteWithChildren =
     AdminAssetsTrialsTrialIdRouteChildren,
   )
 
+interface AdminSettingsAppShellsAppShellIdRouteChildren {
+  AdminSettingsAppShellsAppShellIdDuplicateRoute: typeof AdminSettingsAppShellsAppShellIdDuplicateRoute
+}
+
+const AdminSettingsAppShellsAppShellIdRouteChildren: AdminSettingsAppShellsAppShellIdRouteChildren =
+  {
+    AdminSettingsAppShellsAppShellIdDuplicateRoute:
+      AdminSettingsAppShellsAppShellIdDuplicateRoute,
+  }
+
+const AdminSettingsAppShellsAppShellIdRouteWithChildren =
+  AdminSettingsAppShellsAppShellIdRoute._addFileChildren(
+    AdminSettingsAppShellsAppShellIdRouteChildren,
+  )
+
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminLoginRoute: typeof AdminLoginRoute
@@ -623,9 +718,12 @@ interface AdminRouteChildren {
   AdminAssetsTeamMembersNewRoute: typeof AdminAssetsTeamMembersNewRoute
   AdminAssetsTrialsTrialIdRoute: typeof AdminAssetsTrialsTrialIdRouteWithChildren
   AdminAssetsTrialsNewRoute: typeof AdminAssetsTrialsNewRoute
+  AdminSettingsAppShellsAppShellIdRoute: typeof AdminSettingsAppShellsAppShellIdRouteWithChildren
+  AdminSettingsAppShellsNewRoute: typeof AdminSettingsAppShellsNewRoute
   AdminAssetsPlacesIndexRoute: typeof AdminAssetsPlacesIndexRoute
   AdminAssetsTeamMembersIndexRoute: typeof AdminAssetsTeamMembersIndexRoute
   AdminAssetsTrialsIndexRoute: typeof AdminAssetsTrialsIndexRoute
+  AdminSettingsAppShellsIndexRoute: typeof AdminSettingsAppShellsIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -640,9 +738,13 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAssetsTeamMembersNewRoute: AdminAssetsTeamMembersNewRoute,
   AdminAssetsTrialsTrialIdRoute: AdminAssetsTrialsTrialIdRouteWithChildren,
   AdminAssetsTrialsNewRoute: AdminAssetsTrialsNewRoute,
+  AdminSettingsAppShellsAppShellIdRoute:
+    AdminSettingsAppShellsAppShellIdRouteWithChildren,
+  AdminSettingsAppShellsNewRoute: AdminSettingsAppShellsNewRoute,
   AdminAssetsPlacesIndexRoute: AdminAssetsPlacesIndexRoute,
   AdminAssetsTeamMembersIndexRoute: AdminAssetsTeamMembersIndexRoute,
   AdminAssetsTrialsIndexRoute: AdminAssetsTrialsIndexRoute,
+  AdminSettingsAppShellsIndexRoute: AdminSettingsAppShellsIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
