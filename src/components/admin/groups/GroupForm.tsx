@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from '@tanstack/react-router'
 import { Copy, MoreVertical, Save, Trash2, X } from 'lucide-react'
@@ -14,6 +14,7 @@ import {
   type StatusOption,
 } from '../../common'
 import {
+  useClientGroups,
   useCreateGroup,
   useDeleteGroup,
   useUpdateGroup,
@@ -31,7 +32,6 @@ type FormMode = 'new' | 'edit' | 'duplicate'
 interface GroupFormProps {
   group?: GroupOutDto | null
   tenants: TenantOutDto[]
-  allGroups: GroupOutDto[]
   mode: FormMode
   onClose?: () => void
 }
@@ -46,7 +46,6 @@ interface FormData {
 const GroupForm = ({
   group,
   tenants,
-  allGroups,
   mode,
   onClose,
 }: GroupFormProps) => {
@@ -59,6 +58,32 @@ const GroupForm = ({
   const isDuplicateMode = mode === 'duplicate'
   const canDelete = isEditMode && group?.id
 
+  const form = useForm<FormData>({
+    defaultValues: {
+      name: '',
+      client_id: '',
+      parent_id: '',
+      status: GroupStatus.ACTIVE,
+    },
+  })
+
+  const selectedClientId = form.watch('client_id')
+  const prevClientIdRef = useRef(selectedClientId)
+
+  // Reset parent_id when client_id changes (but not on initial load)
+  useEffect(() => {
+    if (
+      prevClientIdRef.current !== selectedClientId &&
+      prevClientIdRef.current !== ''
+    ) {
+      form.setValue('parent_id', '')
+    }
+    prevClientIdRef.current = selectedClientId
+  }, [selectedClientId, form])
+
+  // Fetch groups filtered by selected client
+  const { data: filteredGroupData } = useClientGroups(selectedClientId)
+
   const tenantOptions = useMemo(
     () =>
       tenants.map((tenant) => ({
@@ -70,7 +95,8 @@ const GroupForm = ({
   )
 
   const parentGroupOptions = useMemo(() => {
-    const options = allGroups
+    const filteredGroups: GroupOutDto[] = filteredGroupData?.data ?? []
+    const options = filteredGroups
       .filter((g) => g.id !== group?.id)
       .map((g) => ({
         value: g.id,
@@ -78,7 +104,7 @@ const GroupForm = ({
         disabled: false,
       }))
     return [{ value: '', label: 'None (root)', disabled: false }, ...options]
-  }, [allGroups, group?.id])
+  }, [filteredGroupData, group?.id])
 
   const statusOptions: Array<StatusOption> = [
     { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
@@ -94,15 +120,6 @@ const GroupForm = ({
     },
   ]
 
-  const form = useForm<FormData>({
-    defaultValues: {
-      name: '',
-      client_id: '',
-      parent_id: '',
-      status: GroupStatus.ACTIVE,
-    },
-  })
-
   useEffect(() => {
     if (group && (isEditMode || isDuplicateMode)) {
       form.reset({
@@ -111,8 +128,10 @@ const GroupForm = ({
         parent_id: group.parent_id ?? '',
         status: (group.status as GroupStatus) || GroupStatus.ACTIVE,
       })
+      prevClientIdRef.current = group.client_id ?? ''
     } else {
       form.reset()
+      prevClientIdRef.current = ''
     }
     setHasChanges(false)
   }, [group, mode, form, isEditMode, isDuplicateMode])
@@ -274,10 +293,15 @@ const GroupForm = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Select
                 label="Parent Group"
-                placeholder="Select a parent group"
+                placeholder={
+                  selectedClientId
+                    ? 'Select a parent group'
+                    : 'Select a client first'
+                }
                 control={form.control}
                 name="parent_id"
                 options={parentGroupOptions}
+                disabled={!selectedClientId}
               />
 
               <StatusSelector

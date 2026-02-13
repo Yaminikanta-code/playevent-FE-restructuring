@@ -126,21 +126,23 @@ export function createApiHooks<
   // ============ LIST HOOK ============
 
   interface UseListParams extends GetListParams {
+    enabled?: boolean
     [key: string]: any
   }
 
   const useList = (params: UseListParams = {}) => {
     const showAlert = useAlertStore((state) => state.showAlert)
+    const { enabled, ...apiParams } = params
 
     const queryKey = queryKeys.list || [serviceName]
     const enhancedQueryKey = [
       ...queryKey,
-      ...Object.values(params).filter((v) => v !== undefined),
+      ...Object.values(apiParams).filter((v) => v !== undefined),
     ]
 
     const query = useQuery({
       queryKey: enhancedQueryKey,
-      queryFn: () => service.getList(params),
+      queryFn: () => service.getList(apiParams),
       staleTime: Infinity,
       gcTime: 10 * 60 * 1000,
       retry: (failureCount, error: any) => {
@@ -150,6 +152,7 @@ export function createApiHooks<
         return failureCount < 2
       },
       ...queryDefaults,
+      ...(enabled !== undefined && { enabled }),
     })
 
     useEffect(() => {

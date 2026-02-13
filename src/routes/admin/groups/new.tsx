@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useTenantList } from '@/api/tenant.api'
-import { useGroupList } from '@/api/group.api'
 import GroupForm from '@/components/admin/groups/GroupForm'
 import { authRedirect } from '@/lib/authRedirect'
 
@@ -16,15 +15,10 @@ function GroupNewPage() {
     page: 1,
     page_size: 100,
   })
-  const { data: groupData, isLoading: groupsLoading } = useGroupList({
-    page: 1,
-    page_size: 100,
-  })
 
   const tenants = tenantData?.data ?? []
-  const groups = groupData?.data ?? []
 
-  if (tenantsLoading || groupsLoading) {
+  if (tenantsLoading) {
     return (
       <div className="flex items-center justify-center h-64">Loading...</div>
     )
@@ -35,7 +29,6 @@ function GroupNewPage() {
       <GroupForm
         group={null}
         tenants={tenants}
-        allGroups={groups}
         mode="new"
         onClose={() => navigate({ to: '/admin/groups' })}
       />

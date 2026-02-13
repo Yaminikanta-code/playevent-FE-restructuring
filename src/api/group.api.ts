@@ -24,6 +24,15 @@ export const {
     useHardDelete: useHardDeleteGroup,
 } = groupHooks
 
+export const useClientGroups = (clientId: string) => {
+    return useGroupList({
+        page: 1,
+        page_size: 100,
+        filter: JSON.stringify({ client_id: clientId }),
+        enabled: !!clientId,
+    })
+}
+
 export type {
     GroupOutDto,
     CreateGroupDto,
