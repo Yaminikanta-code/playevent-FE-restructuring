@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { Controller } from 'react-hook-form'
 import type { Control, FieldValues, Path } from 'react-hook-form'
 import { ChevronDown, Check } from 'lucide-react'
@@ -44,7 +45,34 @@ const Select = <T extends FieldValues = FieldValues>({
   const selectId = id || name
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({})
+
+  const updateDropdownPosition = useCallback(() => {
+    if (!triggerRef.current) return
+    const rect = triggerRef.current.getBoundingClientRect()
+    setDropdownStyle({
+      position: 'fixed',
+      top: rect.bottom + 4,
+      left: rect.left,
+      width: rect.width,
+    })
+  }, [])
+
+  // Update position when open
+  useEffect(() => {
+    if (!isOpen) return
+    updateDropdownPosition()
+
+    const handleScrollOrResize = () => updateDropdownPosition()
+    window.addEventListener('scroll', handleScrollOrResize, true)
+    window.addEventListener('resize', handleScrollOrResize)
+    return () => {
+      window.removeEventListener('scroll', handleScrollOrResize, true)
+      window.removeEventListener('resize', handleScrollOrResize)
+    }
+  }, [isOpen, updateDropdownPosition])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -106,6 +134,7 @@ const Select = <T extends FieldValues = FieldValues>({
             {/* Custom Select Trigger */}
             <button
               type="button"
+              ref={triggerRef}
               id={selectId}
               data-testid={selectId}
               className={cn(
@@ -146,50 +175,53 @@ const Select = <T extends FieldValues = FieldValues>({
               />
             </button>
 
-            {/* Custom Dropdown */}
-            {isOpen && (
-              <div
-                ref={dropdownRef}
-                className="absolute top-full left-0 right-0 z-50 mt-1 max-h-64 overflow-y-auto rounded-lg border border-inputs-border bg-inputs-background shadow-2xl"
-                role="listbox"
-                aria-labelledby={`${selectId}-label`}
-              >
-                {options.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    className={cn(
-                      'flex w-full items-center justify-between px-4 py-3 text-left transition-colors duration-150',
-                      'hover:bg-midnight-light focus:bg-midnight-light focus:outline-none',
-                      option.disabled && 'cursor-not-allowed opacity-50',
-                      field.value === option.value &&
-                        'bg-midnight-light text-ink-highlight',
-                    )}
-                    onClick={() => {
-                      if (!option.disabled) {
-                        field.onChange(option.value)
-                        setIsOpen(false)
-                      }
-                    }}
-                    disabled={option.disabled}
-                    role="option"
-                    aria-selected={field.value === option.value}
-                  >
-                    <span
+            {/* Custom Dropdown - portaled to body to escape overflow-hidden ancestors */}
+            {isOpen &&
+              createPortal(
+                <div
+                  ref={dropdownRef}
+                  className="z-50 max-h-64 overflow-y-auto rounded-lg border border-inputs-border bg-inputs-background shadow-2xl"
+                  style={dropdownStyle}
+                  role="listbox"
+                  aria-labelledby={`${selectId}-label`}
+                >
+                  {options.map((option) => (
+                    <button
+                      key={option.value}
+                      type="button"
                       className={cn(
-                        'text-inputs-title',
-                        field.value === option.value && 'font-medium',
+                        'flex w-full items-center justify-between px-4 py-3 text-left transition-colors duration-150',
+                        'hover:bg-midnight-light focus:bg-midnight-light focus:outline-none',
+                        option.disabled && 'cursor-not-allowed opacity-50',
+                        field.value === option.value &&
+                          'bg-midnight-light text-ink-highlight',
                       )}
+                      onClick={() => {
+                        if (!option.disabled) {
+                          field.onChange(option.value)
+                          setIsOpen(false)
+                        }
+                      }}
+                      disabled={option.disabled}
+                      role="option"
+                      aria-selected={field.value === option.value}
                     >
-                      {option.label}
-                    </span>
-                    {field.value === option.value && (
-                      <Check size={18} className="text-ink-highlight" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
+                      <span
+                        className={cn(
+                          'text-inputs-title',
+                          field.value === option.value && 'font-medium',
+                        )}
+                      >
+                        {option.label}
+                      </span>
+                      {field.value === option.value && (
+                        <Check size={18} className="text-ink-highlight" />
+                      )}
+                    </button>
+                  ))}
+                </div>,
+                document.body,
+              )}
 
             {hasError && (
               <span className="text-sm text-ink-error mt-1">
