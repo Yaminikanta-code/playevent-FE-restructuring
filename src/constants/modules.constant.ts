@@ -14,14 +14,20 @@ export const MOCK_MODULES: Module[] = [
   { id: '6', name: 'Lists', icon: 'List', is_active: true },
 ]
 
-export const MODULE_STATUS_OPTIONS = [
-  { value: 'draft', label: 'Draft', disabled: false },
-  { value: 'active', label: 'Active', disabled: false },
-  { value: 'inactive', label: 'Inactive', disabled: false },
-  { value: 'archived', label: 'Archived', disabled: false },
+import type { StatusOption } from '../components/common/StatusSelector'
+
+export const MODULE_STATUS_OPTIONS: StatusOption[] = [
+  { value: 'draft', label: 'Draft', colorClass: 'bg-statusneutral-base' },
+  { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
+  { value: 'inactive', label: 'Inactive', colorClass: 'bg-statusneutral-base' },
+  {
+    value: 'archived',
+    label: 'Archived',
+    colorClass: 'bg-statusneutral-darkest',
+  },
 ]
 
-export const MODULE_DEFAULT_STATUS_OPTIONS = [
-  { value: 'active', label: 'Active', disabled: false },
-  { value: 'inactive', label: 'Inactive', disabled: false },
+export const MODULE_DEFAULT_STATUS_OPTIONS: StatusOption[] = [
+  { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
+  { value: 'inactive', label: 'Inactive', colorClass: 'bg-statusneutral-base' },
 ]

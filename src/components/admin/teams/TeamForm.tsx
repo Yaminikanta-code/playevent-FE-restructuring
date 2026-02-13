@@ -1,16 +1,28 @@
 import { useEffect, useMemo, useState } from 'react'
-import type React from 'react'
 import { useForm, useFieldArray, useWatch } from 'react-hook-form'
 import { useNavigate } from '@tanstack/react-router'
+import type React from 'react'
 import {
-  MoreVertical,
-  Save,
   Copy,
+  GripVertical,
+  MoreVertical,
+  Plus,
+  Save,
   Trash2,
   X,
-  Plus,
-  GripVertical,
 } from 'lucide-react'
+import {
+  Button,
+  Collapsible,
+  ConfirmationModal,
+  ContextMenu,
+  IconButton,
+  Input,
+  ScrollArea,
+  Select,
+  StatusSelector,
+  type StatusOption,
+} from '../../common'
 import {
   DndContext,
   closestCenter,
@@ -25,27 +37,19 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import ScrollArea from '../../common/ScrollArea'
-import IconButton from '../../common/IconButton'
-import ContextMenu from '../../common/ContextMenu'
-import Input from '../../common/Input'
-import Select from '../../common/Select'
-import Button from '../../common/Button'
-import Collapsible from '../../common/Collapsible'
-import ConfirmationModal from '../../common/ConfirmationModal'
-import type {
-  TeamRead,
-  TeamCreate,
-  TeamUpdate,
-  TeamMember,
-} from '../../../types/team.types'
-import { TeamStatus } from '../../../types/team.types'
-import type { TenantOutDto } from '../../../types/tenant.types'
 import {
   useCreateTeam,
-  useUpdateTeam,
   useDeleteTeam,
+  useUpdateTeam,
 } from '../../../api/team.api'
+import { TeamStatus } from '../../../types/team.types'
+import type {
+  TeamCreate,
+  TeamMember,
+  TeamRead,
+  TeamUpdate,
+} from '../../../types/team.types'
+import type { TenantOutDto } from '../../../types/tenant.types'
 
 type FormMode = 'new' | 'edit' | 'duplicate'
 
@@ -138,15 +142,32 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
     [tenants],
   )
 
-  const statusOptions = [
-    { value: 'active', label: 'Active', disabled: false },
-    { value: 'inactive', label: 'Inactive', disabled: false },
+  const statusOptions: Array<StatusOption> = [
+    { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
+    {
+      value: 'inactive',
+      label: 'Inactive',
+      colorClass: 'bg-statusneutral-base',
+    },
+    {
+      value: 'archived',
+      label: 'Archived',
+      colorClass: 'bg-statusneutral-darkest',
+    },
   ]
 
-  const memberStatusOptions = [
-    { value: 'active', label: 'Active', disabled: false },
-    { value: 'inactive', label: 'Inactive', disabled: false },
-    { value: 'injured', label: 'Injured', disabled: false },
+  const memberStatusOptions: Array<StatusOption> = [
+    { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
+    {
+      value: 'inactive',
+      label: 'Inactive',
+      colorClass: 'bg-statusneutral-base',
+    },
+    {
+      value: 'archived',
+      label: 'Archived',
+      colorClass: 'bg-statusneutral-darkest',
+    },
   ]
 
   const positionOptions = [
@@ -416,9 +437,8 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
                 options={tenantOptions}
               />
 
-              <Select
+              <StatusSelector
                 label="Status"
-                placeholder="Select status"
                 control={form.control}
                 name="status"
                 rules={{ required: 'Status is required' }}
@@ -525,9 +545,8 @@ const TeamForm = ({ team, tenants, mode, onClose }: TeamFormProps) => {
                                       options={positionOptions}
                                     />
 
-                                    <Select
+                                    <StatusSelector
                                       label="Status"
-                                      placeholder="Select status"
                                       control={form.control}
                                       name={`members.${index}.status`}
                                       rules={{ required: 'Status is required' }}

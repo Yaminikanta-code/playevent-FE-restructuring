@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from '@tanstack/react-router'
 import { MoreVertical, Save, X } from 'lucide-react'
-import Input from '../../common/Input'
-import Select from '../../common/Select'
-import ScrollArea from '../../common/ScrollArea'
-import IconButton from '../../common/IconButton'
-import ContextMenu from '../../common/ContextMenu'
-import Collapsible from '../../common/Collapsible'
-import ConfirmationModal from '../../common/ConfirmationModal'
+import {
+  Collapsible,
+  ConfirmationModal,
+  ContextMenu,
+  IconButton,
+  Input,
+  ScrollArea,
+  StatusSelector,
+} from '../../common'
 import {
   MOCK_MODULES,
   MODULE_DEFAULT_STATUS_OPTIONS,
@@ -165,9 +167,8 @@ const ModulesForm = () => {
               defaultExpanded={true}
             >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Select
+                <StatusSelector
                   label="Status"
-                  placeholder="Select status"
                   control={form.control}
                   name={`${module.name}.status`}
                   options={MODULE_DEFAULT_STATUS_OPTIONS}
@@ -182,9 +183,8 @@ const ModulesForm = () => {
                   rules={{ required: 'Default version is required' }}
                 />
 
-                <Select
+                <StatusSelector
                   label="Default Status"
-                  placeholder="Select default status"
                   control={form.control}
                   name={`${module.name}.default_status`}
                   options={MODULE_STATUS_OPTIONS}

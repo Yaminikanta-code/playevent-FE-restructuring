@@ -1,28 +1,32 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from '@tanstack/react-router'
-import { MoreVertical, Save, Copy, Trash2, X } from 'lucide-react'
-import ScrollArea from '../../common/ScrollArea'
-import IconButton from '../../common/IconButton'
-import ContextMenu from '../../common/ContextMenu'
-import Input from '../../common/Input'
-import Select from '../../common/Select'
-import Textarea from '../../common/Textarea'
-import Button from '../../common/Button'
-import Collapsible from '../../common/Collapsible'
-import ConfirmationModal from '../../common/ConfirmationModal'
+import { Copy, MoreVertical, Save, Trash2, X } from 'lucide-react'
+import {
+  Button,
+  Collapsible,
+  ConfirmationModal,
+  ContextMenu,
+  IconButton,
+  Input,
+  ScrollArea,
+  Select,
+  StatusSelector,
+  Textarea,
+  type StatusOption,
+} from '../../common'
+import {
+  useCreateAppShell,
+  useDeleteAppShell,
+  useUpdateAppShell,
+} from '../../../api/app-shell.api'
+import { AppShellStatus } from '../../../types/app-shell.types'
 import type {
   AppShellOutDto,
   CreateAppShellDto,
   UpdateAppShellDto,
 } from '../../../types/app-shell.types'
-import { AppShellStatus } from '../../../types/app-shell.types'
 import type { TenantOutDto } from '../../../types/tenant.types'
-import {
-  useCreateAppShell,
-  useUpdateAppShell,
-  useDeleteAppShell,
-} from '../../../api/app-shell.api'
 
 type FormMode = 'new' | 'edit' | 'duplicate'
 
@@ -68,9 +72,18 @@ const AppShellForm = ({
     [tenants],
   )
 
-  const statusOptions = [
-    { value: 'active', label: 'Active', disabled: false },
-    { value: 'inactive', label: 'Inactive', disabled: false },
+  const statusOptions: Array<StatusOption> = [
+    { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
+    {
+      value: 'inactive',
+      label: 'Inactive',
+      colorClass: 'bg-statusneutral-base',
+    },
+    {
+      value: 'archived',
+      label: 'Archived',
+      colorClass: 'bg-statusneutral-darkest',
+    },
   ]
 
   const form = useForm<FormData>({
@@ -257,9 +270,8 @@ const AppShellForm = ({
                 options={tenantOptions}
               />
 
-              <Select
+              <StatusSelector
                 label="Status"
-                placeholder="Select status"
                 control={form.control}
                 name="status"
                 rules={{ required: 'Status is required' }}

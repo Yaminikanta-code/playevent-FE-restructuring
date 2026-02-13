@@ -58,15 +58,18 @@ const TrialForm = ({ trial, tenants, mode, onClose }: TrialFormProps) => {
     disabled: false,
   }))
 
-  const statusOptions: StatusOption[] = [
+  const statusOptions: Array<StatusOption> = [
     { value: 'active', label: 'Active', colorClass: 'bg-statuszen-base' },
     {
       value: 'inactive',
       label: 'Inactive',
       colorClass: 'bg-statusneutral-base',
     },
-    // { value: 'pending', label: 'Pending', colorClass: 'bg-statusalert-base' },
-    // { value: 'completed', label: 'Completed', colorClass: 'bg-statuszen-base' },
+    {
+      value: 'archived',
+      label: 'Archived',
+      colorClass: 'bg-statusneutral-darkest',
+    },
   ]
 
   const form = useForm<FormData>({

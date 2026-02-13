@@ -15,6 +15,9 @@ export type StatusType =
   | 'inactive'
   | 'pending'
   | 'completed'
+  | 'injured'
+  | 'draft'
+  | 'archived'
 
 export interface StatusOption {
   value: StatusType
@@ -38,6 +41,13 @@ export const statusOptions: StatusOption[] = [
   { value: 'inactive', label: 'Inactive', colorClass: 'bg-statusneutral-base' },
   { value: 'pending', label: 'Pending', colorClass: 'bg-statusalert-base' },
   { value: 'completed', label: 'Completed', colorClass: 'bg-statuszen-base' },
+  { value: 'injured', label: 'Injured', colorClass: 'bg-statusalert-base' },
+  { value: 'draft', label: 'Draft', colorClass: 'bg-statusneutral-base' },
+  {
+    value: 'archived',
+    label: 'Archived',
+    colorClass: 'bg-statusneutral-darkest',
+  },
 ]
 
 export interface StatusSelectorProps<T extends FieldValues = FieldValues> {

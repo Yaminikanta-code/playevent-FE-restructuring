@@ -59,6 +59,8 @@ export type { TableProps, Column, Action, SortDirection } from './Table'
 export { default as StatusBadge } from './StatusBadge'
 export type { StatusBadgeProps, BadgeStatusType } from './StatusBadge'
 
+export { default as ScrollArea } from './ScrollArea'
+
 export { default as Collapsible } from './Collapsible'
 export type { CollapsibleProps } from './Collapsible'
 
