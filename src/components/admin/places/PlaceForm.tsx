@@ -38,6 +38,7 @@ import type {
   PlaceUpdate,
   Subplace,
 } from '../../../types/place.types'
+import { PlaceStatus } from '../../../types/place.types'
 import type { TenantOutDto } from '../../../types/tenant.types'
 import {
   useCreatePlace,
@@ -59,13 +60,13 @@ interface SubplaceFormData {
   name: string
   number_of_winners: string
   index: number | string
-  status: string
+  status: PlaceStatus
 }
 
 interface FormData {
   name: string
   client_id: string
-  status: string
+  status: PlaceStatus
   subplaces: SubplaceFormData[]
 }
 
@@ -151,17 +152,17 @@ const PlaceForm = ({ place, tenants, mode, onClose }: PlaceFormProps) => {
     defaultValues: {
       name: '',
       client_id: '',
-      status: 'active',
+      status: PlaceStatus.ACTIVE,
       subplaces: [],
     },
   })
 
-  const { fields, append, replace, move } = useFieldArray({
+  const { fields, append, replace, move } = useFieldArray<FormData>({
     control: form.control,
     name: 'subplaces',
   })
 
-  const watchedSubplaces = useWatch({
+  const watchedSubplaces = useWatch<FormData, 'subplaces'>({
     control: form.control,
     name: 'subplaces',
   })
@@ -174,13 +175,13 @@ const PlaceForm = ({ place, tenants, mode, onClose }: PlaceFormProps) => {
           name: subplace.name,
           number_of_winners: String(subplace.number_of_winners ?? ''),
           index: subplace.index,
-          status: subplace.status || 'active',
+          status: subplace.status || PlaceStatus.ACTIVE,
         })) ?? []
 
       form.reset({
         name: place.name,
         client_id: place.client_id ?? '',
-        status: place.status || 'active',
+        status: place.status || PlaceStatus.ACTIVE,
         subplaces: normalizeSubplaces(mappedSubplaces),
       })
     } else {
@@ -273,7 +274,7 @@ const PlaceForm = ({ place, tenants, mode, onClose }: PlaceFormProps) => {
       name: '',
       number_of_winners: '1',
       index: fields.length,
-      status: 'active',
+      status: PlaceStatus.ACTIVE,
     })
   }
 

@@ -14,6 +14,7 @@ import type {
   TrialCreate,
   TrialUpdate,
 } from '../../../types/trial.types'
+import { TrialStatus } from '../../../types/trial.types'
 import type { TenantOutDto } from '../../../types/tenant.types'
 import {
   useCreateTrial,
@@ -35,7 +36,7 @@ interface TrialFormProps {
 interface FormData {
   name: string
   client_id: string
-  status: string
+  status: TrialStatus
   started_at: string
   ends_at: string
   data: string
@@ -72,7 +73,7 @@ const TrialForm = ({ trial, tenants, mode, onClose }: TrialFormProps) => {
     defaultValues: {
       name: '',
       client_id: '',
-      status: 'active',
+      status: TrialStatus.ACTIVE,
       started_at: '',
       ends_at: '',
       data: '',
@@ -84,7 +85,7 @@ const TrialForm = ({ trial, tenants, mode, onClose }: TrialFormProps) => {
       form.reset({
         name: trial.name,
         client_id: trial.client_id,
-        status: trial.status || 'pending',
+        status: trial.status || TrialStatus.ACTIVE,
         started_at: trial.started_at ? trial.started_at.split('T')[0] : '',
         ends_at: trial.ends_at ? trial.ends_at.split('T')[0] : '',
         data: trial.data ? JSON.stringify(trial.data, null, 2) : '',
