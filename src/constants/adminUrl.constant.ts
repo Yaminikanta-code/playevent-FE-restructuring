@@ -2,6 +2,10 @@ import type { ApiUrls } from '../services/base-api.service'
 
 const BASE_PATH = '/v1/admins'
 
+export const ADMIN_CUSTOM_URLS = {
+    REGISTER: '/v1/auth/admins/register',
+}
+
 export const ADMIN_URLS: ApiUrls = {
     CREATE: BASE_PATH,
     LIST: BASE_PATH,

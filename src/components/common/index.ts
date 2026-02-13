@@ -70,6 +70,9 @@ export type { CollapsibleProps } from './Collapsible'
 export { default as ContextMenu } from './ContextMenu'
 export type { ContextMenuProps, ContextMenuItem } from './ContextMenu'
 
+export { default as StepIndicator } from './StepIndicator'
+export type { StepIndicatorProps, Step } from './StepIndicator'
+
 export { default as Card } from './Card'
 export type {
   CardProps,

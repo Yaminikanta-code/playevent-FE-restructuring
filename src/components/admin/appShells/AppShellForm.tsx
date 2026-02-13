@@ -35,6 +35,14 @@ interface AppShellFormProps {
   tenants: TenantOutDto[]
   mode: FormMode
   onClose?: () => void
+  /** When set, auto-assigns this client and hides the client dropdown */
+  clientId?: string
+  /** Called after successful create/update instead of navigating */
+  onSubmitSuccess?: () => void
+  /** When true, renders just the form without ScrollArea wrapper */
+  embedded?: boolean
+  /** Custom label for submit button in embedded mode */
+  submitLabel?: string
 }
 
 interface FormData {
@@ -52,6 +60,10 @@ const AppShellForm = ({
   tenants,
   mode,
   onClose,
+  clientId,
+  onSubmitSuccess,
+  embedded = false,
+  submitLabel,
 }: AppShellFormProps) => {
   const navigate = useNavigate()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -89,7 +101,7 @@ const AppShellForm = ({
   const form = useForm<FormData>({
     defaultValues: {
       name: '',
-      client_id: '',
+      client_id: clientId ?? '',
       status: AppShellStatus.ACTIVE,
       shell_css: '',
       navigation_type: '',
@@ -102,7 +114,7 @@ const AppShellForm = ({
     if (appShell && (isEditMode || isDuplicateMode)) {
       form.reset({
         name: appShell.name,
-        client_id: appShell.client_id ?? '',
+        client_id: clientId ?? appShell.client_id ?? '',
         status: appShell.status || AppShellStatus.ACTIVE,
         shell_css: appShell.shell_css ?? '',
         navigation_type: appShell.navigation_type ?? '',
@@ -130,7 +142,7 @@ const AppShellForm = ({
     try {
       const formData: CreateAppShellDto | UpdateAppShellDto = {
         name: data.name,
-        client_id: data.client_id || undefined,
+        client_id: clientId ?? (data.client_id || undefined),
         status: data.status,
         shell_css: data.shell_css || undefined,
         navigation_type: data.navigation_type || undefined,
@@ -148,7 +160,11 @@ const AppShellForm = ({
       }
 
       setHasChanges(false)
-      navigate({ to: '/admin/settings/app-shells' })
+      if (onSubmitSuccess) {
+        onSubmitSuccess()
+      } else {
+        navigate({ to: '/admin/settings/app-shells' })
+      }
     } catch (error) {
       console.error('Form submission error:', error)
     }
@@ -193,6 +209,96 @@ const AppShellForm = ({
     createMutation.isPending ||
     updateMutation.isPending ||
     deleteMutation.isPending
+
+  // --- Shared form content ---
+  const formContent = (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="space-y-4 rounded-lg border border-inputs-border bg-inputs-background p-5">
+        <div className="text-sm font-semibold text-inputs-title">
+          App Shell
+        </div>
+
+        <div className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-6`}>
+          <Input
+            label="Name"
+            placeholder="Enter app shell name"
+            control={form.control}
+            name="name"
+            rules={{ required: 'Name is required' }}
+          />
+
+          {!clientId && (
+            <Select
+              label="Client"
+              placeholder="Select a client"
+              control={form.control}
+              name="client_id"
+              options={tenantOptions}
+            />
+          )}
+
+          <StatusSelector
+            label="Status"
+            control={form.control}
+            name="status"
+            rules={{ required: 'Status is required' }}
+            options={statusOptions}
+          />
+        </div>
+      </div>
+
+      <Collapsible title="CONTENT" defaultExpanded={true}>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Input
+              label="Navigation Type"
+              placeholder="e.g. tabs, drawer, sidebar"
+              control={form.control}
+              name="navigation_type"
+            />
+
+            <Input
+              label="Shell CSS"
+              placeholder="e.g. flex flex-col gap-3"
+              control={form.control}
+              name="shell_css"
+            />
+          </div>
+
+          <Textarea
+            label="Header HTML"
+            placeholder="Enter header HTML content"
+            control={form.control}
+            name="header_html"
+            rows={4}
+          />
+
+          <Textarea
+            label="Footer HTML"
+            placeholder="Enter footer HTML content"
+            control={form.control}
+            name="footer_html"
+            rows={4}
+          />
+        </div>
+      </Collapsible>
+
+      <div className="flex justify-center pt-2">
+        <Button
+          type="submit"
+          variant={embedded ? 'primary' : 'secondary'}
+          icon={embedded ? undefined : Save}
+          isLoading={isSubmitting}
+        >
+          {submitLabel ?? 'Save'}
+        </Button>
+      </div>
+    </form>
+  )
+
+  if (embedded) {
+    return formContent
+  }
 
   return (
     <div className="h-[90vh]">
@@ -247,86 +353,7 @@ const AppShellForm = ({
           </div>
         }
       >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4 rounded-lg border border-inputs-border bg-inputs-background p-5">
-            <div className="text-sm font-semibold text-inputs-title">
-              App Shell
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Input
-                label="Name"
-                placeholder="Enter app shell name"
-                control={form.control}
-                name="name"
-                rules={{ required: 'Name is required' }}
-              />
-
-              <Select
-                label="Client"
-                placeholder="Select a client"
-                control={form.control}
-                name="client_id"
-                options={tenantOptions}
-              />
-
-              <StatusSelector
-                label="Status"
-                control={form.control}
-                name="status"
-                rules={{ required: 'Status is required' }}
-                options={statusOptions}
-              />
-            </div>
-          </div>
-
-          <Collapsible title="CONTENT" defaultExpanded={true}>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Input
-                  label="Navigation Type"
-                  placeholder="e.g. tabs, drawer, sidebar"
-                  control={form.control}
-                  name="navigation_type"
-                />
-
-                <Input
-                  label="Shell CSS"
-                  placeholder="e.g. flex flex-col gap-3"
-                  control={form.control}
-                  name="shell_css"
-                />
-              </div>
-
-              <Textarea
-                label="Header HTML"
-                placeholder="Enter header HTML content"
-                control={form.control}
-                name="header_html"
-                rows={4}
-              />
-
-              <Textarea
-                label="Footer HTML"
-                placeholder="Enter footer HTML content"
-                control={form.control}
-                name="footer_html"
-                rows={4}
-              />
-            </div>
-          </Collapsible>
-
-          <div className="flex justify-center pt-2">
-            <Button
-              type="submit"
-              variant="secondary"
-              icon={Save}
-              isLoading={isSubmitting}
-            >
-              Save
-            </Button>
-          </div>
-        </form>
+        {formContent}
       </ScrollArea>
 
       <ConfirmationModal

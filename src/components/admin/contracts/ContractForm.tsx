@@ -41,6 +41,14 @@ interface ContractFormProps {
   allGroups: GroupOutDto[]
   mode: FormMode
   onClose?: () => void
+  /** When set, auto-assigns this client and hides the client dropdown */
+  clientId?: string
+  /** Called after successful create/update instead of navigating */
+  onSubmitSuccess?: () => void
+  /** When true, renders just the form without ScrollArea wrapper */
+  embedded?: boolean
+  /** Custom label for submit button in embedded mode */
+  submitLabel?: string
 }
 
 interface FormData {
@@ -61,6 +69,10 @@ const ContractForm = ({
   allGroups,
   mode,
   onClose,
+  clientId,
+  onSubmitSuccess,
+  embedded = false,
+  submitLabel,
 }: ContractFormProps) => {
   const navigate = useNavigate()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -128,7 +140,7 @@ const ContractForm = ({
     defaultValues: {
       name: '',
       description: '',
-      client_id: '',
+      client_id: clientId ?? '',
       start_date: '',
       end_date: '',
       total_events: 0,
@@ -143,7 +155,7 @@ const ContractForm = ({
       form.reset({
         name: contract.name,
         description: contract.description,
-        client_id: contract.client_id,
+        client_id: clientId ?? contract.client_id,
         start_date: contract.start_date,
         end_date: contract.end_date,
         total_events: contract.total_events,
@@ -190,7 +202,7 @@ const ContractForm = ({
         const createData: CreateContractDto = {
           name: data.name,
           description: data.description,
-          client_id: data.client_id,
+          client_id: clientId ?? data.client_id,
           source_id: isDuplicateMode ? contract?.id : undefined,
           start_date: data.start_date,
           end_date: data.end_date,
@@ -203,7 +215,11 @@ const ContractForm = ({
       }
 
       setHasChanges(false)
-      navigate({ to: '/admin/contracts' })
+      if (onSubmitSuccess) {
+        onSubmitSuccess()
+      } else {
+        navigate({ to: '/admin/contracts' })
+      }
     } catch (error) {
       console.error('Form submission error:', error)
     }
@@ -250,6 +266,168 @@ const ContractForm = ({
     createMutation.isPending ||
     updateMutation.isPending ||
     deleteMutation.isPending
+
+  // --- Shared form content ---
+  const formContent = (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <div className="rounded-md bg-midnight-light px-4 py-2">
+        <span className="text-sm font-semibold text-white">
+          {displayName}
+        </span>
+      </div>
+
+      <div className="space-y-4">
+        <div className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-1' : 'md:grid-cols-2'} gap-6`}>
+          <Input
+            label="Name"
+            placeholder="Enter contract name"
+            control={form.control}
+            name="name"
+            rules={{ required: 'Name is required' }}
+          />
+          {!clientId && (
+            <Select
+              label="Client"
+              placeholder="Select a client"
+              control={form.control}
+              name="client_id"
+              options={tenantOptions}
+            />
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 gap-6">
+          <Input
+            label="Description"
+            placeholder="Enter description"
+            control={form.control}
+            name="description"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <DatePicker
+            label="Start Date"
+            control={form.control}
+            name="start_date"
+            rules={{ required: 'Start date is required' }}
+          />
+          <DatePicker
+            label="End Date"
+            control={form.control}
+            name="end_date"
+            rules={{ required: 'End date is required' }}
+          />
+          <Input
+            label="Total Events"
+            type="number"
+            placeholder="0"
+            control={form.control}
+            name="total_events"
+            rules={{
+              required: 'Total events is required',
+              min: { value: 0, message: 'Must be 0 or greater' },
+            }}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <StatusSelector
+            label="Status"
+            control={form.control}
+            name="status"
+            rules={{ required: 'Status is required' }}
+            options={statusOptions}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Collapsible title="ALLOCATED MODULES" defaultExpanded>
+          <div className="space-y-3">
+            {activeModules.map((module: any) => {
+              const currentModules = form.watch('allocated_modules') || []
+              const isChecked = currentModules.some(
+                (item) => item.id === module.id,
+              )
+
+              const handleToggle = () => {
+                const current = form.getValues('allocated_modules') || []
+                const exists = current.some((item) => item.id === module.id)
+                if (exists) {
+                  form.setValue(
+                    'allocated_modules',
+                    current.filter((item) => item.id !== module.id),
+                  )
+                } else {
+                  form.setValue('allocated_modules', [
+                    ...current,
+                    { id: module.id, type_name: module.type_name },
+                  ])
+                }
+              }
+
+              return (
+                <div
+                  key={module.id}
+                  className="flex items-center space-x-3 cursor-pointer"
+                  onClick={handleToggle}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={(e) => {
+                      e.stopPropagation()
+                      const current = form.getValues('allocated_modules') || []
+                      if (e.target.checked) {
+                        form.setValue('allocated_modules', [
+                          ...current,
+                          { id: module.id, type_name: module.type_name },
+                        ])
+                      } else {
+                        form.setValue(
+                          'allocated_modules',
+                          current.filter((item) => item.id !== module.id),
+                        )
+                      }
+                    }}
+                    className="h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-inputs-border bg-inputs-background checked:bg-divers-button checked:border-divers-button transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-inputs-border"
+                  />
+                  <span className="text-sm font-medium text-inputs-title">
+                    {module.type_name}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        </Collapsible>
+
+        <Collapsible title="GROUPS" defaultExpanded>
+          <CheckboxTree
+            control={form.control}
+            name="group_ids"
+            items={groupTreeItems}
+            defaultExpandAll
+          />
+        </Collapsible>
+      </div>
+
+      <div className="flex justify-center pt-2">
+        <Button
+          type="submit"
+          variant={embedded ? 'primary' : 'secondary'}
+          icon={embedded ? undefined : Save}
+          isLoading={isSubmitting}
+        >
+          {submitLabel ?? 'Save'}
+        </Button>
+      </div>
+    </form>
+  )
+
+  if (embedded) {
+    return formContent
+  }
 
   return (
     <div className="h-[90vh]">
@@ -304,159 +482,7 @@ const ContractForm = ({
           </div>
         }
       >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="rounded-md bg-midnight-light px-4 py-2">
-            <span className="text-sm font-semibold text-white">
-              {displayName}
-            </span>
-          </div>
-
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input
-                label="Name"
-                placeholder="Enter contract name"
-                control={form.control}
-                name="name"
-                rules={{ required: 'Name is required' }}
-              />
-              <Select
-                label="Client"
-                placeholder="Select a client"
-                control={form.control}
-                name="client_id"
-                options={tenantOptions}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 gap-6">
-              <Input
-                label="Description"
-                placeholder="Enter description"
-                control={form.control}
-                name="description"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <DatePicker
-                label="Start Date"
-                control={form.control}
-                name="start_date"
-                rules={{ required: 'Start date is required' }}
-              />
-              <DatePicker
-                label="End Date"
-                control={form.control}
-                name="end_date"
-                rules={{ required: 'End date is required' }}
-              />
-              <Input
-                label="Total Events"
-                type="number"
-                placeholder="0"
-                control={form.control}
-                name="total_events"
-                rules={{
-                  required: 'Total events is required',
-                  valueAsNumber: true,
-                  min: { value: 0, message: 'Must be 0 or greater' },
-                }}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <StatusSelector
-                label="Status"
-                control={form.control}
-                name="status"
-                rules={{ required: 'Status is required' }}
-                options={statusOptions}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Collapsible title="ALLOCATED MODULES" defaultExpanded>
-              <div className="space-y-3">
-                {activeModules.map((module: any) => {
-                  const currentModules = form.watch('allocated_modules') || []
-                  const isChecked = currentModules.some(
-                    (item) => item.id === module.id,
-                  )
-
-                  const handleToggle = () => {
-                    const current = form.getValues('allocated_modules') || []
-                    const exists = current.some((item) => item.id === module.id)
-                    if (exists) {
-                      form.setValue(
-                        'allocated_modules',
-                        current.filter((item) => item.id !== module.id),
-                      )
-                    } else {
-                      form.setValue('allocated_modules', [
-                        ...current,
-                        { id: module.id, type_name: module.type_name },
-                      ])
-                    }
-                  }
-
-                  return (
-                    <div
-                      key={module.id}
-                      className="flex items-center space-x-3 cursor-pointer"
-                      onClick={handleToggle}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => {
-                          e.stopPropagation()
-                          const current = form.getValues('allocated_modules') || []
-                          if (e.target.checked) {
-                            form.setValue('allocated_modules', [
-                              ...current,
-                              { id: module.id, type_name: module.type_name },
-                            ])
-                          } else {
-                            form.setValue(
-                              'allocated_modules',
-                              current.filter((item) => item.id !== module.id),
-                            )
-                          }
-                        }}
-                        className="h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-inputs-border bg-inputs-background checked:bg-divers-button checked:border-divers-button transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-inputs-border"
-                      />
-                      <span className="text-sm font-medium text-inputs-title">
-                        {module.type_name}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            </Collapsible>
-
-            <Collapsible title="GROUPS" defaultExpanded>
-              <CheckboxTree
-                control={form.control}
-                name="group_ids"
-                items={groupTreeItems}
-                defaultExpandAll
-              />
-            </Collapsible>
-          </div>
-
-          <div className="flex justify-center pt-2">
-            <Button
-              type="submit"
-              variant="secondary"
-              icon={Save}
-              isLoading={isSubmitting}
-            >
-              Save
-            </Button>
-          </div>
-        </form>
+        {formContent}
       </ScrollArea>
 
       <ConfirmationModal

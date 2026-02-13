@@ -62,26 +62,6 @@ export class TenantService extends BaseApiService<
   }
 
   /**
-   * Override update to use PATCH instead of PUT
-   */
-  async update(
-    id: string,
-    data: UpdateTenantDto,
-    config?: AxiosRequestConfig,
-  ): Promise<TenantOutDto> {
-    try {
-      const response = await this.axiosInstance.patch(
-        this.urls.UPDATE(id),
-        data,
-        config,
-      )
-      return response.data
-    } catch (error) {
-      this.handleError(error, 'Failed to update tenant')
-    }
-  }
-
-  /**
    * Get client onboarding status
    */
   async getOnboardingStatus(

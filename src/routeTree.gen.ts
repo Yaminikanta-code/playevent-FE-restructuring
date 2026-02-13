@@ -26,6 +26,7 @@ import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
 import { Route as AdminGroupsIndexRouteImport } from './routes/admin/groups/index'
 import { Route as AdminContractsIndexRouteImport } from './routes/admin/contracts/index'
+import { Route as AdminClientsIndexRouteImport } from './routes/admin/clients/index'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin/assets/index'
 import { Route as AdminUsersNewRouteImport } from './routes/admin/users/new'
 import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
@@ -33,6 +34,8 @@ import { Route as AdminGroupsNewRouteImport } from './routes/admin/groups/new'
 import { Route as AdminGroupsGroupIdRouteImport } from './routes/admin/groups/$groupId'
 import { Route as AdminContractsNewRouteImport } from './routes/admin/contracts/new'
 import { Route as AdminContractsContractIdRouteImport } from './routes/admin/contracts/$contractId'
+import { Route as AdminClientsNewRouteImport } from './routes/admin/clients/new'
+import { Route as AdminClientsClientIdRouteImport } from './routes/admin/clients/$clientId'
 import { Route as AdminSettingsModulesIndexRouteImport } from './routes/admin/settings/modules/index'
 import { Route as AdminSettingsFontsIndexRouteImport } from './routes/admin/settings/fonts/index'
 import { Route as AdminSettingsAppShellsIndexRouteImport } from './routes/admin/settings/app-shells/index'
@@ -142,6 +145,11 @@ const AdminContractsIndexRoute = AdminContractsIndexRouteImport.update({
   path: '/contracts/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminClientsIndexRoute = AdminClientsIndexRouteImport.update({
+  id: '/clients/',
+  path: '/clients/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminAssetsIndexRoute = AdminAssetsIndexRouteImport.update({
   id: '/assets/',
   path: '/assets/',
@@ -178,6 +186,16 @@ const AdminContractsContractIdRoute =
     path: '/contracts/$contractId',
     getParentRoute: () => AdminRoute,
   } as any)
+const AdminClientsNewRoute = AdminClientsNewRouteImport.update({
+  id: '/clients/new',
+  path: '/clients/new',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientsClientIdRoute = AdminClientsClientIdRouteImport.update({
+  id: '/clients/$clientId',
+  path: '/clients/$clientId',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSettingsModulesIndexRoute =
   AdminSettingsModulesIndexRouteImport.update({
     id: '/settings/modules/',
@@ -325,6 +343,8 @@ export interface FileRoutesByFullPath {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
   '/demo/': typeof DemoIndexRoute
+  '/admin/clients/$clientId': typeof AdminClientsClientIdRoute
+  '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/contracts/$contractId': typeof AdminContractsContractIdRouteWithChildren
   '/admin/contracts/new': typeof AdminContractsNewRoute
   '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
@@ -332,6 +352,7 @@ export interface FileRoutesByFullPath {
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
+  '/admin/clients/': typeof AdminClientsIndexRoute
   '/admin/contracts/': typeof AdminContractsIndexRoute
   '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
@@ -374,6 +395,8 @@ export interface FileRoutesByTo {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
   '/demo': typeof DemoIndexRoute
+  '/admin/clients/$clientId': typeof AdminClientsClientIdRoute
+  '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/contracts/$contractId': typeof AdminContractsContractIdRouteWithChildren
   '/admin/contracts/new': typeof AdminContractsNewRoute
   '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
@@ -381,6 +404,7 @@ export interface FileRoutesByTo {
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/assets': typeof AdminAssetsIndexRoute
+  '/admin/clients': typeof AdminClientsIndexRoute
   '/admin/contracts': typeof AdminContractsIndexRoute
   '/admin/groups': typeof AdminGroupsIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
@@ -424,6 +448,8 @@ export interface FileRoutesById {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/test': typeof DemoTestRoute
   '/demo/': typeof DemoIndexRoute
+  '/admin/clients/$clientId': typeof AdminClientsClientIdRoute
+  '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/contracts/$contractId': typeof AdminContractsContractIdRouteWithChildren
   '/admin/contracts/new': typeof AdminContractsNewRoute
   '/admin/groups/$groupId': typeof AdminGroupsGroupIdRouteWithChildren
@@ -431,6 +457,7 @@ export interface FileRoutesById {
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/admin/users/new': typeof AdminUsersNewRoute
   '/admin/assets/': typeof AdminAssetsIndexRoute
+  '/admin/clients/': typeof AdminClientsIndexRoute
   '/admin/contracts/': typeof AdminContractsIndexRoute
   '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
@@ -475,6 +502,8 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/test'
     | '/demo/'
+    | '/admin/clients/$clientId'
+    | '/admin/clients/new'
     | '/admin/contracts/$contractId'
     | '/admin/contracts/new'
     | '/admin/groups/$groupId'
@@ -482,6 +511,7 @@ export interface FileRouteTypes {
     | '/admin/users/$userId'
     | '/admin/users/new'
     | '/admin/assets/'
+    | '/admin/clients/'
     | '/admin/contracts/'
     | '/admin/groups/'
     | '/admin/settings/'
@@ -524,6 +554,8 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/test'
     | '/demo'
+    | '/admin/clients/$clientId'
+    | '/admin/clients/new'
     | '/admin/contracts/$contractId'
     | '/admin/contracts/new'
     | '/admin/groups/$groupId'
@@ -531,6 +563,7 @@ export interface FileRouteTypes {
     | '/admin/users/$userId'
     | '/admin/users/new'
     | '/admin/assets'
+    | '/admin/clients'
     | '/admin/contracts'
     | '/admin/groups'
     | '/admin/settings'
@@ -573,6 +606,8 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/demo/test'
     | '/demo/'
+    | '/admin/clients/$clientId'
+    | '/admin/clients/new'
     | '/admin/contracts/$contractId'
     | '/admin/contracts/new'
     | '/admin/groups/$groupId'
@@ -580,6 +615,7 @@ export interface FileRouteTypes {
     | '/admin/users/$userId'
     | '/admin/users/new'
     | '/admin/assets/'
+    | '/admin/clients/'
     | '/admin/contracts/'
     | '/admin/groups/'
     | '/admin/settings/'
@@ -744,6 +780,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminContractsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/clients/': {
+      id: '/admin/clients/'
+      path: '/clients'
+      fullPath: '/admin/clients/'
+      preLoaderRoute: typeof AdminClientsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/assets/': {
       id: '/admin/assets/'
       path: '/assets'
@@ -791,6 +834,20 @@ declare module '@tanstack/react-router' {
       path: '/contracts/$contractId'
       fullPath: '/admin/contracts/$contractId'
       preLoaderRoute: typeof AdminContractsContractIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clients/new': {
+      id: '/admin/clients/new'
+      path: '/clients/new'
+      fullPath: '/admin/clients/new'
+      preLoaderRoute: typeof AdminClientsNewRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clients/$clientId': {
+      id: '/admin/clients/$clientId'
+      path: '/clients/$clientId'
+      fullPath: '/admin/clients/$clientId'
+      preLoaderRoute: typeof AdminClientsClientIdRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/settings/modules/': {
@@ -1057,6 +1114,8 @@ const AdminSettingsAppShellsAppShellIdRouteWithChildren =
 interface AdminRouteChildren {
   AdminDashboardRoute: typeof AdminDashboardRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminClientsClientIdRoute: typeof AdminClientsClientIdRoute
+  AdminClientsNewRoute: typeof AdminClientsNewRoute
   AdminContractsContractIdRoute: typeof AdminContractsContractIdRouteWithChildren
   AdminContractsNewRoute: typeof AdminContractsNewRoute
   AdminGroupsGroupIdRoute: typeof AdminGroupsGroupIdRouteWithChildren
@@ -1064,6 +1123,7 @@ interface AdminRouteChildren {
   AdminUsersUserIdRoute: typeof AdminUsersUserIdRouteWithChildren
   AdminUsersNewRoute: typeof AdminUsersNewRoute
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
+  AdminClientsIndexRoute: typeof AdminClientsIndexRoute
   AdminContractsIndexRoute: typeof AdminContractsIndexRoute
   AdminGroupsIndexRoute: typeof AdminGroupsIndexRoute
   AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
@@ -1089,6 +1149,8 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminDashboardRoute: AdminDashboardRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminClientsClientIdRoute: AdminClientsClientIdRoute,
+  AdminClientsNewRoute: AdminClientsNewRoute,
   AdminContractsContractIdRoute: AdminContractsContractIdRouteWithChildren,
   AdminContractsNewRoute: AdminContractsNewRoute,
   AdminGroupsGroupIdRoute: AdminGroupsGroupIdRouteWithChildren,
@@ -1096,6 +1158,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminUsersUserIdRoute: AdminUsersUserIdRouteWithChildren,
   AdminUsersNewRoute: AdminUsersNewRoute,
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
+  AdminClientsIndexRoute: AdminClientsIndexRoute,
   AdminContractsIndexRoute: AdminContractsIndexRoute,
   AdminGroupsIndexRoute: AdminGroupsIndexRoute,
   AdminSettingsIndexRoute: AdminSettingsIndexRoute,

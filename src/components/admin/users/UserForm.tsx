@@ -40,6 +40,14 @@ interface UserFormProps {
   allGroups: GroupOutDto[]
   mode: FormMode
   onClose?: () => void
+  /** When set, auto-assigns this client and hides the client dropdown */
+  clientId?: string
+  /** Called after successful create/update instead of navigating */
+  onSubmitSuccess?: () => void
+  /** When true, renders just the form without ScrollArea wrapper */
+  embedded?: boolean
+  /** Custom label for submit button in embedded mode */
+  submitLabel?: string
 }
 
 interface FormData {
@@ -62,6 +70,10 @@ const UserForm = ({
   allGroups,
   mode,
   onClose,
+  clientId,
+  onSubmitSuccess,
+  embedded = false,
+  submitLabel,
 }: UserFormProps) => {
   const navigate = useNavigate()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -132,7 +144,7 @@ const UserForm = ({
       last_name: '',
       email: '',
       password: '',
-      client_id: '',
+      client_id: clientId ?? '',
       status: AdminStatus.ACTIVE,
       rights_users_creation: false,
       rights_html_edition: false,
@@ -149,7 +161,7 @@ const UserForm = ({
         last_name: user.last_name ?? '',
         email: isDuplicateMode ? '' : user.email ?? '',
         password: '',
-        client_id: user.client_id ?? '',
+        client_id: clientId ?? user.client_id ?? '',
         status: (user.status as AdminStatus) || AdminStatus.ACTIVE,
         rights_users_creation: !!userRights?.users_creation,
         rights_html_edition: !!userRights?.html_edition,
@@ -203,13 +215,17 @@ const UserForm = ({
           role: AdminRole.CLIENT_ADMIN,
           first_name: data.first_name || undefined,
           last_name: data.last_name || undefined,
-          client_id: data.client_id || undefined,
+          client_id: clientId ?? (data.client_id || undefined),
         }
         await createMutation.mutateAsync(createData)
       }
 
       setHasChanges(false)
-      navigate({ to: '/admin/users' })
+      if (onSubmitSuccess) {
+        onSubmitSuccess()
+      } else {
+        navigate({ to: '/admin/users' })
+      }
     } catch (error) {
       console.error('Form submission error:', error)
     }
@@ -257,6 +273,154 @@ const UserForm = ({
     createMutation.isPending ||
     updateMutation.isPending ||
     deleteMutation.isPending
+
+  // --- Shared form content ---
+  const formContent = (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      {/* User name banner */}
+      <div className="rounded-md bg-midnight-light px-4 py-2">
+        <span className="text-sm font-semibold text-white">
+          {displayName}
+        </span>
+      </div>
+
+      {/* Main fields */}
+      <div className="space-y-4">
+        <div className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-3' : 'md:grid-cols-4'} gap-6`}>
+          <Input
+            label="Firstname"
+            placeholder="Enter first name"
+            control={form.control}
+            name="first_name"
+            rules={{ required: 'First name is required' }}
+          />
+          <Input
+            label="Lastname"
+            placeholder="Enter last name"
+            control={form.control}
+            name="last_name"
+            rules={{ required: 'Last name is required' }}
+          />
+          <StatusSelector
+            label="Status"
+            control={form.control}
+            name="status"
+            rules={{ required: 'Status is required' }}
+            options={statusOptions}
+          />
+          {!clientId && (
+            isEditMode ? (
+              <div className="flex flex-col">
+                <label className="block text-sm font-medium text-inputs-title mb-2">
+                  Client
+                </label>
+                <div className="flex h-10 items-center text-sm text-inputs-text">
+                  {user?.client_id
+                    ? clientNameMap[user.client_id] ?? '-'
+                    : '-'}
+                </div>
+              </div>
+            ) : (
+              <Select
+                label="Client"
+                placeholder="Select a client"
+                control={form.control}
+                name="client_id"
+                options={tenantOptions}
+              />
+            )
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Input
+            label="Email"
+            placeholder="Enter email"
+            type="email"
+            control={form.control}
+            name="email"
+            rules={{
+              required: 'Email is required',
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: 'Invalid email address',
+              },
+            }}
+          />
+          <Input
+            label="Password"
+            placeholder={isEditMode ? '••••••••' : 'Enter password'}
+            type="password"
+            control={form.control}
+            name="password"
+            rules={
+              isEditMode
+                ? {}
+                : {
+                    required: 'Password is required',
+                    minLength: {
+                      value: 8,
+                      message: 'Password must be at least 8 characters',
+                    },
+                  }
+            }
+          />
+        </div>
+      </div>
+
+      {/* Rights & Accesses */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Collapsible title="RIGHTS" defaultExpanded>
+          <div className="grid grid-cols-2 gap-4">
+            <Checkbox
+              label="Users creation"
+              control={form.control}
+              name="rights_users_creation"
+            />
+            <Checkbox
+              label="HTML edition"
+              control={form.control}
+              name="rights_html_edition"
+            />
+            <Checkbox
+              label="Other rights"
+              control={form.control}
+              name="rights_other"
+            />
+            <Checkbox
+              label="Other rights 2"
+              control={form.control}
+              name="rights_other_2"
+            />
+          </div>
+        </Collapsible>
+
+        <Collapsible title="GROUPS" defaultExpanded>
+          <CheckboxTree
+            control={form.control}
+            name="group_ids"
+            items={groupTreeItems}
+            defaultExpandAll
+          />
+        </Collapsible>
+      </div>
+
+      <div className="flex justify-center pt-2">
+        <Button
+          type="submit"
+          variant={embedded ? 'primary' : 'secondary'}
+          icon={embedded ? undefined : Save}
+          isLoading={isSubmitting}
+        >
+          {submitLabel ?? 'Save'}
+        </Button>
+      </div>
+    </form>
+  )
+
+  if (embedded) {
+    return formContent
+  }
 
   return (
     <div className="h-[90vh]">
@@ -311,146 +475,7 @@ const UserForm = ({
           </div>
         }
       >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* User name banner */}
-          <div className="rounded-md bg-midnight-light px-4 py-2">
-            <span className="text-sm font-semibold text-white">
-              {displayName}
-            </span>
-          </div>
-
-          {/* Main fields */}
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <Input
-                label="Firstname"
-                placeholder="Enter first name"
-                control={form.control}
-                name="first_name"
-                rules={{ required: 'First name is required' }}
-              />
-              <Input
-                label="Lastname"
-                placeholder="Enter last name"
-                control={form.control}
-                name="last_name"
-                rules={{ required: 'Last name is required' }}
-              />
-              <StatusSelector
-                label="Status"
-                control={form.control}
-                name="status"
-                rules={{ required: 'Status is required' }}
-                options={statusOptions}
-              />
-              {isEditMode ? (
-                <div className="flex flex-col">
-                  <label className="block text-sm font-medium text-inputs-title mb-2">
-                    Client
-                  </label>
-                  <div className="flex h-10 items-center text-sm text-inputs-text">
-                    {user?.client_id
-                      ? clientNameMap[user.client_id] ?? '-'
-                      : '-'}
-                  </div>
-                </div>
-              ) : (
-                <Select
-                  label="Client"
-                  placeholder="Select a client"
-                  control={form.control}
-                  name="client_id"
-                  options={tenantOptions}
-                />
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Input
-                label="Email"
-                placeholder="Enter email"
-                type="email"
-                control={form.control}
-                name="email"
-                rules={{
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: 'Invalid email address',
-                  },
-                }}
-              />
-              <Input
-                label="Password"
-                placeholder={isEditMode ? '••••••••' : 'Enter password'}
-                type="password"
-                control={form.control}
-                name="password"
-                rules={
-                  isEditMode
-                    ? {}
-                    : {
-                        required: 'Password is required',
-                        minLength: {
-                          value: 8,
-                          message: 'Password must be at least 8 characters',
-                        },
-                      }
-                }
-              />
-            </div>
-          </div>
-
-          {/* Rights & Accesses */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* RIGHTS */}
-            <Collapsible title="RIGHTS" defaultExpanded>
-              <div className="grid grid-cols-2 gap-4">
-                <Checkbox
-                  label="Users creation"
-                  control={form.control}
-                  name="rights_users_creation"
-                />
-                <Checkbox
-                  label="HTML edition"
-                  control={form.control}
-                  name="rights_html_edition"
-                />
-                <Checkbox
-                  label="Other rights"
-                  control={form.control}
-                  name="rights_other"
-                />
-                <Checkbox
-                  label="Other rights 2"
-                  control={form.control}
-                  name="rights_other_2"
-                />
-              </div>
-            </Collapsible>
-
-            {/* ACCESSES */}
-            <Collapsible title="ACCESSES" defaultExpanded>
-              <CheckboxTree
-                control={form.control}
-                name="group_ids"
-                items={groupTreeItems}
-                defaultExpandAll
-              />
-            </Collapsible>
-          </div>
-
-          <div className="flex justify-center pt-2">
-            <Button
-              type="submit"
-              variant="secondary"
-              icon={Save}
-              isLoading={isSubmitting}
-            >
-              Save
-            </Button>
-          </div>
-        </form>
+        {formContent}
       </ScrollArea>
 
       <ConfirmationModal
