@@ -1,11 +1,14 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Save } from 'lucide-react'
+import { useNavigate } from '@tanstack/react-router'
+import { MoreVertical, Save, X } from 'lucide-react'
 import Input from '../../common/Input'
 import Select from '../../common/Select'
 import ScrollArea from '../../common/ScrollArea'
 import IconButton from '../../common/IconButton'
+import ContextMenu from '../../common/ContextMenu'
 import Collapsible from '../../common/Collapsible'
+import ConfirmationModal from '../../common/ConfirmationModal'
 import {
   MOCK_MODULES,
   MODULE_DEFAULT_STATUS_OPTIONS,
@@ -28,6 +31,10 @@ interface ModuleFormData {
 }
 
 const ModulesForm = () => {
+  const navigate = useNavigate()
+  const [showCancelModal, setShowCancelModal] = useState(false)
+  const [hasChanges, setHasChanges] = useState(false)
+
   const { data: modulesData, isLoading } = useModuleList({
     page: 1,
     page_size: 100,
@@ -54,7 +61,15 @@ const ModulesForm = () => {
       }
     })
     form.reset(defaultValues)
+    setHasChanges(false)
   }, [existingModules, form])
+
+  useEffect(() => {
+    const subscription = form.watch(() => {
+      setHasChanges(true)
+    })
+    return () => subscription.unsubscribe()
+  }, [form])
 
   const onSubmit = async (data: ModuleFormData) => {
     try {
@@ -85,8 +100,17 @@ const ModulesForm = () => {
       )
 
       await Promise.all(promises)
+      setHasChanges(false)
     } catch (error) {
       console.error('Form submission error:', error)
+    }
+  }
+
+  const handleCancel = () => {
+    if (hasChanges) {
+      setShowCancelModal(true)
+    } else {
+      navigate({ to: '/admin/settings' })
     }
   }
 
@@ -103,59 +127,85 @@ const ModulesForm = () => {
       <ScrollArea
         title="Modules"
         headerActions={
-          <IconButton
-            icon={Save}
-            variant="secondary"
-            size="md"
-            tooltip="Save Modules"
-            onClick={() => form.handleSubmit(onSubmit)()}
-            isLoading={isSubmitting}
-          />
+          <div className="flex items-center gap-2">
+            <IconButton
+              icon={Save}
+              variant="primary"
+              size="md"
+              tooltip="Save Modules"
+              onClick={() => form.handleSubmit(onSubmit)()}
+              isLoading={isSubmitting}
+            />
+            <ContextMenu
+              items={[
+                {
+                  icon: X,
+                  label: 'Cancel',
+                  onClick: handleCancel,
+                },
+              ]}
+              trigger={
+                <IconButton
+                  icon={MoreVertical}
+                  variant="ghost"
+                  size="md"
+                  tooltip="More options"
+                />
+              }
+              position="bottom-right"
+            />
+          </div>
         }
       >
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <Collapsible title="MODULES" defaultExpanded={true}>
-            <div className="space-y-4">
-              {MOCK_MODULES.map((module) => (
-                <div
-                  key={module.name}
-                  className="grid grid-cols-1 md:grid-cols-4 gap-6 items-start"
-                >
-                  <div className="font-medium text-inputs-title flex items-center">
-                    {module.name}
-                  </div>
+          {MOCK_MODULES.map((module) => (
+            <Collapsible
+              key={module.name}
+              title={module.name}
+              defaultExpanded={true}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Select
+                  label="Status"
+                  placeholder="Select status"
+                  control={form.control}
+                  name={`${module.name}.status`}
+                  options={MODULE_DEFAULT_STATUS_OPTIONS}
+                />
 
-                  <Select
-                    label="Status"
-                    placeholder="Select status"
-                    control={form.control}
-                    name={`${module.name}.status`}
-                    options={MODULE_DEFAULT_STATUS_OPTIONS}
-                  />
+                <Input
+                  label="Default Version"
+                  placeholder="Enter version"
+                  type="number"
+                  control={form.control}
+                  name={`${module.name}.default_version`}
+                  rules={{ required: 'Default version is required' }}
+                />
 
-                  <Input
-                    label="Default Version"
-                    placeholder="Enter version"
-                    type="number"
-                    control={form.control}
-                    name={`${module.name}.default_version`}
-                    rules={{ required: 'Default version is required' }}
-                  />
-
-                  <Select
-                    label="Default Status"
-                    placeholder="Select default status"
-                    control={form.control}
-                    name={`${module.name}.default_status`}
-                    options={MODULE_STATUS_OPTIONS}
-                    rules={{ required: 'Default status is required' }}
-                  />
-                </div>
-              ))}
-            </div>
-          </Collapsible>
+                <Select
+                  label="Default Status"
+                  placeholder="Select default status"
+                  control={form.control}
+                  name={`${module.name}.default_status`}
+                  options={MODULE_STATUS_OPTIONS}
+                  rules={{ required: 'Default status is required' }}
+                />
+              </div>
+            </Collapsible>
+          ))}
         </form>
       </ScrollArea>
+
+      <ConfirmationModal
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        title="Discard Changes"
+        message="You have unsaved changes. Are you sure you want to cancel and discard these changes?"
+        confirmText="Discard"
+        cancelText="Keep Editing"
+        onConfirm={() => navigate({ to: '/admin/settings' })}
+        variant="warning"
+      />
     </div>
   )
 }
