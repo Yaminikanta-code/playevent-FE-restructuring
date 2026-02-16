@@ -4,7 +4,7 @@ export const ROUTES = {
   CLIENTS: '/admin/clients',
   CONTRACTS: '/admin/contracts',
   SETTINGS: '/admin/settings',
-  EVENTS: '/demo/scroll-area-demo',
+  EVENTS: '/admin/events',
   GROUPS: '/admin/groups',
   USERS: '/admin/users',
   ASSETS: '/admin/assets',

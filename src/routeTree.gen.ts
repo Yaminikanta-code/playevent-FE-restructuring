@@ -10,21 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AdminRouteImport } from './routes/admin'
-import { Route as DemoIndexRouteImport } from './routes/demo/index'
-import { Route as DemoTestRouteImport } from './routes/demo/test'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
-import { Route as DemoTableDemoRouteImport } from './routes/demo/table-demo'
-import { Route as DemoSidebarDemoRouteImport } from './routes/demo/sidebar-demo'
-import { Route as DemoScrollAreaDemoRouteImport } from './routes/demo/scroll-area-demo'
-import { Route as DemoModalTestRouteImport } from './routes/demo/modal-test'
-import { Route as DemoFormTestRouteImport } from './routes/demo/form-test'
-import { Route as DemoContextMenuDemoRouteImport } from './routes/demo/context-menu-demo'
-import { Route as DemoCollapsibleDemoRouteImport } from './routes/demo/collapsible-demo'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
 import { Route as AdminGroupsIndexRouteImport } from './routes/admin/groups/index'
+import { Route as AdminEventsIndexRouteImport } from './routes/admin/events/index'
 import { Route as AdminContractsIndexRouteImport } from './routes/admin/contracts/index'
 import { Route as AdminClientsIndexRouteImport } from './routes/admin/clients/index'
 import { Route as AdminAssetsIndexRouteImport } from './routes/admin/assets/index'
@@ -65,56 +56,6 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoIndexRoute = DemoIndexRouteImport.update({
-  id: '/demo/',
-  path: '/demo/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoTestRoute = DemoTestRouteImport.update({
-  id: '/demo/test',
-  path: '/demo/test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoTableDemoRoute = DemoTableDemoRouteImport.update({
-  id: '/demo/table-demo',
-  path: '/demo/table-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoSidebarDemoRoute = DemoSidebarDemoRouteImport.update({
-  id: '/demo/sidebar-demo',
-  path: '/demo/sidebar-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoScrollAreaDemoRoute = DemoScrollAreaDemoRouteImport.update({
-  id: '/demo/scroll-area-demo',
-  path: '/demo/scroll-area-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoModalTestRoute = DemoModalTestRouteImport.update({
-  id: '/demo/modal-test',
-  path: '/demo/modal-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoFormTestRoute = DemoFormTestRouteImport.update({
-  id: '/demo/form-test',
-  path: '/demo/form-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoContextMenuDemoRoute = DemoContextMenuDemoRouteImport.update({
-  id: '/demo/context-menu-demo',
-  path: '/demo/context-menu-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoCollapsibleDemoRoute = DemoCollapsibleDemoRouteImport.update({
-  id: '/demo/collapsible-demo',
-  path: '/demo/collapsible-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -138,6 +79,11 @@ const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
 const AdminGroupsIndexRoute = AdminGroupsIndexRouteImport.update({
   id: '/groups/',
   path: '/groups/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEventsIndexRoute = AdminEventsIndexRouteImport.update({
+  id: '/events/',
+  path: '/events/',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminContractsIndexRoute = AdminContractsIndexRouteImport.update({
@@ -333,16 +279,6 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
-  '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
-  '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
-  '/demo/form-test': typeof DemoFormTestRoute
-  '/demo/modal-test': typeof DemoModalTestRoute
-  '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
-  '/demo/sidebar-demo': typeof DemoSidebarDemoRoute
-  '/demo/table-demo': typeof DemoTableDemoRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/test': typeof DemoTestRoute
-  '/demo/': typeof DemoIndexRoute
   '/admin/clients/$clientId': typeof AdminClientsClientIdRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/contracts/$contractId': typeof AdminContractsContractIdRouteWithChildren
@@ -354,6 +290,7 @@ export interface FileRoutesByFullPath {
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
   '/admin/contracts/': typeof AdminContractsIndexRoute
+  '/admin/events/': typeof AdminEventsIndexRoute
   '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
@@ -385,16 +322,6 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
-  '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
-  '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
-  '/demo/form-test': typeof DemoFormTestRoute
-  '/demo/modal-test': typeof DemoModalTestRoute
-  '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
-  '/demo/sidebar-demo': typeof DemoSidebarDemoRoute
-  '/demo/table-demo': typeof DemoTableDemoRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/test': typeof DemoTestRoute
-  '/demo': typeof DemoIndexRoute
   '/admin/clients/$clientId': typeof AdminClientsClientIdRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/contracts/$contractId': typeof AdminContractsContractIdRouteWithChildren
@@ -406,6 +333,7 @@ export interface FileRoutesByTo {
   '/admin/assets': typeof AdminAssetsIndexRoute
   '/admin/clients': typeof AdminClientsIndexRoute
   '/admin/contracts': typeof AdminContractsIndexRoute
+  '/admin/events': typeof AdminEventsIndexRoute
   '/admin/groups': typeof AdminGroupsIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
@@ -438,16 +366,6 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
-  '/demo/collapsible-demo': typeof DemoCollapsibleDemoRoute
-  '/demo/context-menu-demo': typeof DemoContextMenuDemoRoute
-  '/demo/form-test': typeof DemoFormTestRoute
-  '/demo/modal-test': typeof DemoModalTestRoute
-  '/demo/scroll-area-demo': typeof DemoScrollAreaDemoRoute
-  '/demo/sidebar-demo': typeof DemoSidebarDemoRoute
-  '/demo/table-demo': typeof DemoTableDemoRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/demo/test': typeof DemoTestRoute
-  '/demo/': typeof DemoIndexRoute
   '/admin/clients/$clientId': typeof AdminClientsClientIdRoute
   '/admin/clients/new': typeof AdminClientsNewRoute
   '/admin/contracts/$contractId': typeof AdminContractsContractIdRouteWithChildren
@@ -459,6 +377,7 @@ export interface FileRoutesById {
   '/admin/assets/': typeof AdminAssetsIndexRoute
   '/admin/clients/': typeof AdminClientsIndexRoute
   '/admin/contracts/': typeof AdminContractsIndexRoute
+  '/admin/events/': typeof AdminEventsIndexRoute
   '/admin/groups/': typeof AdminGroupsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
@@ -492,16 +411,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/dashboard'
     | '/admin/login'
-    | '/demo/collapsible-demo'
-    | '/demo/context-menu-demo'
-    | '/demo/form-test'
-    | '/demo/modal-test'
-    | '/demo/scroll-area-demo'
-    | '/demo/sidebar-demo'
-    | '/demo/table-demo'
-    | '/demo/tanstack-query'
-    | '/demo/test'
-    | '/demo/'
     | '/admin/clients/$clientId'
     | '/admin/clients/new'
     | '/admin/contracts/$contractId'
@@ -513,6 +422,7 @@ export interface FileRouteTypes {
     | '/admin/assets/'
     | '/admin/clients/'
     | '/admin/contracts/'
+    | '/admin/events/'
     | '/admin/groups/'
     | '/admin/settings/'
     | '/admin/users/'
@@ -544,16 +454,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/dashboard'
     | '/admin/login'
-    | '/demo/collapsible-demo'
-    | '/demo/context-menu-demo'
-    | '/demo/form-test'
-    | '/demo/modal-test'
-    | '/demo/scroll-area-demo'
-    | '/demo/sidebar-demo'
-    | '/demo/table-demo'
-    | '/demo/tanstack-query'
-    | '/demo/test'
-    | '/demo'
     | '/admin/clients/$clientId'
     | '/admin/clients/new'
     | '/admin/contracts/$contractId'
@@ -565,6 +465,7 @@ export interface FileRouteTypes {
     | '/admin/assets'
     | '/admin/clients'
     | '/admin/contracts'
+    | '/admin/events'
     | '/admin/groups'
     | '/admin/settings'
     | '/admin/users'
@@ -596,16 +497,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/dashboard'
     | '/admin/login'
-    | '/demo/collapsible-demo'
-    | '/demo/context-menu-demo'
-    | '/demo/form-test'
-    | '/demo/modal-test'
-    | '/demo/scroll-area-demo'
-    | '/demo/sidebar-demo'
-    | '/demo/table-demo'
-    | '/demo/tanstack-query'
-    | '/demo/test'
-    | '/demo/'
     | '/admin/clients/$clientId'
     | '/admin/clients/new'
     | '/admin/contracts/$contractId'
@@ -617,6 +508,7 @@ export interface FileRouteTypes {
     | '/admin/assets/'
     | '/admin/clients/'
     | '/admin/contracts/'
+    | '/admin/events/'
     | '/admin/groups/'
     | '/admin/settings/'
     | '/admin/users/'
@@ -647,16 +539,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   AdminRoute: typeof AdminRouteWithChildren
-  DemoCollapsibleDemoRoute: typeof DemoCollapsibleDemoRoute
-  DemoContextMenuDemoRoute: typeof DemoContextMenuDemoRoute
-  DemoFormTestRoute: typeof DemoFormTestRoute
-  DemoModalTestRoute: typeof DemoModalTestRoute
-  DemoScrollAreaDemoRoute: typeof DemoScrollAreaDemoRoute
-  DemoSidebarDemoRoute: typeof DemoSidebarDemoRoute
-  DemoTableDemoRoute: typeof DemoTableDemoRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
-  DemoTestRoute: typeof DemoTestRoute
-  DemoIndexRoute: typeof DemoIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -666,76 +548,6 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/': {
-      id: '/demo/'
-      path: '/demo'
-      fullPath: '/demo/'
-      preLoaderRoute: typeof DemoIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/test': {
-      id: '/demo/test'
-      path: '/demo/test'
-      fullPath: '/demo/test'
-      preLoaderRoute: typeof DemoTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/table-demo': {
-      id: '/demo/table-demo'
-      path: '/demo/table-demo'
-      fullPath: '/demo/table-demo'
-      preLoaderRoute: typeof DemoTableDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/sidebar-demo': {
-      id: '/demo/sidebar-demo'
-      path: '/demo/sidebar-demo'
-      fullPath: '/demo/sidebar-demo'
-      preLoaderRoute: typeof DemoSidebarDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/scroll-area-demo': {
-      id: '/demo/scroll-area-demo'
-      path: '/demo/scroll-area-demo'
-      fullPath: '/demo/scroll-area-demo'
-      preLoaderRoute: typeof DemoScrollAreaDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/modal-test': {
-      id: '/demo/modal-test'
-      path: '/demo/modal-test'
-      fullPath: '/demo/modal-test'
-      preLoaderRoute: typeof DemoModalTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/form-test': {
-      id: '/demo/form-test'
-      path: '/demo/form-test'
-      fullPath: '/demo/form-test'
-      preLoaderRoute: typeof DemoFormTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/context-menu-demo': {
-      id: '/demo/context-menu-demo'
-      path: '/demo/context-menu-demo'
-      fullPath: '/demo/context-menu-demo'
-      preLoaderRoute: typeof DemoContextMenuDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/collapsible-demo': {
-      id: '/demo/collapsible-demo'
-      path: '/demo/collapsible-demo'
-      fullPath: '/demo/collapsible-demo'
-      preLoaderRoute: typeof DemoCollapsibleDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/login': {
@@ -771,6 +583,13 @@ declare module '@tanstack/react-router' {
       path: '/groups'
       fullPath: '/admin/groups/'
       preLoaderRoute: typeof AdminGroupsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/events/': {
+      id: '/admin/events/'
+      path: '/events'
+      fullPath: '/admin/events/'
+      preLoaderRoute: typeof AdminEventsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/contracts/': {
@@ -1125,6 +944,7 @@ interface AdminRouteChildren {
   AdminAssetsIndexRoute: typeof AdminAssetsIndexRoute
   AdminClientsIndexRoute: typeof AdminClientsIndexRoute
   AdminContractsIndexRoute: typeof AdminContractsIndexRoute
+  AdminEventsIndexRoute: typeof AdminEventsIndexRoute
   AdminGroupsIndexRoute: typeof AdminGroupsIndexRoute
   AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
   AdminUsersIndexRoute: typeof AdminUsersIndexRoute
@@ -1160,6 +980,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminAssetsIndexRoute: AdminAssetsIndexRoute,
   AdminClientsIndexRoute: AdminClientsIndexRoute,
   AdminContractsIndexRoute: AdminContractsIndexRoute,
+  AdminEventsIndexRoute: AdminEventsIndexRoute,
   AdminGroupsIndexRoute: AdminGroupsIndexRoute,
   AdminSettingsIndexRoute: AdminSettingsIndexRoute,
   AdminUsersIndexRoute: AdminUsersIndexRoute,
@@ -1187,16 +1008,6 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRouteWithChildren,
-  DemoCollapsibleDemoRoute: DemoCollapsibleDemoRoute,
-  DemoContextMenuDemoRoute: DemoContextMenuDemoRoute,
-  DemoFormTestRoute: DemoFormTestRoute,
-  DemoModalTestRoute: DemoModalTestRoute,
-  DemoScrollAreaDemoRoute: DemoScrollAreaDemoRoute,
-  DemoSidebarDemoRoute: DemoSidebarDemoRoute,
-  DemoTableDemoRoute: DemoTableDemoRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
-  DemoTestRoute: DemoTestRoute,
-  DemoIndexRoute: DemoIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
