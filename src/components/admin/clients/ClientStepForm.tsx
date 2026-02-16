@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { X } from 'lucide-react'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   ConfirmationModal,
   IconButton,
@@ -44,6 +45,7 @@ interface ClientStepFormProps {
 
 const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const initialCompleted = existingClient
     ? completedStepsFromKey(existingClient.creation_step)
@@ -80,6 +82,13 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
     () => groupData?.data ?? [],
     [groupData],
   )
+
+  // Invalidate groups cache when clientId changes (after root group is created)
+  useEffect(() => {
+    if (clientId) {
+      queryClient.invalidateQueries({ queryKey: ['groups'] })
+    }
+  }, [clientId, queryClient])
 
   const updateTenantMutation = useUpdateTenant()
 

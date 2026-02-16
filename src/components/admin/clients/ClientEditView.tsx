@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { Plus, Edit, Trash2, Copy, ArrowLeft } from 'lucide-react'
 import { Button, Table, ConfirmationModal, ScrollArea } from '../../common'
 import type { Column } from '../../common/Table'
@@ -23,7 +24,6 @@ import GroupForm from '../groups/GroupForm'
 import UserForm from '../users/UserForm'
 import ContractForm from '../contracts/ContractForm'
 import AppShellForm from '../appShells/AppShellForm'
-import { useClientGroups as useClientGroupsForForms } from '../../../api/group.api'
 
 type EditTab = 'client' | 'groups' | 'users' | 'contracts' | 'shells'
 type FormMode = 'new' | 'edit' | 'duplicate'
@@ -40,6 +40,8 @@ interface ClientEditViewProps {
 
 const ClientEditView = ({ client }: ClientEditViewProps) => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
+
   const [activeTab, setActiveTab] = useState<EditTab>('client')
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [itemToDelete, setItemToDelete] = useState<{
@@ -51,6 +53,14 @@ const ClientEditView = ({ client }: ClientEditViewProps) => {
     type: null,
     mode: 'new',
   })
+
+  // Invalidate cache on mount to ensure root group is included
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['groups'] })
+    queryClient.invalidateQueries({ queryKey: ['admins'] })
+    queryClient.invalidateQueries({ queryKey: ['contracts'] })
+    queryClient.invalidateQueries({ queryKey: ['app_shells'] })
+  }, [client.id, queryClient])
 
   const { data: groupsData, refetch: refetchGroups } = useClientGroups(
     client.id,
@@ -71,8 +81,6 @@ const ClientEditView = ({ client }: ClientEditViewProps) => {
     client.id,
   )
   const deleteShellMutation = useDeleteAppShell()
-
-  const { data: allGroups } = useClientGroupsForForms(client.id)
 
   const groups = groupsData?.data ?? []
   const admins = adminsData?.data ?? []
@@ -285,7 +293,7 @@ const ClientEditView = ({ client }: ClientEditViewProps) => {
               <UserForm
                 user={formState.item}
                 tenants={[client]}
-                allGroups={allGroups?.data ?? []}
+                allGroups={groups}
                 mode={formState.mode}
                 clientId={client.id}
                 onClose={handleFormClose}
@@ -361,7 +369,7 @@ const ClientEditView = ({ client }: ClientEditViewProps) => {
               <ContractForm
                 contract={formState.item}
                 tenants={[client]}
-                allGroups={allGroups?.data ?? []}
+                allGroups={groups}
                 mode={formState.mode}
                 clientId={client.id}
                 onClose={handleFormClose}
