@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { X } from 'lucide-react'
 import {
@@ -42,21 +42,29 @@ interface ClientStepFormProps {
   onClose?: () => void
 }
 
-const ClientStepForm = ({
-  existingClient,
-  onClose,
-}: ClientStepFormProps) => {
+const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
   const navigate = useNavigate()
 
-  const initialStep = existingClient
-    ? stepKeyToIndex(existingClient.creation_step)
-    : 0
   const initialCompleted = existingClient
     ? completedStepsFromKey(existingClient.creation_step)
     : []
 
+  const initialStep = existingClient
+    ? Math.min(
+        stepKeyToIndex(existingClient.creation_step) + 1,
+        STEPS.length - 1,
+      )
+    : 0
+
+  useEffect(() => {
+    if (existingClient?.creation_step === 'completed') {
+      navigate({ to: '/admin/clients' })
+    }
+  }, [existingClient?.creation_step, navigate])
+
   const [currentStep, setCurrentStep] = useState(initialStep)
-  const [completedSteps, setCompletedSteps] = useState<number[]>(initialCompleted)
+  const [completedSteps, setCompletedSteps] =
+    useState<number[]>(initialCompleted)
   const [clientId, setClientId] = useState<string | null>(
     existingClient?.id ?? null,
   )

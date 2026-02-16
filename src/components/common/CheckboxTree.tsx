@@ -37,7 +37,12 @@ function buildTree(items: CheckboxTreeItem[]): {
   const nodeMap = new Map<string, TreeNode>()
 
   for (const item of items) {
-    nodeMap.set(item.id, { id: item.id, label: item.label, parentId: item.parentId, children: [] })
+    nodeMap.set(item.id, {
+      id: item.id,
+      label: item.label,
+      parentId: item.parentId,
+      children: [],
+    })
   }
 
   const roots: TreeNode[] = []
@@ -131,7 +136,11 @@ const TreeNodeRow = ({
             className="flex h-5 w-5 items-center justify-center text-inputs-text hover:text-inputs-title"
             onClick={() => onToggleExpand(node.id)}
           >
-            {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+            {isExpanded ? (
+              <ChevronDown size={16} />
+            ) : (
+              <ChevronRight size={16} />
+            )}
           </button>
         ) : (
           <span className="w-5" />
@@ -157,7 +166,8 @@ const TreeNodeRow = ({
           {node.label}
         </span>
       </div>
-      {hasChildren && isExpanded &&
+      {hasChildren &&
+        isExpanded &&
         node.children.map((child) => (
           <TreeNodeRow
             key={child.id}
@@ -188,15 +198,14 @@ const CheckboxTree = <T extends FieldValues = FieldValues>({
 }: CheckboxTreeProps<T>) => {
   const treeId = id || name
 
-  const { roots, descendantsMap } = useMemo(
-    () => buildTree(items),
-    [items],
-  )
+  const { roots, descendantsMap } = useMemo(() => buildTree(items), [items])
 
   const [expandedSet, setExpandedSet] = useState<Set<string>>(() => {
     if (defaultExpandAll) {
       return new Set(
-        items.filter((i) => items.some((c) => c.parentId === i.id)).map((i) => i.id),
+        items
+          .filter((i) => items.some((c) => c.parentId === i.id))
+          .map((i) => i.id),
       )
     }
     return new Set<string>()
@@ -243,15 +252,7 @@ const CheckboxTree = <T extends FieldValues = FieldValues>({
                 {isRequired && <span className="text-ink-error ml-1">*</span>}
               </label>
             )}
-            <div
-              className={cn(
-                'rounded-md border-2 p-3',
-                hasError
-                  ? 'border-ink-error'
-                  : 'border-inputs-border',
-                'bg-inputs-background',
-              )}
-            >
+            <div className={cn(' p-3', 'bg-inputs-background')}>
               {roots.map((root) => (
                 <TreeNodeRow
                   key={root.id}

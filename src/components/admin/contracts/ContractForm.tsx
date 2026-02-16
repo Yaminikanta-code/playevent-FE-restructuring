@@ -122,8 +122,6 @@ const ContractForm = ({
     [allGroups],
   )
 
-
-
   const contractGroupIds = useMemo(() => {
     if ('group_ids' in (contract ?? {})) {
       return (contract as ContractDetailDto)?.group_ids ?? []
@@ -167,7 +165,15 @@ const ContractForm = ({
       form.reset()
     }
     setHasChanges(false)
-  }, [contract, mode, form, isEditMode, isDuplicateMode, contractModules, contractGroupIds])
+  }, [
+    contract,
+    mode,
+    form,
+    isEditMode,
+    isDuplicateMode,
+    contractModules,
+    contractGroupIds,
+  ])
 
   useEffect(() => {
     const subscription = form.watch(() => {
@@ -271,20 +277,13 @@ const ContractForm = ({
   const formContent = (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <div className="rounded-md bg-midnight-light px-4 py-2">
-        <span className="text-sm font-semibold text-white">
-          {displayName}
-        </span>
+        <span className="text-sm font-semibold text-white">{displayName}</span>
       </div>
 
       <div className="space-y-4">
-        <div className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-1' : 'md:grid-cols-2'} gap-6`}>
-          <Input
-            label="Name"
-            placeholder="Enter contract name"
-            control={form.control}
-            name="name"
-            rules={{ required: 'Name is required' }}
-          />
+        <div
+          className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-1' : 'md:grid-cols-2'} gap-6`}
+        >
           {!clientId && (
             <Select
               label="Client"
@@ -296,7 +295,30 @@ const ContractForm = ({
           )}
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-2 gap-6">
+          <Input
+            label="Name"
+            placeholder="Enter contract name"
+            control={form.control}
+            name="name"
+            rules={{ required: 'Name is required' }}
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <DatePicker
+              label="Start Date"
+              control={form.control}
+              name="start_date"
+              rules={{ required: 'Start date is required' }}
+            />
+            <DatePicker
+              label="End Date"
+              control={form.control}
+              name="end_date"
+              rules={{ required: 'End date is required' }}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1">
           <Input
             label="Description"
             placeholder="Enter description"
@@ -304,42 +326,32 @@ const ContractForm = ({
             name="description"
           />
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <DatePicker
-            label="Start Date"
-            control={form.control}
-            name="start_date"
-            rules={{ required: 'Start date is required' }}
-          />
-          <DatePicker
-            label="End Date"
-            control={form.control}
-            name="end_date"
-            rules={{ required: 'End date is required' }}
-          />
-          <Input
-            label="Total Events"
-            type="number"
-            placeholder="0"
-            control={form.control}
-            name="total_events"
-            rules={{
-              required: 'Total events is required',
-              min: { value: 0, message: 'Must be 0 or greater' },
-            }}
-          />
+        <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
+            <Input
+              label="Total Events"
+              type="number"
+              placeholder="0"
+              control={form.control}
+              name="total_events"
+              rules={{
+                required: 'Total events is required',
+                min: { value: 0, message: 'Must be 0 or greater' },
+              }}
+            />{' '}
+          </div>
+          <div className="grid grid-cols-2 gap-6">
+            <StatusSelector
+              label="Status"
+              control={form.control}
+              name="status"
+              rules={{ required: 'Status is required' }}
+              options={statusOptions}
+            />
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <StatusSelector
-            label="Status"
-            control={form.control}
-            name="status"
-            rules={{ required: 'Status is required' }}
-            options={statusOptions}
-          />
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
