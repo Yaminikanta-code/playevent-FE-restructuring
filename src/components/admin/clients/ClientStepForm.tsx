@@ -65,6 +65,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
   const [currentStep, setCurrentStep] = useState(initialStep)
   const [completedSteps, setCompletedSteps] =
     useState<number[]>(initialCompleted)
+  const [furthestStep, setFurthestStep] = useState(initialStep)
   const [clientId, setClientId] = useState<string | null>(
     existingClient?.id ?? null,
   )
@@ -110,6 +111,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
       setClientId(newClientId)
       setClientName(name)
       markStepCompleted(0)
+      setFurthestStep(1)
       setCurrentStep(1)
     },
     [markStepCompleted],
@@ -121,6 +123,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
       await updateCreationStep(clientId, 'contracts')
     }
     markStepCompleted(1)
+    setFurthestStep(2)
     setCurrentStep(2)
   }, [clientId, updateCreationStep, markStepCompleted])
 
@@ -129,6 +132,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
       await updateCreationStep(clientId, 'shells')
     }
     markStepCompleted(2)
+    setFurthestStep(3)
     setCurrentStep(3)
   }, [clientId, updateCreationStep, markStepCompleted])
 
@@ -141,10 +145,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
   }, [clientId, updateCreationStep, markStepCompleted, navigate])
 
   const handleStepClick = (stepIndex: number) => {
-    if (
-      completedSteps.includes(stepIndex) ||
-      stepIndex <= Math.max(...completedSteps, -1) + 1
-    ) {
+    if (stepIndex <= furthestStep) {
       setCurrentStep(stepIndex)
     }
   }
@@ -160,12 +161,15 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
 
   // --- Render steps ---
   const renderStep = () => {
+    const isReadOnly = currentStep < furthestStep
+
     switch (currentStep) {
       case 0:
         return (
           <ClientForm
             existingClient={existingClient}
             onSubmitSuccess={handleClientSuccess}
+            readOnly={isReadOnly}
           />
         )
       case 1:
@@ -178,6 +182,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
             clientId={clientId}
             onSubmitSuccess={handleUserSuccess}
             submitLabel="Add a contract >>"
+            readOnly={isReadOnly}
           />
         ) : null
       case 2:
@@ -190,6 +195,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
             clientId={clientId}
             onSubmitSuccess={handleContractSuccess}
             submitLabel="Add a shell >>"
+            readOnly={isReadOnly}
           />
         ) : null
       case 3:
@@ -201,6 +207,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
             clientId={clientId}
             onSubmitSuccess={handleShellSuccess}
             submitLabel="Complete Setup"
+            readOnly={isReadOnly}
           />
         ) : null
       default:
@@ -226,6 +233,7 @@ const ClientStepForm = ({ existingClient, onClose }: ClientStepFormProps) => {
             steps={STEPS}
             currentStep={currentStep}
             completedSteps={completedSteps}
+            furthestStep={furthestStep}
             onStepClick={handleStepClick}
           />
         }

@@ -48,6 +48,8 @@ interface UserFormProps {
   embedded?: boolean
   /** Custom label for submit button in embedded mode */
   submitLabel?: string
+  /** When true, form is in read-only mode */
+  readOnly?: boolean
 }
 
 interface FormData {
@@ -74,6 +76,7 @@ const UserForm = ({
   onSubmitSuccess,
   embedded = false,
   submitLabel,
+  readOnly = false,
 }: UserFormProps) => {
   const navigate = useNavigate()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -152,6 +155,7 @@ const UserForm = ({
       rights_other_2: false,
       group_ids: [],
     },
+    disabled: readOnly,
   })
 
   useEffect(() => {
@@ -159,7 +163,7 @@ const UserForm = ({
       form.reset({
         first_name: user.first_name ?? '',
         last_name: user.last_name ?? '',
-        email: isDuplicateMode ? '' : user.email ?? '',
+        email: isDuplicateMode ? '' : (user.email ?? ''),
         password: '',
         client_id: clientId ?? user.client_id ?? '',
         status: (user.status as AdminStatus) || AdminStatus.ACTIVE,
@@ -279,14 +283,14 @@ const UserForm = ({
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       {/* User name banner */}
       <div className="rounded-md bg-midnight-light px-4 py-2">
-        <span className="text-sm font-semibold text-white">
-          {displayName}
-        </span>
+        <span className="text-sm font-semibold text-white">{displayName}</span>
       </div>
 
       {/* Main fields */}
       <div className="space-y-4">
-        <div className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-3' : 'md:grid-cols-4'} gap-6`}>
+        <div
+          className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-3' : 'md:grid-cols-4'} gap-6`}
+        >
           <Input
             label="Firstname"
             placeholder="Enter first name"
@@ -308,15 +312,15 @@ const UserForm = ({
             rules={{ required: 'Status is required' }}
             options={statusOptions}
           />
-          {!clientId && (
-            isEditMode ? (
+          {!clientId &&
+            (isEditMode ? (
               <div className="flex flex-col">
                 <label className="block text-sm font-medium text-inputs-title mb-2">
                   Client
                 </label>
                 <div className="flex h-10 items-center text-sm text-inputs-text">
                   {user?.client_id
-                    ? clientNameMap[user.client_id] ?? '-'
+                    ? (clientNameMap[user.client_id] ?? '-')
                     : '-'}
                 </div>
               </div>
@@ -328,8 +332,7 @@ const UserForm = ({
                 name="client_id"
                 options={tenantOptions}
               />
-            )
-          )}
+            ))}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -405,16 +408,18 @@ const UserForm = ({
         </Collapsible>
       </div>
 
-      <div className="flex justify-center pt-2">
-        <Button
-          type="submit"
-          variant={embedded ? 'primary' : 'secondary'}
-          icon={embedded ? undefined : Save}
-          isLoading={isSubmitting}
-        >
-          {submitLabel ?? 'Save'}
-        </Button>
-      </div>
+      {!readOnly && (
+        <div className="flex justify-center pt-2">
+          <Button
+            type="submit"
+            variant={embedded ? 'primary' : 'secondary'}
+            icon={embedded ? undefined : Save}
+            isLoading={isSubmitting}
+          >
+            {submitLabel ?? 'Save'}
+          </Button>
+        </div>
+      )}
     </form>
   )
 

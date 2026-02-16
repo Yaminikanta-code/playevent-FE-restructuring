@@ -1,13 +1,6 @@
 import { useForm } from 'react-hook-form'
-import {
-  Button,
-  Input,
-  StatusSelector,
-  type StatusOption,
-} from '../../common'
-import {
-  useCreateTenant,
-} from '../../../api/tenant.api'
+import { Button, Input, StatusSelector, type StatusOption } from '../../common'
+import { useCreateTenant } from '../../../api/tenant.api'
 import { useCreateGroup } from '../../../api/group.api'
 import { TenantStatus } from '../../../types/tenant.types'
 import type { TenantOutDto } from '../../../types/tenant.types'
@@ -27,6 +20,8 @@ interface ClientFormProps {
   onSubmitSuccess: (clientId: string, clientName: string) => void
   /** Custom label for submit button */
   submitLabel?: string
+  /** When true, form is in read-only mode */
+  readOnly?: boolean
 }
 
 const statusOptions: StatusOption[] = [
@@ -39,6 +34,7 @@ const ClientForm = ({
   rootGroupName: existingRootGroupName,
   onSubmitSuccess,
   submitLabel = 'Add a user >>',
+  readOnly = false,
 }: ClientFormProps) => {
   const createTenantMutation = useCreateTenant()
   const createGroupMutation = useCreateGroup()
@@ -50,12 +46,14 @@ const ClientForm = ({
       status: (existingClient?.status as TenantStatus) ?? TenantStatus.ACTIVE,
       activity_name: existingClient?.activity_name ?? '',
     },
+    disabled: readOnly,
   })
 
   const watchedShortName = form.watch('short_name')
   const watchedName = form.watch('name')
-  const rootGroupPreview = existingRootGroupName
-    || (watchedShortName
+  const rootGroupPreview =
+    existingRootGroupName ||
+    (watchedShortName
       ? `${watchedShortName}_root`
       : watchedName
         ? `${watchedName.substring(0, 5)}_root`
@@ -92,10 +90,7 @@ const ClientForm = ({
   }
 
   return (
-    <form
-      onSubmit={form.handleSubmit(handleSubmit)}
-      className="space-y-6"
-    >
+    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
       <div className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Input
@@ -141,17 +136,19 @@ const ClientForm = ({
         </div>
       </div>
 
-      <div className="flex justify-center pt-4">
-        <Button
-          type="submit"
-          variant="primary"
-          isLoading={
-            createTenantMutation.isPending || createGroupMutation.isPending
-          }
-        >
-          {submitLabel}
-        </Button>
-      </div>
+      {!readOnly && (
+        <div className="flex justify-center pt-4">
+          <Button
+            type="submit"
+            variant="primary"
+            isLoading={
+              createTenantMutation.isPending || createGroupMutation.isPending
+            }
+          >
+            {submitLabel}
+          </Button>
+        </div>
+      )}
     </form>
   )
 }

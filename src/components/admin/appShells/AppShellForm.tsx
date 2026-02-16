@@ -43,6 +43,8 @@ interface AppShellFormProps {
   embedded?: boolean
   /** Custom label for submit button in embedded mode */
   submitLabel?: string
+  /** When true, form is in read-only mode */
+  readOnly?: boolean
 }
 
 interface FormData {
@@ -64,6 +66,7 @@ const AppShellForm = ({
   onSubmitSuccess,
   embedded = false,
   submitLabel,
+  readOnly = false,
 }: AppShellFormProps) => {
   const navigate = useNavigate()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -108,6 +111,7 @@ const AppShellForm = ({
       header_html: '',
       footer_html: '',
     },
+    disabled: readOnly,
   })
 
   useEffect(() => {
@@ -214,11 +218,11 @@ const AppShellForm = ({
   const formContent = (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       <div className="space-y-4 rounded-lg border border-inputs-border bg-inputs-background p-5">
-        <div className="text-sm font-semibold text-inputs-title">
-          App Shell
-        </div>
+        <div className="text-sm font-semibold text-inputs-title">App Shell</div>
 
-        <div className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-6`}>
+        <div
+          className={`grid grid-cols-1 ${clientId ? 'md:grid-cols-2' : 'md:grid-cols-3'} gap-6`}
+        >
           <Input
             label="Name"
             placeholder="Enter app shell name"
@@ -283,16 +287,18 @@ const AppShellForm = ({
         </div>
       </Collapsible>
 
-      <div className="flex justify-center pt-2">
-        <Button
-          type="submit"
-          variant={embedded ? 'primary' : 'secondary'}
-          icon={embedded ? undefined : Save}
-          isLoading={isSubmitting}
-        >
-          {submitLabel ?? 'Save'}
-        </Button>
-      </div>
+      {!readOnly && (
+        <div className="flex justify-center pt-2">
+          <Button
+            type="submit"
+            variant={embedded ? 'primary' : 'secondary'}
+            icon={embedded ? undefined : Save}
+            isLoading={isSubmitting}
+          >
+            {submitLabel ?? 'Save'}
+          </Button>
+        </div>
+      )}
     </form>
   )
 

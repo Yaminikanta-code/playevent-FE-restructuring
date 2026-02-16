@@ -8,6 +8,7 @@ export interface StepIndicatorProps {
   steps: Step[]
   currentStep: number
   completedSteps?: number[]
+  furthestStep?: number
   onStepClick?: (stepIndex: number) => void
 }
 
@@ -15,6 +16,7 @@ const StepIndicator = ({
   steps,
   currentStep,
   completedSteps = [],
+  furthestStep = currentStep,
   onStepClick,
 }: StepIndicatorProps) => {
   return (
@@ -22,9 +24,7 @@ const StepIndicator = ({
       {steps.map((step, index) => {
         const isCompleted = completedSteps.includes(index)
         const isCurrent = index === currentStep
-        const isClickable =
-          onStepClick &&
-          (isCompleted || index <= Math.max(...completedSteps, -1) + 1)
+        const isClickable = onStepClick && index <= furthestStep
 
         return (
           <button
@@ -38,10 +38,10 @@ const StepIndicator = ({
               isCompleted &&
                 !isCurrent &&
                 'bg-statuszen-base/15 text-statuszen-base hover:bg-statuszen-base/25',
-              !isCurrent &&
-                !isCompleted &&
-                'text-inputs-text',
-              isClickable && !isCurrent && 'cursor-pointer hover:text-inputs-title',
+              !isCurrent && !isCompleted && 'text-inputs-text',
+              isClickable &&
+                !isCurrent &&
+                'cursor-pointer hover:text-inputs-title',
               !isClickable && 'cursor-default opacity-50',
             )}
           >

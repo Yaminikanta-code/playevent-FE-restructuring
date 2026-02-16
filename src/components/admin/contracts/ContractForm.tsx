@@ -49,6 +49,8 @@ interface ContractFormProps {
   embedded?: boolean
   /** Custom label for submit button in embedded mode */
   submitLabel?: string
+  /** When true, form is in read-only mode */
+  readOnly?: boolean
 }
 
 interface FormData {
@@ -73,6 +75,7 @@ const ContractForm = ({
   onSubmitSuccess,
   embedded = false,
   submitLabel,
+  readOnly = false,
 }: ContractFormProps) => {
   const navigate = useNavigate()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -146,6 +149,7 @@ const ContractForm = ({
       allocated_modules: [],
       group_ids: [],
     },
+    disabled: readOnly,
   })
 
   useEffect(() => {
@@ -424,16 +428,18 @@ const ContractForm = ({
         </Collapsible>
       </div>
 
-      <div className="flex justify-center pt-2">
-        <Button
-          type="submit"
-          variant={embedded ? 'primary' : 'secondary'}
-          icon={embedded ? undefined : Save}
-          isLoading={isSubmitting}
-        >
-          {submitLabel ?? 'Save'}
-        </Button>
-      </div>
+      {!readOnly && (
+        <div className="flex justify-center pt-2">
+          <Button
+            type="submit"
+            variant={embedded ? 'primary' : 'secondary'}
+            icon={embedded ? undefined : Save}
+            isLoading={isSubmitting}
+          >
+            {submitLabel ?? 'Save'}
+          </Button>
+        </div>
+      )}
     </form>
   )
 
