@@ -28,7 +28,7 @@ export interface ApiHookOptions<OutDto> {
     error: (action: string) => string
   }>
   invalidateQueries?: {
-    onSuccess?: (queryClient: any, data?: any, variables?: any) => void
+    onSuccess?: (queryClient: any, data?: OutDto, variables?: any) => void
   }
   queryDefaults?: Partial<UseQueryOptions<any, any, any, any>>
   mutationDefaults?: Partial<UseMutationOptions<any, any, any, any>>
