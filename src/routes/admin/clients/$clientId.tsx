@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useTenantById } from '@/api/tenant.api'
 import ClientStepForm from '@/components/admin/clients/ClientStepForm'
+import ClientEditView from '@/components/admin/clients/ClientEditView'
 import { authRedirect } from '@/lib/authRedirect'
 
 export const Route = createFileRoute('/admin/clients/$clientId')({
@@ -26,6 +27,10 @@ function ClientResumePage() {
         Client not found
       </div>
     )
+  }
+
+  if (client.creation_step === 'completed') {
+    return <ClientEditView client={client} />
   }
 
   return (
